@@ -4,23 +4,24 @@
 
 #include "neslib.h"
 #include "nesdoug.h"
-// #include "plasma.h"
 
 const unsigned char sinTbl1[]={4,6,7,8,8,8,7,6,4,2,1,0,0,0,1,2,4,6,7,8,8,8,7,6,4,2,1,0,0,0,1,2,4,6,7,8,8,8,7,6,4,2,1,0,0,0,1,2,4,6,7,8,8,8,7,6,4,2,1,0,0,0,1,2,4,6,7,8,8,8,7,6,4,2,1,0,0,0,1,2,4,6,7,8,8,8,7,6,4,2,1,0,0,0,1,2,4,6,7,8,8,8,7,6,4,2,1,0,0,0,1,2,4,6,7,8,8,8,7,6,4,2,1,0,0,0,1,2,4,6,7,8,8,8,7,6,4,2,1,0,0,0,1,2,4,6,7,8,8,8,7,6,4,2,1,0,0,0,1,2,4,6,7,8,8,8,7,6,4,2,1,0,0,0,1,2,4,6,7,8,8,8,7,6,4,2,1,0,0,0,1,2,4,6,7,8,8,8,7,6,4,2,1,0,0,0,1,2,4,6,7,8,8,8,7,6,4,2,1,0,0,0,1,2,4,6,7,8,8,8,7,6,4,2,1,0,0,0,1,2,4,6,7,8,8,8,7,6,4,2,1,0,0,0,1,2};
 const unsigned char sinTbl2[]={12,15,18,20,22,23,24,24,23,22,20,17,14,11,9,6,4,2,1,0,0,1,3,5,7,10,13,16,19,21,23,24,24,24,23,21,19,16,13,10,7,5,3,1,0,0,1,2,4,6,9,11,14,17,20,22,23,24,24,23,22,20,18,15,12,9,6,4,2,1,0,0,1,2,4,7,10,13,15,18,20,22,23,24,24,23,21,19,17,14,11,8,5,3,1,0,0,0,1,3,5,8,11,14,17,19,21,23,24,24,23,22,20,18,15,13,10,7,4,2,1,0,0,1,2,4,6,9,12,15,18,20,22,23,24,24,23,22,20,17,14,11,9,6,4,2,1,0,0,1,3,5,7,10,13,16,19,21,23,24,24,24,23,21,19,16,13,10,7,5,3,1,0,0,1,2,4,6,9,11,14,17,20,22,23,24,24,23,22,20,18,15,12,9,6,4,2,1,0,0,1,2,4,7,10,13,15,18,20,22,23,24,24,23,21,19,17,14,11,8,5,3,1,0,0,0,1,3,5,8,11,14,17,19,21,23,24,24,23,22,20,18,15,13,10,7,4,2,1,0,0,1,2,4,6,9};
 const unsigned char sinTbl3[]={8,10,11,12,14,15,15,16,16,16,15,15,14,12,11,10,8,6,5,4,2,1,1,0,0,0,1,1,2,4,5,6,8,10,11,12,14,15,15,16,16,16,15,15,14,12,11,10,8,6,5,4,2,1,1,0,0,0,1,1,2,4,5,6,8,10,11,12,14,15,15,16,16,16,15,15,14,12,11,10,8,6,5,4,2,1,1,0,0,0,1,1,2,4,5,6,8,10,11,12,14,15,15,16,16,16,15,15,14,12,11,10,8,6,5,4,2,1,1,0,0,0,1,1,2,4,5,6,8,10,11,12,14,15,15,16,16,16,15,15,14,12,11,10,8,6,5,4,2,1,1,0,0,0,1,1,2,4,5,6,8,10,11,12,14,15,15,16,16,16,15,15,14,12,11,10,8,6,5,4,2,1,1,0,0,0,1,1,2,4,5,6,8,10,11,12,14,15,15,16,16,16,15,15,14,12,11,10,8,6,5,4,2,1,1,0,0,0,1,1,2,4,5,6,8,10,11,12,14,15,15,16,16,16,15,15,14,12,11,10,8,6,5,4,2,1,1,0,0,0,1,1,2,4,5,6};
 
 const unsigned char string_we_like_to[32*1]={
-	0xff,0xff,0xff,0xff,0xff,0xff,0x00,0x00,0xc0,0xc0,0xc1,0xc2,0xc3,0xc4,0xc5,0xc6,0xc7,0xc8,0xc9,0xca,0xcb,0xcc,0xcd,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff
+	0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x6a,0x6b,0xd7,0xa0,0xa1,0xa2,0xa3,0xdc,0xbb,0xbc,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00
 };
 
 const unsigned char string_invite_you_to[32*1]={
-	0xff,0xff,0xff,0xff,0xff,0xff,0xce,0xcf,0xff,0xd0,0xd1,0xd2,0xd3,0xd4,0xd5,0xd6,0xd7,0xd8,0xd9,0xda,0xdb,0xdc,0xdd,0xde,0xdf,0xff,0xff,0xff,0xff,0xff,0xff,0xff
+	0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0xbd,0xbe,0xbf,0xc0,0xc1,0xc2,0xc3,0xc4,0xc5,0xc6,0xc7,0xc8,0xc9,0xca,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0xff
 };
+
 
 
 #include "part1_zx_loading_nam.h"
 #include "part1_zx_pilotone_nam.h"
+#include "nam_split.h"
 
 #define	PLASMA16_POS_X						8
 #define	PLASMA16_POS_Y						5
@@ -68,7 +69,9 @@ static unsigned char titles_list[25+25+1]={
 
 const unsigned char pal_part1[16]={ 0x0f,0x05,0x2c,0x10,0x0f,0x30,0x10,0x06,0x0f,0x0f,0x10,0x0f,0x0f,0x0f,0x0f,0x0f };
 const unsigned char palette[16]={ 0x0f,0x05,0x2c,0x10,0x0f,0x20,0x10,0x05,0x0f,0x3d,0x3d,0x0f,0x0f,0x0f,0x0f,0x0f };
-const unsigned char pal_water[16]={ 0x0f,0x0c,0x21,0x1c,0x0f,0x0c,0x21,0x1c,0x0f,0x3d,0x3d,0x0f,0x0f,0x0f,0x0f,0x0f };
+//const unsigned char pal_water[16]={ 0x0f,0x0c,0x21,0x1c,0x0f,0x0c,0x21,0x1c,0x0f,0x3d,0x3d,0x0f,0x0f,0x0f,0x0f,0x0f };
+const unsigned char pal_water[16]={ 0x0f,0x0c,0x21,0x1c,0x0f,0x0b,0x1b,0x2b,0x0f,0x2d,0x20,0x10,0x0f,0x3d,0x3d,0x0f };
+
 
 
 const unsigned char bus_conflict[4]={ 0x00,0x01,0x02,0x03 };
@@ -193,7 +196,7 @@ void fxPlasm16(void) {
 	for (frm = 0; frm < 8; frm++) {
 		if (scrSwap == 0) {
 			scroll(0,0);
-			fxPlasmFrame(frm, 15);
+			fxPlasmFrame(frm, 31);
 //			gray_line();
 			clear_vram_buffer();
 			multi_vram_buffer_horz((unsigned char*) fire_array+0,16,NAMETABLE_B+frm*64+32+PLASMA16_POS_X + PLASMA16_POS_Y*32);
@@ -201,7 +204,7 @@ void fxPlasm16(void) {
 			ppu_wait_nmi();
 			scroll(256,0);
 		} else {
-			fxPlasmFrame(frm, 15);
+			fxPlasmFrame(frm, 31);
 //			gray_line();
 			clear_vram_buffer();
 			multi_vram_buffer_horz((unsigned char*) fire_array+0,16,NAMETABLE_A+frm*64+32+PLASMA16_POS_X + PLASMA16_POS_Y*32);
@@ -319,14 +322,14 @@ unsigned char off;
 	i=15;
 
 	vram_adr(NAMETABLE_A);
-	vram_fill(0,1024*2);
-//	vram_unrle(nam_border16x16);
+//	vram_fill(0,1024*2);
+	vram_unrle(nam_split);
 	vram_adr(NAMETABLE_B);
-//	vram_unrle(nam_border16x16);
+	vram_unrle(nam_split);
 
-	vram_adr(NAMETABLE_A+25*32);
+	vram_adr(NAMETABLE_A+26*32);
 	vram_write(string_we_like_to,32);
-	vram_adr(NAMETABLE_B+25*32);
+	vram_adr(NAMETABLE_B+26*32);
 	vram_write(string_we_like_to,32);
 
 	set_vram_buffer();
@@ -353,7 +356,7 @@ unsigned char off;
 
 	_pal_fade_to(0);
 
-	vram_adr(NAMETABLE_A+25*32);
+	vram_adr(NAMETABLE_A+26*32);
 	vram_write(string_invite_you_to,32);
 
 
