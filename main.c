@@ -12,7 +12,6 @@ const unsigned char sinTbl3[]={8,10,11,12,14,15,15,16,16,16,15,15,14,12,11,10,8,
 
 #include "part1_zx_loading_nam.h"
 #include "part1_zx_pilotone_nam.h"
-#include "pal_effect_nametable.h"
 
 #pragma bss-name (push,"ZEROPAGE")
 
@@ -37,6 +36,7 @@ static unsigned char fire_array[16*16]={
 0x70,0x70,0x70,0x70,0x70,0x70,0x70,0x70,0x70,0x70,0x70,0x70,0x70,0x70,0x70,0x70
 };
 
+unsigned char frm = 0;
 unsigned char xa = 0;
 unsigned char ya = 0;
 unsigned char xya = 0;
@@ -51,6 +51,8 @@ unsigned val = 0;
 
 unsigned char pad;
 unsigned char tileset;
+
+
 
 /*
 const unsigned char nametable_part1_bytes[22*1]={
@@ -187,49 +189,43 @@ void plasma(unsigned int offset){
 }
 */
 
-void redrawFrame(void) {
-unsigned char y, x;
-	xa++;
-	ya++;
-	xya--;
-	colorAdd += 2;
+void fxPlasmFrame(frm) {
+unsigned char y, x, yfrom, yto;
 	buffAdr = 0;
-	yy = ya;
-	for (y = 0; y < 16; y++) {
+	yfrom = frm*3;
+	yto = frm*3 + 3;
+	yy = ya + yfrom;
+	for (y = yfrom; y < yto; y++) {
 		xx = xa;
 		xy = y + xya;
-		for (x = 0; x < 16; x++) {
-			val = colorAdd + sinTbl1[xx] + sinTbl2[yy] + sinTbl3[xy];
-			val = val & 31;
-			fire_array[buffAdr] = val+0x80;
-			buffAdr++;
-			xx++;
-			xy++;
+		for (x = 0; x < 32; x++) {
+			fire_array[buffAdr] = 0x80 + ((colorAdd + sinTbl1[xx] + sinTbl2[yy] + sinTbl3[xy]) & 31);
+			buffAdr+=1;
+			xx+=1;
+			xy+=1;
 		}
-		yy++;
+		yy+=1;
 	}
 }
 
-void roll_palette(unsigned char i) {
-	switch(i){
-		case 0:
-			pal_col(1, 0x2b);
-			pal_col(2, 0x12);
-			pal_col(3, 0x29);
-		break;
+void rollpalette(void) {
+unsigned char i;
 
-		case 1:
-			pal_col(1, 0x12);
-			pal_col(2, 0x29);
-			pal_col(3, 0x2b);
-		break;
+}
 
-		case 2:
-			pal_col(1, 0x29);
-			pal_col(2, 0x2b);
-			pal_col(3, 0x12);
-		break;
+void fxPlasm(void) {
+	for (frm = 0; frm < 8; frm++) {
+		fxPlasmFrame(frm);
+		clear_vram_buffer();
+		multi_vram_buffer_horz((unsigned char*) fire_array+0,32,NAMETABLE_A+frm*96+32);
+		multi_vram_buffer_horz((unsigned char*) fire_array+32,32,NAMETABLE_A+frm*96+64);
+		multi_vram_buffer_horz((unsigned char*) fire_array+64,32,NAMETABLE_A+frm*96+96);
+		ppu_wait_nmi();
 	}
+	xa+=1;
+	ya+=1;
+	xya-=1;
+	colorAdd += 1;
 }
 
 void main(void)
@@ -250,9 +246,7 @@ unsigned char off;
 	vram_adr(NAMETABLE_A);
 //	vram_unrle(part1_zx_pilotone_nam);
 
-//	vram_fill(0x70,32*30);
-
-	vram_write(pal_effect_nametable, 1024);
+	vram_fill(0x70,32*30);
 
 	bright=4;
 
@@ -278,39 +272,26 @@ unsigned char off;
 
 	off=15;
 
-	i=0;
-	pad=pad_trigger(0);
-	while(!(pad&PAD_START)){
-		++i;
-		
-		if (!(i&7)) --k;
-		roll_palette(k);
-		if (k<1) k=3;
-		ppu_wait_nmi();
-
-	}	
-
 	pad=pad_trigger(0);
 	while(!(pad&PAD_START)){
 
 		i+=k;
 		if (i>28 || i<3) k=-k;
 
+		if (!(i&15)) {
+			rollpalette();
+		}
+
 		pad=pad_trigger(0);
 
 //		plasma(i*256);
-		redrawFrame();
-//		plotfirehead();
-		gray_line();
 
+		fxPlasm();
 
-		clear_vram_buffer();
-		for (fy=0;fy<4;++fy){
-			multi_vram_buffer_horz((unsigned char*) fire_array+fy*16,16,NAMETABLE_A+64+fy*32);
-		}
-		ppu_wait_nmi();
+	
+		
 
-		clear_vram_buffer();
+		/*clear_vram_buffer();
 		for (fy=4;fy<8;++fy){
 			multi_vram_buffer_horz((unsigned char*) fire_array+fy*16,16,NAMETABLE_A+64+fy*32);
 		}
@@ -350,7 +331,7 @@ unsigned char off;
 		for (fy=12;fy<16;++fy){
 			multi_vram_buffer_horz((unsigned char*) fire_array+fy*16,16,NAMETABLE_A+64+512+fy*32);
 		}
-		ppu_wait_nmi();
+		ppu_wait_nmi();*/
 	}
 
 	_pal_fade_to(8);
