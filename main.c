@@ -36,6 +36,7 @@ static unsigned char fire_array[16*16]={
 0x70,0x70,0x70,0x70,0x70,0x70,0x70,0x70,0x70,0x70,0x70,0x70,0x70,0x70,0x70,0x70
 };
 
+unsigned char scrSwap = 0;
 unsigned char frm = 0;
 unsigned char xa = 0;
 unsigned char ya = 0;
@@ -215,17 +216,29 @@ unsigned char i;
 
 void fxPlasm(void) {
 	for (frm = 0; frm < 8; frm++) {
-		fxPlasmFrame(frm);
-		clear_vram_buffer();
-		multi_vram_buffer_horz((unsigned char*) fire_array+0,32,NAMETABLE_A+frm*96+32);
-		multi_vram_buffer_horz((unsigned char*) fire_array+32,32,NAMETABLE_A+frm*96+64);
-		multi_vram_buffer_horz((unsigned char*) fire_array+64,32,NAMETABLE_A+frm*96+96);
-		ppu_wait_nmi();
+		if (scrSwap == 0) {
+			scroll(0,0);
+			fxPlasmFrame(frm);
+			clear_vram_buffer();
+			multi_vram_buffer_horz((unsigned char*) fire_array+0,32,NAMETABLE_B+frm*96+32 + 64);
+			multi_vram_buffer_horz((unsigned char*) fire_array+32,32,NAMETABLE_B+frm*96+64 + 64);
+			multi_vram_buffer_horz((unsigned char*) fire_array+64,32,NAMETABLE_B+frm*96+96 + 64);
+			ppu_wait_nmi();
+			scroll(256,0);
+		} else {
+			fxPlasmFrame(frm);
+			clear_vram_buffer();
+			multi_vram_buffer_horz((unsigned char*) fire_array+0,32,NAMETABLE_A+frm*96+32 + 64);
+			multi_vram_buffer_horz((unsigned char*) fire_array+32,32,NAMETABLE_A+frm*96+64 + 64);
+			multi_vram_buffer_horz((unsigned char*) fire_array+64,32,NAMETABLE_A+frm*96+96 + 64);
+			ppu_wait_nmi();
+		}
 	}
 	xa+=1;
 	ya+=1;
 	xya-=1;
 	colorAdd += 1;
+	scrSwap ^= 1;
 }
 
 void main(void)
