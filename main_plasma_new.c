@@ -12,7 +12,6 @@ const unsigned char sinTbl3[]={8,10,11,12,14,15,15,16,16,16,15,15,14,12,11,10,8,
 
 #include "part1_zx_loading_nam.h"
 #include "part1_zx_pilotone_nam.h"
-#include "pal_effect_nametable.h"
 
 #pragma bss-name (push,"ZEROPAGE")
 
@@ -210,26 +209,9 @@ unsigned char y, x;
 	}
 }
 
-void roll_palette(unsigned char i) {
-	switch(i){
-		case 0:
-			pal_col(1, 0x2b);
-			pal_col(2, 0x12);
-			pal_col(3, 0x29);
-		break;
+void rollpalette(void) {
+unsigned char i;
 
-		case 1:
-			pal_col(1, 0x12);
-			pal_col(2, 0x29);
-			pal_col(3, 0x2b);
-		break;
-
-		case 2:
-			pal_col(1, 0x29);
-			pal_col(2, 0x2b);
-			pal_col(3, 0x12);
-		break;
-	}
 }
 
 void main(void)
@@ -250,9 +232,7 @@ unsigned char off;
 	vram_adr(NAMETABLE_A);
 //	vram_unrle(part1_zx_pilotone_nam);
 
-//	vram_fill(0x70,32*30);
-
-	vram_write(pal_effect_nametable, 1024);
+	vram_fill(0x70,32*30);
 
 	bright=4;
 
@@ -278,23 +258,15 @@ unsigned char off;
 
 	off=15;
 
-	i=0;
-	pad=pad_trigger(0);
-	while(!(pad&PAD_START)){
-		++i;
-		
-		if (!(i&7)) --k;
-		roll_palette(k);
-		if (k<1) k=3;
-		ppu_wait_nmi();
-
-	}	
-
 	pad=pad_trigger(0);
 	while(!(pad&PAD_START)){
 
 		i+=k;
 		if (i>28 || i<3) k=-k;
+
+		if (!(i&15)) {
+			rollpalette();
+		}
 
 		pad=pad_trigger(0);
 
