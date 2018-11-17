@@ -80,8 +80,8 @@ static unsigned char titles_list[25+25+1]={
 };
 
 const unsigned char part1_palette[16]={ 0x0f,0x05,0x2c,0x10,0x0f,0x30,0x10,0x06,0x0f,0x0f,0x10,0x0f,0x0f,0x0f,0x0f,0x0f };
-// const unsigned char palette[16]={ 0x0f,0x06,0x16,0x28,0x0f,0x30,0x0f,0x05,0x0f,0x06,0x16,0x28,0x0f,0x0f,0x0f,0x0f };
-const unsigned char palette[16]={ 0x0f,0x28,0x03,0x05,0x0f,0x28,0x03,0x05,0x0f,0x28,0x03,0x05,0x0f,0x28,0x03,0x05 };
+const unsigned char palette[16]={ 0x0f,0x05,0x2c,0x10,0x0f,0x20,0x10,0x05,0x0f,0x3d,0x3d,0x0f,0x0f,0x0f,0x0f,0x0f };
+const unsigned char palette1[16]={ 0x0f,0x28,0x03,0x05,0x0f,0x28,0x03,0x05,0x0f,0x28,0x03,0x05,0x0f,0x28,0x03,0x05 };
 
 const unsigned char bus_conflict[4]={ 0x00,0x01,0x02,0x03 };
 
@@ -256,144 +256,29 @@ unsigned char off;
 	pal_bg(palette);
 
 	vram_adr(NAMETABLE_B);
-//	vram_unrle(part1_zx_loading_nam);
+	vram_unrle(part1_zx_loading_nam);
 
 	vram_adr(NAMETABLE_A);
-//	vram_unrle(part1_zx_pilotone_nam);
-
-	vram_fill(0x70,32*30);
+	vram_unrle(part1_zx_pilotone_nam);
 
 	bright=4;
 
-/*
+
 	// "Program" title reset
 	pal_col(9,0x10);
+	pal_col(10,0x10);
 
 	// "Bill Gilbert" reset
 	pal_col(5,0x10);
 	pal_col(6,0x10);
 	pal_col(7,0x10);
-*/
 
-//	set_vram_update(titles_list);
+
+	set_vram_update(titles_list);
 	ppu_on_all();
 
-	k=1;
-	i=15;
+	music_play(0);
 
-//	music_play(0);
-
-	set_vram_buffer();
-
-	off=15;
-
-	pad=pad_trigger(0);
-	while(!(pad&PAD_START)){
-
-		i+=k;
-		if (i>28 || i<3) k=-k;
-
-		if (!(i&15)) {
-			rollpalette();
-		}
-
-		pad=pad_trigger(0);
-
-//		plasma(i*256);
-
-		fxPlasm();
-
-	
-		
-
-		/*clear_vram_buffer();
-		for (fy=4;fy<8;++fy){
-			multi_vram_buffer_horz((unsigned char*) fire_array+fy*16,16,NAMETABLE_A+64+fy*32);
-		}
-		ppu_wait_nmi();
-
-		clear_vram_buffer();
-		for (fy=8;fy<12;++fy){
-			multi_vram_buffer_horz((unsigned char*) fire_array+fy*16,16,NAMETABLE_A+64+fy*32);
-		}
-		ppu_wait_nmi();
-
-		clear_vram_buffer();
-		for (fy=12;fy<16;++fy){
-			multi_vram_buffer_horz((unsigned char*) fire_array+fy*16,16,NAMETABLE_A+64+fy*32);
-		}
-		ppu_wait_nmi();
-
-		clear_vram_buffer();
-		for (fy=0;fy<4;++fy){
-			multi_vram_buffer_horz((unsigned char*) fire_array+fy*16,16,NAMETABLE_A+64+512+fy*32);
-		}
-		ppu_wait_nmi();
-
-		clear_vram_buffer();
-		for (fy=4;fy<8;++fy){
-			multi_vram_buffer_horz((unsigned char*) fire_array+fy*16,16,NAMETABLE_A+64+512+fy*32);
-		}
-		ppu_wait_nmi();
-
-		clear_vram_buffer();
-		for (fy=8;fy<12;++fy){
-			multi_vram_buffer_horz((unsigned char*) fire_array+fy*16,16,NAMETABLE_A+64+512+fy*32);
-		}
-		ppu_wait_nmi();
-
-		clear_vram_buffer();
-		for (fy=12;fy<16;++fy){
-			multi_vram_buffer_horz((unsigned char*) fire_array+fy*16,16,NAMETABLE_A+64+512+fy*32);
-		}
-		ppu_wait_nmi();*/
-	}
-
-	_pal_fade_to(8);
-	pal_col(1,0x06);
-	pal_col(2,0x05);
-	pal_col(3,0x28);
-
-	for (fy=0;fy<256;++fy){
-		fire_array[fy]=0x71;
-	}
-
-	_pal_fade_to(4);
-
-	while(1){
-
-		pad=pad_trigger(0);
-
-		plotfirehead();
-		fireloop();
-
-		clear_vram_buffer();
-		for (fy=0;fy<4;++fy){
-			multi_vram_buffer_horz((unsigned char*) fire_array+fy*16,16,NAMETABLE_A+64+fy*32);
-		}
-		ppu_wait_nmi();
-
-		clear_vram_buffer();
-		for (fy=4;fy<8;++fy){
-			multi_vram_buffer_horz((unsigned char*) fire_array+fy*16,16,NAMETABLE_A+64+fy*32);
-		}
-		ppu_wait_nmi();
-
-		clear_vram_buffer();
-		for (fy=8;fy<12;++fy){
-			multi_vram_buffer_horz((unsigned char*) fire_array+fy*16,16,NAMETABLE_A+64+fy*32);
-		}
-		ppu_wait_nmi();
-
-		clear_vram_buffer();
-		for (fy=12;fy<16;++fy){
-			multi_vram_buffer_horz((unsigned char*) fire_array+fy*16,16,NAMETABLE_A+64+fy*32);
-		}
-		ppu_wait_nmi();
-
-	}
-
-/*
 	// Block 1:
 	// Pilotone
 	zx_loading(192, 0x2c, 0x05, 4, 0);
@@ -506,7 +391,7 @@ unsigned char off;
 
 //	zx_border(0x02);
 
-	pal_fade_to(8);
+	_pal_fade_to(8);
 	zx_border(0x0f);
 	pal_col(5, 0x0f);
 	pal_col(6, 0x0f);
@@ -514,10 +399,132 @@ unsigned char off;
 	pal_col(9,0x0f);
 
 	skip_frames(25);
-	pal_fade_to(0);
+	_pal_fade_to(0);
 
 	ppu_off();
-*/
+	
+	pal_bg(palette1);
+
+	_pal_fade_to(4);
+
+	k=1;
+	i=15;
+
+//	music_play(0);
+
+	set_vram_buffer();
+
+	ppu_on_all();
+
+	off=15;
+
+	pad=pad_trigger(0);
+	while(!(pad&PAD_START)){
+
+		i+=k;
+		if (i>28 || i<3) k=-k;
+
+		if (!(i&15)) {
+			rollpalette();
+		}
+
+		pad=pad_trigger(0);
+
+//		plasma(i*256);
+
+		fxPlasm();
+
+	
+		
+
+		/*clear_vram_buffer();
+		for (fy=4;fy<8;++fy){
+			multi_vram_buffer_horz((unsigned char*) fire_array+fy*16,16,NAMETABLE_A+64+fy*32);
+		}
+		ppu_wait_nmi();
+
+		clear_vram_buffer();
+		for (fy=8;fy<12;++fy){
+			multi_vram_buffer_horz((unsigned char*) fire_array+fy*16,16,NAMETABLE_A+64+fy*32);
+		}
+		ppu_wait_nmi();
+
+		clear_vram_buffer();
+		for (fy=12;fy<16;++fy){
+			multi_vram_buffer_horz((unsigned char*) fire_array+fy*16,16,NAMETABLE_A+64+fy*32);
+		}
+		ppu_wait_nmi();
+
+		clear_vram_buffer();
+		for (fy=0;fy<4;++fy){
+			multi_vram_buffer_horz((unsigned char*) fire_array+fy*16,16,NAMETABLE_A+64+512+fy*32);
+		}
+		ppu_wait_nmi();
+
+		clear_vram_buffer();
+		for (fy=4;fy<8;++fy){
+			multi_vram_buffer_horz((unsigned char*) fire_array+fy*16,16,NAMETABLE_A+64+512+fy*32);
+		}
+		ppu_wait_nmi();
+
+		clear_vram_buffer();
+		for (fy=8;fy<12;++fy){
+			multi_vram_buffer_horz((unsigned char*) fire_array+fy*16,16,NAMETABLE_A+64+512+fy*32);
+		}
+		ppu_wait_nmi();
+
+		clear_vram_buffer();
+		for (fy=12;fy<16;++fy){
+			multi_vram_buffer_horz((unsigned char*) fire_array+fy*16,16,NAMETABLE_A+64+512+fy*32);
+		}
+		ppu_wait_nmi();*/
+	}
+
+	_pal_fade_to(8);
+	pal_col(1,0x06);
+	pal_col(2,0x05);
+	pal_col(3,0x28);
+
+	for (fy=0;fy<256;++fy){
+		fire_array[fy]=0x71;
+	}
+
+	_pal_fade_to(4);
+
+	while(1){
+
+		pad=pad_trigger(0);
+
+		plotfirehead();
+		fireloop();
+
+		clear_vram_buffer();
+		for (fy=0;fy<4;++fy){
+			multi_vram_buffer_horz((unsigned char*) fire_array+fy*16,16,NAMETABLE_A+64+fy*32);
+		}
+		ppu_wait_nmi();
+
+		clear_vram_buffer();
+		for (fy=4;fy<8;++fy){
+			multi_vram_buffer_horz((unsigned char*) fire_array+fy*16,16,NAMETABLE_A+64+fy*32);
+		}
+		ppu_wait_nmi();
+
+		clear_vram_buffer();
+		for (fy=8;fy<12;++fy){
+			multi_vram_buffer_horz((unsigned char*) fire_array+fy*16,16,NAMETABLE_A+64+fy*32);
+		}
+		ppu_wait_nmi();
+
+		clear_vram_buffer();
+		for (fy=12;fy<16;++fy){
+			multi_vram_buffer_horz((unsigned char*) fire_array+fy*16,16,NAMETABLE_A+64+fy*32);
+		}
+		ppu_wait_nmi();
+
+	}
+
+
 	while(1)
 	{
 	}
