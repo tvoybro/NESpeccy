@@ -198,10 +198,7 @@ unsigned char y, x;
 		xx = xa;
 		xy = y + xya;
 		for (x = 0; x < 16; x++) {
-			val = colorAdd;
-			val += sinTbl1[xx];
-			val += sinTbl2[yy];
-			val += sinTbl3[xy];
+			val = colorAdd + sinTbl1[xx] + sinTbl2[yy] + sinTbl3[xy];
 			val = val & 31;
 			fire_array[buffAdr] = val+0x80;
 			buffAdr++;
