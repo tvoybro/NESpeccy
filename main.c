@@ -220,6 +220,7 @@ void fxPlasm(void) {
 		if (scrSwap == 0) {
 			scroll(0,0);
 			fxPlasmFrame(frm);
+			gray_line();
 			clear_vram_buffer();
 			multi_vram_buffer_horz((unsigned char*) fire_array+0,32,NAMETABLE_B+frm*96+32 + 64);
 			multi_vram_buffer_horz((unsigned char*) fire_array+32,32,NAMETABLE_B+frm*96+64 + 64);
@@ -228,6 +229,7 @@ void fxPlasm(void) {
 			scroll(256,0);
 		} else {
 			fxPlasmFrame(frm);
+			gray_line();
 			clear_vram_buffer();
 			multi_vram_buffer_horz((unsigned char*) fire_array+0,32,NAMETABLE_A+frm*96+32 + 64);
 			multi_vram_buffer_horz((unsigned char*) fire_array+32,32,NAMETABLE_A+frm*96+64 + 64);
@@ -405,16 +407,18 @@ unsigned char off;
 	
 	pal_bg(palette1);
 
-	_pal_fade_to(4);
+
 
 	k=1;
 	i=15;
 
-//	music_play(0);
+	vram_adr(NAMETABLE_A);
+	vram_fill(0,1024*2);
 
 	set_vram_buffer();
 
 	ppu_on_all();
+	_pal_fade_to(4);
 
 	off=15;
 
