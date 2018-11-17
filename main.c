@@ -214,8 +214,9 @@ unsigned char i;
 }
 
 void fxPlasm(void) {
-	for (frm = 0; frm < 8; frm++) {
+	for (frm = 0; frm < 7; frm++) {
 		fxPlasmFrame(frm);
+		gray_line();
 		clear_vram_buffer();
 		multi_vram_buffer_horz((unsigned char*) fire_array+0,32,NAMETABLE_A+frm*96+32);
 		multi_vram_buffer_horz((unsigned char*) fire_array+32,32,NAMETABLE_A+frm*96+64);
