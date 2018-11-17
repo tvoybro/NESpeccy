@@ -276,6 +276,7 @@ unsigned char off;
 //		plasma(i*256);
 		redrawFrame();
 //		plotfirehead();
+		gray_line();
 
 
 		clear_vram_buffer();
@@ -325,7 +326,6 @@ unsigned char off;
 			multi_vram_buffer_horz((unsigned char*) fire_array+fy*16,16,NAMETABLE_A+64+512+fy*32);
 		}
 		ppu_wait_nmi();
-
 	}
 
 	_pal_fade_to(8);

@@ -271,7 +271,7 @@ sounds_data:
 	.incbin "NESst\part1_zx_loading_chr.chr"
 	
 .segment "CHR2"
-	.incbin "tileset2.chr"
+;	.incbin "tileset2.chr"
 	
 .segment "CHR3"
 ;	.incbin "tileset3.chr"
