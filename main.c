@@ -82,8 +82,6 @@ const unsigned char palette[16]={ 0x0f,0x05,0x2c,0x10,0x0f,0x20,0x10,0x05,0x0f,0
 //const unsigned char pal_water[16]={ 0x0f,0x0c,0x21,0x1c,0x0f,0x0c,0x21,0x1c,0x0f,0x3d,0x3d,0x0f,0x0f,0x0f,0x0f,0x0f };
 const unsigned char pal_water[16]={ 0x0f,0x0c,0x21,0x1c,0x0f,0x0b,0x1b,0x2b,0x0f,0x2d,0x20,0x10,0x0f,0x3d,0x3d,0x0f };
 
-
-
 const unsigned char bus_conflict[4]={ 0x00,0x01,0x02,0x03 };
 
 void cnrom_set_bank(unsigned char bank)
@@ -171,11 +169,26 @@ unsigned char i;
 }
 
 
-void fxTwisterFrame(frm) {
+const twLines = 4;
+
+void fxTwisterFrame(scrSwap, frm) {
 	unsigned char x, y, twisterAdr, yyy, x1, x2, y1, chunk, chunkAdr, yfrom, yto;
 	
-	yfrom = frm * 3;
-	yto = yfrom + 3;
+	
+
+	memfill(fire_array, 0, 32*twLines + 3);
+	if (scrSwap) {
+		fire_array[0] = MSB(NTADR_A(0,frm*twLines))|NT_UPD_HORZ;
+		fire_array[1] = LSB(NTADR_A(0,frm*twLines));
+	} else {
+		fire_array[0] = MSB(NTADR_B(0,frm*twLines))|NT_UPD_HORZ;
+		fire_array[1] = LSB(NTADR_B(0,frm*twLines));		
+	}
+	fire_array[2] = (32*twLines)/32;
+	fire_array[32*twLines+3] = NT_UPD_EOF;
+
+	yfrom = frm * twLines;
+	yto = yfrom + twLines;
 	yyy = 0;
 	for (y = yfrom; y < yto; y++) {
 		x1 = xa + 6*y;
@@ -183,14 +196,7 @@ void fxTwisterFrame(frm) {
 		y1 = ya + y;
 		chunkAdr = 3 * (twisterSin[y1] / 16);
 		twisterAdr = (twisterSin[y1] & 15) * 16;
-
-		buffAdr = yyy*32;
-		for (x = 0; x < 32; x++) {
-			fire_array[buffAdr] = 0;
-			buffAdr += 1;
-		}
-
-		buffAdr = yyy*32 + (twisterSinX[x1] + twisterSinX[x2]) / 2;
+		buffAdr = 3 + yyy*32 + (twisterSinX[x1] + twisterSinX[x2]) / 2;
 		for (x = 0; x < 16; x++) {
 			chunk = twisterData[twisterAdr];
 			fire_array[buffAdr] = twisterChunks[chunk + chunkAdr];
@@ -199,28 +205,23 @@ void fxTwisterFrame(frm) {
 		}
 		yyy++;
 	}
-	
+
 }
 
 void fxTwister(void) {
 	for (frm = 0; frm < 7; frm++) {
 		if (scrSwap == 0) {
 			scroll(0,0);
-			fxTwisterFrame(frm);
+			fxTwisterFrame(scrSwap, frm);
 			gray_line();
-			clear_vram_buffer();
-			multi_vram_buffer_horz((unsigned char*) fire_array+0,32,NAMETABLE_B+frm*96+32);
-			multi_vram_buffer_horz((unsigned char*) fire_array+32,32,NAMETABLE_B+frm*96+64);
-			multi_vram_buffer_horz((unsigned char*) fire_array+64,32,NAMETABLE_B+frm*96+96);
+			set_vram_update((unsigned char*) fire_array);
 			ppu_wait_nmi();
+			
 		} else {
 			scroll(256,0);
-			fxTwisterFrame(frm);
+			fxTwisterFrame(scrSwap, frm);
 			gray_line();
-			clear_vram_buffer();
-			multi_vram_buffer_horz((unsigned char*) fire_array+0,32,NAMETABLE_A+frm*96+32);
-			multi_vram_buffer_horz((unsigned char*) fire_array+32,32,NAMETABLE_A+frm*96+64);
-			multi_vram_buffer_horz((unsigned char*) fire_array+64,32,NAMETABLE_A+frm*96+96);
+			set_vram_update((unsigned char*) fire_array);
 			ppu_wait_nmi();
 		}
 
