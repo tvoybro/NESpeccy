@@ -184,7 +184,7 @@ void fxTwisterFrame(scrSwap, frm) {
 		fire_array[0] = MSB(NTADR_B(0,frm*twLines))|NT_UPD_HORZ;
 		fire_array[1] = LSB(NTADR_B(0,frm*twLines));		
 	}
-	fire_array[2] = (32*twLines)/32;
+	fire_array[2] = (32*twLines)/16;
 	fire_array[32*twLines+3] = NT_UPD_EOF;
 
 	yfrom = frm * twLines;

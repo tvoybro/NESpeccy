@@ -1041,8 +1041,8 @@ _flush_vram_update_nmi:
 
 @updNameLoop:
 
-	jmp @upd32
-@upd32ret:
+	jmp @upd16
+@upd16ret:
 
 	dex
 	bne @updNameLoop
@@ -1056,135 +1056,57 @@ _flush_vram_update_nmi:
 
 	rts
 
-
-@upd32:
-	lda (NAME_UPD_ADR),y
-	iny
-	sta PPU_DATA
-
-	lda (NAME_UPD_ADR),y
-	iny
-	sta PPU_DATA
-
-	lda (NAME_UPD_ADR),y
-	iny
-	sta PPU_DATA
-
-	lda (NAME_UPD_ADR),y
-	iny
-	sta PPU_DATA
-
-	lda (NAME_UPD_ADR),y
-	iny
-	sta PPU_DATA
-
-	lda (NAME_UPD_ADR),y
-	iny
-	sta PPU_DATA
-
-	lda (NAME_UPD_ADR),y
-	iny
-	sta PPU_DATA
-
+@upd16:
 	lda (NAME_UPD_ADR),y
 	iny
 	sta PPU_DATA
 	lda (NAME_UPD_ADR),y
 	iny
 	sta PPU_DATA
-
-	lda (NAME_UPD_ADR),y
-	iny
-	sta PPU_DATA
-
-	lda (NAME_UPD_ADR),y
-	iny
-	sta PPU_DATA
-
-	lda (NAME_UPD_ADR),y
-	iny
-	sta PPU_DATA
-
-	lda (NAME_UPD_ADR),y
-	iny
-	sta PPU_DATA
-
-	lda (NAME_UPD_ADR),y
-	iny
-	sta PPU_DATA
-
-	lda (NAME_UPD_ADR),y
-	iny
-	sta PPU_DATA
-
 	lda (NAME_UPD_ADR),y
 	iny
 	sta PPU_DATA
 	lda (NAME_UPD_ADR),y
 	iny
 	sta PPU_DATA
-
-	lda (NAME_UPD_ADR),y
-	iny
-	sta PPU_DATA
-
-	lda (NAME_UPD_ADR),y
-	iny
-	sta PPU_DATA
-
-	lda (NAME_UPD_ADR),y
-	iny
-	sta PPU_DATA
-
-	lda (NAME_UPD_ADR),y
-	iny
-	sta PPU_DATA
-
-	lda (NAME_UPD_ADR),y
-	iny
-	sta PPU_DATA
-
-	lda (NAME_UPD_ADR),y
-	iny
-	sta PPU_DATA
-
 	lda (NAME_UPD_ADR),y
 	iny
 	sta PPU_DATA
 	lda (NAME_UPD_ADR),y
 	iny
 	sta PPU_DATA
-
 	lda (NAME_UPD_ADR),y
 	iny
 	sta PPU_DATA
-
 	lda (NAME_UPD_ADR),y
 	iny
 	sta PPU_DATA
-
 	lda (NAME_UPD_ADR),y
 	iny
 	sta PPU_DATA
-
 	lda (NAME_UPD_ADR),y
 	iny
 	sta PPU_DATA
-
 	lda (NAME_UPD_ADR),y
 	iny
 	sta PPU_DATA
-
 	lda (NAME_UPD_ADR),y
 	iny
 	sta PPU_DATA
-
+	lda (NAME_UPD_ADR),y
+	iny
+	sta PPU_DATA
+	lda (NAME_UPD_ADR),y
+	iny
+	sta PPU_DATA
+	lda (NAME_UPD_ADR),y
+	iny
+	sta PPU_DATA
 	lda (NAME_UPD_ADR),y
 	iny
 	sta PPU_DATA
 	
-	jmp @upd32ret
-
+	jmp @upd16ret
 
 ;void __fastcall__ vram_adr(unsigned int adr);
 
