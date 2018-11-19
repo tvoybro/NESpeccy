@@ -31,7 +31,10 @@
 //  060414 - many fixes and improvements, including sequental VRAM updates
 //  previous versions were created since mid-2011, there were many updates
 
-
+void __fastcall__ set_nmi_user_call_on(void);
+void __fastcall__ set_nmi_user_call_off(void);
+void __fastcall__ set_nmi_user_vram_adr(int ppu_address);
+void __fastcall__ set_nmi_user_vram_lines_qty(unsigned char lines_qty);	
 
 
 

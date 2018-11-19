@@ -101,6 +101,11 @@ VRAM_INDEX:			.res 1
 META_PTR:			.res 2
 DATA_PTR:			.res 2 
 
+NMI_USER_CALL:		.res 1
+NMI_USER_VRAM_ADR:	.res 2
+NMI_USER_VRAM_LINES_QTY:	.res 1
+
+
 .segment "HEADER"
 
     .byte $4e,$45,$53,$1a

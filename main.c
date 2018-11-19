@@ -115,12 +115,13 @@ unsigned char i;
 }
 
 
+const twLines = 5;
+
 void fxTwisterFrame(frm) {
 	unsigned char x, y, twisterAdr, yyy, x1, x2, y1, chunk, chunkAdr, yfrom, yto;
-	
-	yfrom = frm * 3;
-	yto = yfrom + 3;
-
+	memfill(fire_array, 0, 32*twLines);
+	yfrom = frm * twLines;
+	yto = yfrom + twLines;
 	yyy = 0;
 	for (y = yfrom; y < yto; y++) {
 		x1 = xa + 6*y;
@@ -128,13 +129,6 @@ void fxTwisterFrame(frm) {
 		y1 = ya + y;
 		chunkAdr = 3 * (twisterSin[y1] / 16);
 		twisterAdr = (twisterSin[y1] & 15) * 16;
-
-		buffAdr = yyy*32;
-		for (x = 0; x < 32; x++) {
-			fire_array[buffAdr] = 0;
-			buffAdr += 1;
-		}
-
 		buffAdr = yyy*32 + (twisterSinX[x1] + twisterSinX[x2]) / 2;
 		for (x = 0; x < 16; x++) {
 			chunk = twisterData[twisterAdr];
@@ -148,28 +142,22 @@ void fxTwisterFrame(frm) {
 }
 
 void fxTwister(void) {
-	for (frm = 0; frm < 7; frm++) {
+	set_nmi_user_call_on();
+	set_nmi_user_vram_lines_qty(twLines);
+	for (frm = 0; frm < 4; frm++) {
 		if (scrSwap == 0) {
 			scroll(0,0);
 			fxTwisterFrame(frm);
-//			gray_line();
-			clear_vram_buffer();
-			multi_vram_buffer_horz((unsigned char*) fire_array+0, 32, NAMETABLE_B+frm*96+32);
-			multi_vram_buffer_horz((unsigned char*) fire_array+32, 32, NAMETABLE_B+frm*96+64);
-			multi_vram_buffer_horz((unsigned char*) fire_array+64, 32, NAMETABLE_B+frm*96+96);
+			gray_line();
+			set_nmi_user_vram_adr(NAMETABLE_B + 64+32 + frm*32*twLines);
 			ppu_wait_nmi();
-			
 		} else {
 			scroll(256,0);
 			fxTwisterFrame(frm);
-//			gray_line();
-			clear_vram_buffer();
-			multi_vram_buffer_horz((unsigned char*) fire_array+0, 32, NAMETABLE_A+frm*96+32);
-			multi_vram_buffer_horz((unsigned char*) fire_array+32, 32, NAMETABLE_A+frm*96+64);
-			multi_vram_buffer_horz((unsigned char*) fire_array+64, 32, NAMETABLE_A+frm*96+96);
+			gray_line();
+			set_nmi_user_vram_adr(NAMETABLE_A + 64+32 + frm*32*twLines);
 			ppu_wait_nmi();
 		}
-
 	}
 	xa += 8;
 	za += 12;
@@ -348,7 +336,7 @@ void main(void)
 	oam_spr(31*8,25*8-1,0x1,2,0);
 
 	to_bright=4;
-
+/*
 	gfrm=50;
 	while(gfrm){
 		fxPlasm16();	
@@ -359,9 +347,8 @@ void main(void)
 		}
 		--gfrm;
 	}
+*/
 
-
-/*
 // pal twistor
 	pal_col(1,0x11);
 	pal_col(2,0x25);
@@ -372,7 +359,7 @@ void main(void)
 		pad=pad_trigger(0);
 		fxTwister();
 	}
-*/
+
 
 	
 
