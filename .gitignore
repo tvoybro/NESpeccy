@@ -1,4 +1,5 @@
 cc65
 *.o
 *.deb
+*.db
 *.nes

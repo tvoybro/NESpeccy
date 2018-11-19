@@ -203,12 +203,13 @@ const unsigned char char_exclamation[2*2]={
 	0x9d,0x00
 };
 
-const unsigned char tbl_ascii[41]={
+const unsigned char tbl_ascii[42]={
 	' ', '0', '1', '2', '3', '4', '5', '6', '7', '8',
 	'9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I',
 	'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S',
 	'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '.', ',', '-',
-	'!'
+	'!',
+	0x0ff
 };
 
 const unsigned char const* tbl_alphabet[41]={

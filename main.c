@@ -6,8 +6,6 @@
 #include "neslib.h"
 #include "nesdoug.h"
 
-#include "nam_split.h"
-
 #define	PLASMA16_POS_X						8
 #define	PLASMA16_POS_Y						5
 
@@ -108,12 +106,6 @@ unsigned char y, x, yfrom, yto;
 		yy+=1;
 	}
 }
-
-void rollpalette(void) {
-unsigned char i;
-
-}
-
 
 const twLines = 5;
 
@@ -298,19 +290,38 @@ void fxFire(void) {
 		ppu_wait_nmi();
 }
 
-void setup_scene_fire(void) {
+void setup_scene_water(void) {
 	vram_adr(NAMETABLE_A);
-	vram_unrle(nam_split);
+	vram_fill(0,1024-16);
+	vram_fill(255,16);
 	vram_adr(NAMETABLE_B);
-	vram_unrle(nam_split);
+	vram_fill(0,1024-16);
+	vram_fill(255,16);
 
-	vram_adr(NAMETABLE_A+26*32);
-	vram_write(string_we_like_to,32);
-	vram_adr(NAMETABLE_B+26*32);
-	vram_write(string_we_like_to,32);
+//	vram_adr(NAMETABLE_A+25*32);
+//	vram_write(string_we_like_to,32);
+//	vram_adr(NAMETABLE_B+25*32);
+//	vram_write(string_we_like_to,32);
 	pal_bg(pal_water);
 	ppu_on_all();
 }
+
+void setup_scene_fire(void) {
+	vram_adr(NAMETABLE_A);
+	vram_fill(0,960);
+	vram_adr(NAMETABLE_B);
+	vram_fill(0,960);
+
+	memfill((unsigned char*) fire_array, 0x70, 256);
+
+	pal_col(1,0x06);
+	pal_col(2,0x16);
+	pal_col(3,0x28);
+
+	scroll(0,0);
+	ppu_on_all();
+}
+
 
 void main(void)
 {
@@ -321,35 +332,20 @@ void main(void)
 
 	set_vram_buffer();
 
-//	setup_scene1();
-//	music_play(0);
-//	scene1_ZXloading();
+	setup_scene1();
+	music_play(0);
+	scene1_ZXloading();
 
 	ppu_off();
 
 	xa = 0;
 	ya = 0;
 
-	setup_scene_fire();
+	setup_scene_water();
 	pal_spr(pal_water);
-	bank_spr(1);
-	oam_spr(31*8,25*8-1,0x1,2,0);
-
-	to_bright=4;
-/*
-	gfrm=50;
-	while(gfrm){
-		fxPlasm16();	
-		if(bright!=to_bright)
-		{
-			if(bright<to_bright) ++bright; else --bright;
-			pal_bright(bright);
-		}
-		--gfrm;
-	}
-*/
 
 // pal twistor
+/*
 	pal_col(1,0x11);
 	pal_col(2,0x25);
 	pal_col(3,0x2a);
@@ -360,34 +356,95 @@ void main(void)
 		fxTwister();
 	}
 
+	set_nmi_user_call_off();
+*/
 
-	
 
-//	_pal_fade_to(0);
-	ppu_off();
-	vram_adr(NAMETABLE_A+26*32);
-	vram_write(string_invite_you_to,32);
+	to_bright=4;
 
-	pal_col(1,0x06);
-	pal_col(2,0x16);
-	pal_col(3,0x28);
+	gfrm=20;
+	while(gfrm){
+		fxPlasm16();
+		if (gfrm<4){
+			++bright;
+			pal_bright(bright);
+		}
+		else
+		if(bright!=to_bright)
+		{
+			++bright;
+			pal_bright(bright);
+		}
+		--gfrm;
+	}
 
-	scroll(0,0);
-	ppu_on_all();
+	clear_vram_buffer();
+	multi_vram_buffer_horz((unsigned char *) string_we_like_to, 32, NAMETABLE_A+32 * 25);
+	multi_vram_buffer_horz((unsigned char *) string_we_like_to, 32, NAMETABLE_B+32 * 25);
+	ppu_wait_nmi();
 
-	for (fy=0;fy<6;++fy) fxFire();
-//	_pal_fade_to(4);
 
-	pad=pad_trigger(0);
-
-	while(!(pad&PAD_START)){
-
-		pad=pad_trigger(0);
-		fxFire();
-
+	gfrm=26;
+	while(gfrm){
+		fxPlasm16();	
+		if (gfrm<5){
+			++bright;
+			pal_bright(bright);
+		}
+		else
+		if(bright!=to_bright)
+		{
+			--bright;
+			pal_bright(bright);
+		}
+		--gfrm;
 	}
 
 	ppu_off();
+
+	setup_scene_fire();
+
+	to_bright=4;
+
+	gfrm=25;
+	while(gfrm){
+		fxFire();	
+		if (gfrm<5){
+			++bright;
+			pal_bright(bright);
+		}
+		else
+		if(bright!=to_bright)
+		{
+			--bright;
+			pal_bright(bright);
+		}
+		--gfrm;
+	}
+
+	clear_vram_buffer();
+	multi_vram_buffer_horz((unsigned char *) string_invite_you_to, 32, NAMETABLE_A+32 * 25);
+	multi_vram_buffer_horz((unsigned char *) string_invite_you_to, 32, NAMETABLE_B+32 * 25);
+	ppu_wait_nmi();
+
+	gfrm=28;
+	while(gfrm){
+		fxFire();	
+		if (gfrm<5){
+			++bright;
+			pal_bright(bright);
+		}
+		else
+		if(bright!=to_bright)
+		{
+			--bright;
+			pal_bright(bright);
+		}
+		--gfrm;
+	}
+
+
+//	ppu_off();
 
 	while(1)
 	{
