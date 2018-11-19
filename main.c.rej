@@ -1,0 +1,31 @@
+diff a/main.c b/main.c	(rejected hunks)
+@@ -169,11 +169,26 @@
+ }
+ 
+ 
+-void fxTwisterFrame(frm) {
++const twLines = 4;
++
++void fxTwisterFrame(scrSwap, frm) {
+ 	unsigned char x, y, twisterAdr, yyy, x1, x2, y1, chunk, chunkAdr, yfrom, yto;
+ 	
+-	yfrom = frm * 3;
+-	yto = yfrom + 3;
++	
++
++	memfill(fire_array, 0, 32*twLines + 3);
++	if (scrSwap) {
++		fire_array[0] = MSB(NTADR_A(0,frm*twLines))|NT_UPD_HORZ;
++		fire_array[1] = LSB(NTADR_A(0,frm*twLines));
++	} else {
++		fire_array[0] = MSB(NTADR_B(0,frm*twLines))|NT_UPD_HORZ;
++		fire_array[1] = LSB(NTADR_B(0,frm*twLines));		
++	}
++	fire_array[2] = (32*twLines)/32;
++	fire_array[32*twLines+3] = NT_UPD_EOF;
++
++	yfrom = frm * twLines;
++	yto = yfrom + twLines;
+ 	yyy = 0;
+ 	for (y = yfrom; y < yto; y++) {
+ 		x1 = xa + 6*y;
