@@ -276,7 +276,7 @@ sounds_data:
 	.incbin "NESst\part1_zx_loading_chr.chr"
 	
 .segment "CHR2"
-	.incbin "NESst\twister_double.chr"
+	.incbin "NESst\chr_Invaders_chunks_font.chr"
 	
 .segment "CHR3"
 ;	.incbin "tileset3.chr"

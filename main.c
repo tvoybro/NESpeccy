@@ -6,12 +6,14 @@
 #include "neslib.h"
 #include "nesdoug.h"
 
-#define	PLASMA16_POS_X						8
-#define	PLASMA16_POS_Y						5
+#include "nam_test1.h"
+#include "nam_test2.h"
 
-#define	FX_START							0
-#define	FX_FADE_IN_FROM_MAX					1
-#define	FX_FADE_IN_FROM_MIN					2
+#define	PLASMA16_POS_X						8
+#define	PLASMA16_POS_Y						4
+
+#define	TILESET_FIRE_CHUNKS_ZX				0
+#define	TILESET_CHUNKS_FONT_INVADERS		1
 
 const unsigned char sinTbl1[]={4,6,7,8,8,8,7,6,4,2,1,0,0,0,1,2,4,6,7,8,8,8,7,6,4,2,1,0,0,0,1,2,4,6,7,8,8,8,7,6,4,2,1,0,0,0,1,2,4,6,7,8,8,8,7,6,4,2,1,0,0,0,1,2,4,6,7,8,8,8,7,6,4,2,1,0,0,0,1,2,4,6,7,8,8,8,7,6,4,2,1,0,0,0,1,2,4,6,7,8,8,8,7,6,4,2,1,0,0,0,1,2,4,6,7,8,8,8,7,6,4,2,1,0,0,0,1,2,4,6,7,8,8,8,7,6,4,2,1,0,0,0,1,2,4,6,7,8,8,8,7,6,4,2,1,0,0,0,1,2,4,6,7,8,8,8,7,6,4,2,1,0,0,0,1,2,4,6,7,8,8,8,7,6,4,2,1,0,0,0,1,2,4,6,7,8,8,8,7,6,4,2,1,0,0,0,1,2,4,6,7,8,8,8,7,6,4,2,1,0,0,0,1,2,4,6,7,8,8,8,7,6,4,2,1,0,0,0,1,2,4,6,7,8,8,8,7,6,4,2,1,0,0,0,1,2};
 const unsigned char sinTbl2[]={12,15,18,20,22,23,24,24,23,22,20,17,14,11,9,6,4,2,1,0,0,1,3,5,7,10,13,16,19,21,23,24,24,24,23,21,19,16,13,10,7,5,3,1,0,0,1,2,4,6,9,11,14,17,20,22,23,24,24,23,22,20,18,15,12,9,6,4,2,1,0,0,1,2,4,7,10,13,15,18,20,22,23,24,24,23,21,19,17,14,11,8,5,3,1,0,0,0,1,3,5,8,11,14,17,19,21,23,24,24,23,22,20,18,15,13,10,7,4,2,1,0,0,1,2,4,6,9,12,15,18,20,22,23,24,24,23,22,20,17,14,11,9,6,4,2,1,0,0,1,3,5,7,10,13,16,19,21,23,24,24,24,23,21,19,16,13,10,7,5,3,1,0,0,1,2,4,6,9,11,14,17,20,22,23,24,24,23,22,20,18,15,12,9,6,4,2,1,0,0,1,2,4,7,10,13,15,18,20,22,23,24,24,23,21,19,17,14,11,8,5,3,1,0,0,0,1,3,5,8,11,14,17,19,21,23,24,24,23,22,20,18,15,13,10,7,4,2,1,0,0,1,2,4,6,9};
@@ -60,7 +62,6 @@ unsigned val = 0;
 #pragma bss-name (pop);
 
 unsigned char pad;
-unsigned char tileset;
 
 const unsigned char pal_part1[16]={ 0x0f,0x05,0x2c,0x10,0x0f,0x30,0x10,0x06,0x0f,0x0f,0x10,0x0f,0x0f,0x0f,0x0f,0x0f };
 const unsigned char pal_water[16]={ 0x0f,0x0c,0x21,0x1c,0x0f,0x0b,0x1b,0x2b,0x0f,0x2d,0x20,0x10,0x0f,0x3d,0x3d,0x0f };
@@ -194,7 +195,7 @@ void fxPlasm16(void) {
 	for (frm = 0; frm < 8; frm++) {
 		if (scrSwap == 0) {
 			scroll(0,0);
-			fxPlasmFrame(frm, 31);
+			fxPlasmFrame(frm, 15);
 //			gray_line();
 			clear_vram_buffer();
 			multi_vram_buffer_horz((unsigned char*) fire_array+0,16,NAMETABLE_B+frm*64+32+PLASMA16_POS_X + PLASMA16_POS_Y*32);
@@ -202,7 +203,7 @@ void fxPlasm16(void) {
 			ppu_wait_nmi();
 			scroll(256,0);
 		} else {
-			fxPlasmFrame(frm, 31);
+			fxPlasmFrame(frm, 15);
 //			gray_line();
 			clear_vram_buffer();
 			multi_vram_buffer_horz((unsigned char*) fire_array+0,16,NAMETABLE_A+frm*64+32+PLASMA16_POS_X + PLASMA16_POS_Y*32);
@@ -267,36 +268,38 @@ void fxFire(void) {
 
 		clear_vram_buffer();
 		for (fy=0;fy<4;++fy){
-			multi_vram_buffer_horz((unsigned char*) fire_array+fy*16,16,NAMETABLE_A+6*32+8+fy*32);
+			multi_vram_buffer_horz((unsigned char*) fire_array+fy*16,16,NAMETABLE_A+5*32+8+fy*32);
 		}
 		ppu_wait_nmi();
 
 		clear_vram_buffer();
 		for (fy=4;fy<8;++fy){
-			multi_vram_buffer_horz((unsigned char*) fire_array+fy*16,16,NAMETABLE_A+6*32+8+fy*32);
+			multi_vram_buffer_horz((unsigned char*) fire_array+fy*16,16,NAMETABLE_A+5*32+8+fy*32);
 		}
 		ppu_wait_nmi();
 
 		clear_vram_buffer();
 		for (fy=8;fy<12;++fy){
-			multi_vram_buffer_horz((unsigned char*) fire_array+fy*16,16,NAMETABLE_A+6*32+8+fy*32);
+			multi_vram_buffer_horz((unsigned char*) fire_array+fy*16,16,NAMETABLE_A+5*32+8+fy*32);
 		}
 		ppu_wait_nmi();
 
 		clear_vram_buffer();
 		for (fy=12;fy<16;++fy){
-			multi_vram_buffer_horz((unsigned char*) fire_array+fy*16,16,NAMETABLE_A+6*32+8+fy*32);
+			multi_vram_buffer_horz((unsigned char*) fire_array+fy*16,16,NAMETABLE_A+5*32+8+fy*32);
 		}
 		ppu_wait_nmi();
 }
 
 void setup_scene_water(void) {
+unsigned char attr;
 	vram_adr(NAMETABLE_A);
-	vram_fill(0,1024-16);
-	vram_fill(255,16);
+	vram_fill(0,1024-24);
+	attr=(3 << 6) | (3 << 4) | (0 << 2) | (0 << 0);
+	vram_fill(attr,24);
 	vram_adr(NAMETABLE_B);
-	vram_fill(0,1024-16);
-	vram_fill(255,16);
+	vram_fill(0,1024-24);
+	vram_fill(attr,24);
 
 //	vram_adr(NAMETABLE_A+25*32);
 //	vram_write(string_we_like_to,32);
@@ -322,12 +325,17 @@ void setup_scene_fire(void) {
 	ppu_on_all();
 }
 
+void setup_scrollerFX(void) {
+	vram_adr(NAMETABLE_B);
+	vram_unrle(nam_test2);
+	vram_adr(NAMETABLE_A);
+	vram_unrle(nam_test1);
+}
 
 void main(void)
 {
 
-	tileset=0;
-	cnrom_set_bank(tileset);
+	cnrom_set_bank(TILESET_FIRE_CHUNKS_ZX);
 	bright=4;
 
 	set_vram_buffer();
@@ -350,6 +358,7 @@ void main(void)
 	pal_col(2,0x25);
 	pal_col(3,0x2a);
 
+	cnrom_set_bank(TILESET_CHUNKS_FONT_INVADERS);
 
 	while(!(pad&PAD_START)){
 		pad=pad_trigger(0);
@@ -379,8 +388,8 @@ void main(void)
 	}
 
 	clear_vram_buffer();
-	multi_vram_buffer_horz((unsigned char *) string_we_like_to, 32, NAMETABLE_A+32 * 25);
-	multi_vram_buffer_horz((unsigned char *) string_we_like_to, 32, NAMETABLE_B+32 * 25);
+	multi_vram_buffer_horz((unsigned char *) string_we_like_to, 32, NAMETABLE_A+32 * 23);
+	multi_vram_buffer_horz((unsigned char *) string_we_like_to, 32, NAMETABLE_B+32 * 23);
 	ppu_wait_nmi();
 
 
@@ -423,8 +432,8 @@ void main(void)
 	}
 
 	clear_vram_buffer();
-	multi_vram_buffer_horz((unsigned char *) string_invite_you_to, 32, NAMETABLE_A+32 * 25);
-	multi_vram_buffer_horz((unsigned char *) string_invite_you_to, 32, NAMETABLE_B+32 * 25);
+	multi_vram_buffer_horz((unsigned char *) string_invite_you_to, 32, NAMETABLE_A+32 * 23);
+	multi_vram_buffer_horz((unsigned char *) string_invite_you_to, 32, NAMETABLE_B+32 * 23);
 	ppu_wait_nmi();
 
 	gfrm=28;
