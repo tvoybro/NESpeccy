@@ -308,7 +308,10 @@ const unsigned char plsmText[] = {
 void fxPlasmSetup(void) {
 	ppu_off();
     
-    pal_bg(pal_water);
+    pal_col(0,0x09);
+    pal_col(2,0x19);
+    pal_col(1,0x30);
+    pal_col(3,0x29);
     
 	vram_adr(NAMETABLE_A);
 	vram_fill(0,1024-24);
