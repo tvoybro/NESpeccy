@@ -6,6 +6,7 @@ NMI_USER_FASTMOVE_ADR = $0352;
 
 
 	.export _set_nmi_user_call_on, _set_nmi_user_call_off, _set_nmi_user_vram_adr, _set_nmi_user_vram_lines_qty
+	.export _memfill32
 
 	.export _pal_all,_pal_bg,_pal_spr,_pal_col,_pal_clear
 	.export _pal_bright,_pal_spr_bright,_pal_bg_bright
@@ -1835,7 +1836,29 @@ ppu_fastmove_ln_7:
 
 	jmp nmiUserCallRet
 	
-	
+;void __fastcall__ memfill32(void *dst,unsigned char value,unsigned char len);
+_memfill32:
+
+	sta <LEN
+	jsr popa
+	sta <TEMP
+	jsr popax
+	sta <DST
+	stx <DST+1
+
+	ldy #0
+	ldx <LEN
+	lda <TEMP
+
+@1:
+	.repeat 32
+	sta (DST),y
+	iny
+	.endrepeat
+	dex
+	bne @1
+
+	rts
 	
 	
 	

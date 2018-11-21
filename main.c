@@ -44,8 +44,10 @@ const unsigned char string_invite_you_to[32*1]={
 unsigned char p, fx, fy, bright, to_bright;
 unsigned int gfrm;
 
-static unsigned char fire_array[16*16]={};
+static unsigned char fire_array[256]={};
+static unsigned char fire_attr_array[256]={};
 
+unsigned int fxFrame = 0;
 unsigned char scrSwap = 0;
 unsigned char frm = 0;
 unsigned char xa = 0;
@@ -108,11 +110,53 @@ unsigned char y, x, yfrom, yto;
 	}
 }
 
-const twLines = 5;
+
+
+void fxTwisterSetup() {
+
+	ppu_off();
+	vram_adr(NAMETABLE_A);
+	vram_fill(0,1024-24);
+	vram_adr(NAMETABLE_B);
+	vram_fill(0,1024-24);
+
+	pal_col(1,0x11);
+	pal_col(2,0x25);
+	pal_col(3,0x2a);
+	cnrom_set_bank(TILESET_CHUNKS_FONT_INVADERS);
+	ppu_on_all();
+	
+	fxFrame = 0;
+}
+
+const twLines = 6;
+
+const unsigned char twisterText[] = {
+	0, 60*4,
+	0, 3, 4,
+	6,
+	0xDE, 0xF1, 0xDC, 0xDE, 0xEC, 0xEC,
+	
+	0, 60*4,
+	1, 3, 20,
+	6,
+	0xDE, 0xF1, 0xDC, 0xDE, 0xEC, 0xEC,
+	
+	0, 60*4,
+	2, 3, 4,
+	6,
+	0xDE, 0xF1, 0xDC, 0xDE, 0xEC, 0xEC,
+	
+	0, 60*4,
+	3, 3, 20,
+	6,
+	0xDE, 0xF1, 0xDC, 0xDE, 0xEC, 0xEC,
+	
+};
 
 void fxTwisterFrame(frm) {
-	unsigned char x, y, twisterAdr, yyy, x1, x2, y1, chunk, chunkAdr, yfrom, yto;
-	memfill(fire_array, 0, 32*twLines);
+	unsigned char x, y, twisterAdr, yyy, x1, x2, y1, chunk, chunkAdr, yfrom, yto, tadr, tqty;
+	memfill32(fire_array, 0, twLines);
 	yfrom = frm * twLines;
 	yto = yfrom + twLines;
 	yyy = 0;
@@ -131,7 +175,26 @@ void fxTwisterFrame(frm) {
 		}
 		yyy++;
 	}
-
+	
+	tqty = 4;
+	y = 0;
+	while (tqty > 0) {
+		if (
+			(twisterText[y + 2] == frm)
+			&& (twisterText[y + 0] <= fxFrame)
+			//&& (twisterText[y + 1] >= fxFrame)
+		) {
+			tadr = twisterText[y + 3] * 32 + twisterText[y + 4];
+			for (x = 0; x < twisterText[y + 5]; x++) {
+				fire_array[tadr] = twisterText[y + 6 + x];
+				tadr++;
+			}
+		}
+		y += twisterText[y + 5] + 6;
+		--tqty;
+	}
+	
+	
 }
 
 void fxTwister(void) {
@@ -156,6 +219,7 @@ void fxTwister(void) {
 	za += 12;
 	ya += 4;
 	scrSwap ^= 1;
+	fxFrame++;
 }
 
 
@@ -334,6 +398,12 @@ void setup_scrollerFX(void) {
 
 void main(void)
 {
+
+	fxTwisterSetup();
+	while(1){
+		fxTwister();
+	}
+
 
 	cnrom_set_bank(TILESET_FIRE_CHUNKS_ZX);
 	bright=4;
