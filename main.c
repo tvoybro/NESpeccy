@@ -45,7 +45,6 @@ unsigned char p, fx, fy, bright, to_bright;
 unsigned int gfrm;
 
 static unsigned char fire_array[256]={};
-static unsigned char fire_attr_array[256]={};
 
 unsigned int fxFrame = 0;
 unsigned char scrSwap = 0;
@@ -129,35 +128,58 @@ void fxTwisterSetup() {
 	fxFrame = 0;
 }
 
+#define twLines 6
+#define twTextDelay1 5
+#define twTextDelay2 60
 
-void setAttr(unsigned char x, unsigned char y, unsigned char attr) {
-}
 
-
-
-const twLines = 6;
-
+unsigned int twTextAdr = 0;
 const unsigned char twisterText[] = {
-	0, 80-30,
+	0 * twTextDelay1, twTextDelay2 - 3 * twTextDelay1,
 	0, 3*32+4,
 	6,
 	0xDE, 0xF1, 0xDC, 0xDE, 0xEC, 0xEC,
 	
-	10, 80-20,
+	1 * twTextDelay1, twTextDelay2 - 2 * twTextDelay1,
 	1, 3*32+20,
 	6,
 	0xDE, 0xF1, 0xDC, 0xDE, 0xEC, 0xEC,
 	
-	20, 80-10,
+	2 * twTextDelay1, twTextDelay2 - 1 * twTextDelay1,
 	2, 3*32+4,
 	6,
 	0xDE, 0xF1, 0xDC, 0xDE, 0xEC, 0xEC,
 	
-	30, 80,
+	3 * twTextDelay1, twTextDelay2 - 0 * twTextDelay1,
 	3, 3*32+20,
 	6,
 	0xDE, 0xF1, 0xDC, 0xDE, 0xEC, 0xEC,
 	
+    //-------------------------
+    
+	0 * twTextDelay1, twTextDelay2 - 4 * twTextDelay1,
+	0, 3*32+4,
+	3,
+	0xEC, 0xEC, 0xEC,
+	
+	1 * twTextDelay1, twTextDelay2 - 3 * twTextDelay1,
+	1, 3*32+20,
+	6,
+	0xDE, 0xF1, 0xDC, 0xDE, 0xEC, 0xEC,
+	
+	2 * twTextDelay1, twTextDelay2 - 2 * twTextDelay1,
+	2, 3*32+4,
+	6,
+	0xDE, 0xF1, 0xDC, 0xDE, 0xEC, 0xEC,
+	
+	3 * twTextDelay1, twTextDelay2 - 1 * twTextDelay1,
+	3, 3*32+20,
+	6,
+	0xDE, 0xF1, 0xDC, 0xDE, 0xEC, 0xEC,
+    
+    //-------------------------
+    255 //no text code
+    
 };
 
 
@@ -174,10 +196,7 @@ Xб - само сообщение
 
 
 void fxTwisterFrame(frm) {
-	unsigned char x, y, twisterAdr, yyy, x1, x2, y1, chunk, chunkAdr, yfrom, yto, tadr, tqty;
-	
-	memfill(fire_attr_array, 0, 48);
-	
+	unsigned char x, y, twisterAdr, yyy, x1, x2, y1, chunk, chunkAdr, yfrom, yto, tadr, tqty, txtadr;
 	memfill32(fire_array, 0, twLines);
 	yfrom = frm * twLines;
 	yto = yfrom + twLines;
@@ -199,23 +218,31 @@ void fxTwisterFrame(frm) {
 	}
 	
 	tqty = 4;
-	y = 0;
+	txtadr = twTextAdr;
+    if (twisterText[txtadr] == 255) {
+        return;
+    }
+    
 	while (tqty > 0) {
 		if (
-			(twisterText[y + 2] == frm)
-			&& (twisterText[y + 0] <= fxFrame)
-			&& (twisterText[y + 1] >= fxFrame)
+			(twisterText[txtadr + 2] == frm)
+			&& (twisterText[txtadr + 0] <= fxFrame)
+			&& (twisterText[txtadr + 1] >= fxFrame)
 		) {
-			tadr = twisterText[y + 3];
-			for (x = 0; x < twisterText[y + 4]; x++) {
-				fire_array[tadr] = twisterText[y + 5 + x];
+			tadr = twisterText[txtadr + 3];
+			for (x = 0; x < twisterText[txtadr + 4]; x++) {
+				fire_array[tadr] = twisterText[txtadr + 5 + x];
 				tadr++;
 			}
 		}
-		y += twisterText[y + 4] + 5;
+		txtadr += twisterText[txtadr + 4] + 5;
 		--tqty;
 	}
 	
+    if (fxFrame >= twTextDelay2 - 1) {
+        fxFrame = 0;
+        twTextAdr = txtadr;
+    }
 	
 }
 
