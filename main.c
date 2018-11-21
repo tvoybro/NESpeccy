@@ -17,6 +17,8 @@
 #include "Include\nam_scroll_squaresB.h"
 #include "Include\nam_scrollFX_arrowsA.h"
 #include "Include\nam_scrollFX_arrowsB.h"
+#include "Include\nam_scroll_gridA.h"
+#include "Include\nam_scroll_gridB.h"
 #include "Include\nam_paletteFX.h"
 #include "Include\nam_BigText.h"
 
@@ -74,6 +76,7 @@ unsigned buffAdr = 0;
 unsigned val = 0;
 
 unsigned char palRoll = 0;
+unsigned char scrollFXpos = 0;
 
 #pragma bss-name (pop);
 
@@ -579,6 +582,39 @@ void setupRhombusFX(void) {
 	ppu_on_all();
 }
 
+void setupSquaresFX(void) {
+	cnrom_set_bank(TILESET_SCROLLER_FX);
+	ppu_off();
+	vram_adr(NAMETABLE_A);
+	vram_unrle(nam_scroll_squaresA);
+	vram_adr(NAMETABLE_B);
+	vram_unrle(nam_scroll_squaresB);
+	pal_col(2,0x03);
+	ppu_on_all();
+}
+
+void setupGridFX(void) {
+	cnrom_set_bank(TILESET_SCROLLER_FX);
+	ppu_off();
+	vram_adr(NAMETABLE_A);
+	vram_unrle(nam_scroll_gridA);
+	vram_adr(NAMETABLE_B);
+	vram_unrle(nam_scroll_gridB);
+	pal_col(2,0x03);
+	ppu_on_all();
+}
+
+void setupArrowsFX(void) {
+	cnrom_set_bank(TILESET_SCROLLER_FX);
+	ppu_off();
+	vram_adr(NAMETABLE_A);
+	vram_unrle(nam_scrollFX_arrowsA);
+	vram_adr(NAMETABLE_B);
+	vram_unrle(nam_scrollFX_arrowsB);
+	pal_col(2,0x03);
+	ppu_on_all();
+}
+
 void fxPaletteRoll(void) {
 	switch(palRoll) {
 		case 0:
@@ -617,11 +653,21 @@ void main(void)
 //		fxTwister();
 //	}
 
-	setupRhombusFX();
-	while(1){
-		if (!(gfrm&3)) fxPaletteRoll();
-		++gfrm;
+//	setupRhombusFX();
+//	while(1){
+//		if (!(gfrm&3)) fxPaletteRoll();
+//		++gfrm;
+//		ppu_wait_nmi();
+//	};
+
+
+	setupArrowsFX();
+	while (1) {
+		scroll(scrollFXpos*64,0);
 		ppu_wait_nmi();
+		++gfrm;
+		if (!(gfrm&1)) ++scrollFXpos;
+		if (scrollFXpos>15) scrollFXpos=0;
 	};
 
 	cnrom_set_bank(TILESET_FIRE_CHUNKS_ZX);
