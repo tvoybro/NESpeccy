@@ -279,7 +279,7 @@ sounds_data:
 	.incbin "NESst\chr_Invaders_chunks_font.chr"
 	
 .segment "CHR3"
-;	.incbin "tileset3.chr"
+	.incbin "NESst\chr_scrollingFX.chr"
 	
 .segment "CHR4"
-;	.incbin "tileset4.chr"
+	.incbin "NESst\chr_rhombusBigFont.chr"
