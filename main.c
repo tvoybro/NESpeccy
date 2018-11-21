@@ -138,27 +138,40 @@ void setAttr(unsigned char x, unsigned char y, unsigned char attr) {
 const twLines = 6;
 
 const unsigned char twisterText[] = {
-	0, 60*4,
-	0, 3, 4,
+	0, 80-30,
+	0, 3*32+4,
 	6,
 	0xDE, 0xF1, 0xDC, 0xDE, 0xEC, 0xEC,
 	
-	0, 60*4,
-	1, 3, 20,
+	10, 80-20,
+	1, 3*32+20,
 	6,
 	0xDE, 0xF1, 0xDC, 0xDE, 0xEC, 0xEC,
 	
-	0, 60*4,
-	2, 3, 4,
+	20, 80-10,
+	2, 3*32+4,
 	6,
 	0xDE, 0xF1, 0xDC, 0xDE, 0xEC, 0xEC,
 	
-	0, 60*4,
-	3, 3, 20,
+	30, 80,
+	3, 3*32+20,
 	6,
 	0xDE, 0xF1, 0xDC, 0xDE, 0xEC, 0xEC,
 	
 };
+
+
+/*
+для каждого frm мы строим 6 строк
+
+1б - начиная с какого фрейма показывать
+1б - длительность показа
+1б - номер frm
+1б - адрес
+1б - длина сообщения
+Xб - само сообщение
+*/
+
 
 void fxTwisterFrame(frm) {
 	unsigned char x, y, twisterAdr, yyy, x1, x2, y1, chunk, chunkAdr, yfrom, yto, tadr, tqty;
@@ -193,14 +206,13 @@ void fxTwisterFrame(frm) {
 			&& (twisterText[y + 0] <= fxFrame)
 			&& (twisterText[y + 1] >= fxFrame)
 		) {
-			tadr = twisterText[y + 3] * 32 + twisterText[y + 4];
-			chunkAdr = 16 * (twisterText[y + 3] / 2) + x/2;
-			for (x = 0; x < twisterText[y + 5]; x++) {
-				fire_array[tadr] = twisterText[y + 6 + x];
+			tadr = twisterText[y + 3];
+			for (x = 0; x < twisterText[y + 4]; x++) {
+				fire_array[tadr] = twisterText[y + 5 + x];
 				tadr++;
 			}
 		}
-		y += twisterText[y + 5] + 6;
+		y += twisterText[y + 4] + 5;
 		--tqty;
 	}
 	
