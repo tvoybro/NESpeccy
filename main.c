@@ -89,28 +89,6 @@ void _pal_fade_to(unsigned to)
 
 #include "sceneZXloading.h"
 
-// quality: mask (15/31) 
-void fxPlasmFrame(frm, quality) {  
-unsigned char y, x, yfrom, yto;
-	buffAdr = 0;
-	yfrom = frm*3;
-	yto = frm*3 + 3;
-	yy = ya + yfrom;
-	for (y = yfrom; y < yto; y++) {
-		xx = xa;
-		xy = y + xya;
-		for (x = 0; x < 32; x++) {
-			fire_array[buffAdr] = 0x80 + ((colorAdd + sinTbl1[xx] + sinTbl2[yy] + sinTbl3[xy]) & quality);
-			buffAdr+=1;
-			xx+=1;
-			xy+=1;
-		}
-		yy+=1;
-	}
-}
-
-
-
 void fxTwisterSetup() {
 
 	ppu_off();
@@ -271,27 +249,141 @@ void fxTwister(void) {
 	fxFrame++;
 }
 
+//----------------------------------------------------------------------
+#define plsmLines 5
+#define plsmTextDelay1 5
+#define plsmTextDelay2 60
+
+
+unsigned int plsmTextAdr = 0;
+const unsigned char plsmText[] = {
+	0 * plsmTextDelay1, plsmTextDelay2 - 3 * plsmTextDelay1,
+	0, 3*32+4,
+	6,
+	0xDE, 0xF1, 0xDC, 0xDE, 0xEC, 0xEC,
+	
+	1 * plsmTextDelay1, plsmTextDelay2 - 2 * plsmTextDelay1,
+	1, 3*32+20,
+	6,
+	0xDE, 0xF1, 0xDC, 0xDE, 0xEC, 0xEC,
+	
+	2 * plsmTextDelay1, plsmTextDelay2 - 1 * plsmTextDelay1,
+	2, 3*32+4,
+	6,
+	0xDE, 0xF1, 0xDC, 0xDE, 0xEC, 0xEC,
+	
+	3 * plsmTextDelay1, plsmTextDelay2 - 0 * plsmTextDelay1,
+	3, 3*32+20,
+	6,
+	0xDE, 0xF1, 0xDC, 0xDE, 0xEC, 0xEC,
+	
+    //-------------------------
+    
+	0 * plsmTextDelay1, plsmTextDelay2 - 4 * plsmTextDelay1,
+	0, 3*32+4,
+	3,
+	0xEC, 0xEC, 0xEC,
+	
+	1 * plsmTextDelay1, plsmTextDelay2 - 3 * plsmTextDelay1,
+	1, 3*32+20,
+	6,
+	0xDE, 0xF1, 0xDC, 0xDE, 0xEC, 0xEC,
+	
+	2 * plsmTextDelay1, plsmTextDelay2 - 2 * plsmTextDelay1,
+	2, 3*32+4,
+	6,
+	0xDE, 0xF1, 0xDC, 0xDE, 0xEC, 0xEC,
+	
+	3 * plsmTextDelay1, plsmTextDelay2 - 1 * plsmTextDelay1,
+	3, 3*32+20,
+	6,
+	0xDE, 0xF1, 0xDC, 0xDE, 0xEC, 0xEC,
+    
+    //-------------------------
+    255 //no text code
+    
+};
+
+
+void fxPlasmSetup(void) {
+	ppu_off();
+    
+    pal_bg(pal_water);
+    
+	vram_adr(NAMETABLE_A);
+	vram_fill(0,1024-24);
+	vram_adr(NAMETABLE_B);
+	vram_fill(0,1024-24);
+
+	cnrom_set_bank(TILESET_CHUNKS_FONT_INVADERS);
+	ppu_on_all();
+	
+	fxFrame = 0;
+}
+
+void fxPlasmFrame(frm) {  
+unsigned char y, x, yfrom, yto, tqty, txtadr, tadr;
+	buffAdr = 0;
+	yfrom = frm * plsmLines;
+	yto = frm * plsmLines + plsmLines;
+	yy = ya + yfrom;
+	for (y = yfrom; y < yto; y++) {
+		xx = xa;
+		xy = y + xya;
+		for (x = 0; x < 32; x++) {
+			fire_array[buffAdr] = 0x80 + ((colorAdd + sinTbl1[xx] + sinTbl2[yy] + sinTbl3[xy]) & 31);
+			++buffAdr;
+			++xx;
+			++xy;
+		}
+		++yy;
+	}
+    
+	tqty = 4;
+	txtadr = plsmTextAdr;
+    if (plsmText[txtadr] == 255) {
+        return;
+    }
+    
+	while (tqty > 0) {
+		if (
+			(plsmText[txtadr + 2] == frm)
+			&& (plsmText[txtadr + 0] <= fxFrame)
+			&& (plsmText[txtadr + 1] >= fxFrame)
+		) {
+			tadr = plsmText[txtadr + 3];
+			for (x = 0; x < plsmText[txtadr + 4]; x++) {
+				fire_array[tadr] = plsmText[txtadr + 5 + x];
+				tadr++;
+			}
+		}
+		txtadr += plsmText[txtadr + 4] + 5;
+		--tqty;
+	}
+	
+    if (fxFrame >= twTextDelay2 - 1) {
+        fxFrame = 0;
+        plsmTextAdr = txtadr;
+    }
+    
+    
+}
 
 void fxPlasm(void) {
-
-	for (frm = 0; frm < 8; frm++) {
+	for (frm = 0; frm < 5; frm++) {
+        set_nmi_user_call_on();
+        set_nmi_user_vram_lines_qty(frm == 4 ? plsmLines-1 : plsmLines);
 		if (scrSwap == 0) {
 			scroll(0,0);
-			fxPlasmFrame(frm, 31);
-//			gray_line();
-			clear_vram_buffer();
-			multi_vram_buffer_horz((unsigned char*) fire_array+0,32,NAMETABLE_B+frm*96+32 + 64);
-			multi_vram_buffer_horz((unsigned char*) fire_array+32,32,NAMETABLE_B+frm*96+64 + 64);
-			multi_vram_buffer_horz((unsigned char*) fire_array+64,32,NAMETABLE_B+frm*96+96 + 64);
+			fxPlasmFrame(frm);
+			gray_line();
+            set_nmi_user_vram_adr(NAMETABLE_B + 96 + frm*32*plsmLines);
 			ppu_wait_nmi();
-			scroll(256,0);
 		} else {
-			fxPlasmFrame(frm, 31);
-//			gray_line();
-			clear_vram_buffer();
-			multi_vram_buffer_horz((unsigned char*) fire_array+0,32,NAMETABLE_A+frm*96+32 + 64);
-			multi_vram_buffer_horz((unsigned char*) fire_array+32,32,NAMETABLE_A+frm*96+64 + 64);
-			multi_vram_buffer_horz((unsigned char*) fire_array+64,32,NAMETABLE_A+frm*96+96 + 64);
+            scroll(256,0);
+			fxPlasmFrame(frm);
+			gray_line();
+            set_nmi_user_vram_adr(NAMETABLE_A + 96 + frm*32*plsmLines);
 			ppu_wait_nmi();
 		}
 
@@ -301,6 +393,27 @@ void fxPlasm(void) {
 	xya-=1;
 	colorAdd += 1;
 	scrSwap ^= 1;
+    fxFrame++;
+}
+
+//----------------------------------------------------------------------------
+void fxPlasm16Frame(frm) {  
+unsigned char y, x, yfrom, yto;
+	buffAdr = 0;
+	yfrom = frm*3;
+	yto = frm*3 + 3;
+	yy = ya + yfrom;
+	for (y = yfrom; y < yto; y++) {
+		xx = xa;
+		xy = y + xya;
+		for (x = 0; x < 32; x++) {
+			fire_array[buffAdr] = 0x80 + ((colorAdd + sinTbl1[xx] + sinTbl2[yy] + sinTbl3[xy]) & 15);
+			buffAdr+=1;
+			xx+=1;
+			xy+=1;
+		}
+		yy+=1;
+	}
 }
 
 void fxPlasm16(void) {
@@ -308,7 +421,7 @@ void fxPlasm16(void) {
 	for (frm = 0; frm < 8; frm++) {
 		if (scrSwap == 0) {
 			scroll(0,0);
-			fxPlasmFrame(frm, 15);
+			fxPlasm16Frame(frm);
 //			gray_line();
 			clear_vram_buffer();
 			multi_vram_buffer_horz((unsigned char*) fire_array+0,16,NAMETABLE_B+frm*64+32+PLASMA16_POS_X + PLASMA16_POS_Y*32);
@@ -316,7 +429,7 @@ void fxPlasm16(void) {
 			ppu_wait_nmi();
 			scroll(256,0);
 		} else {
-			fxPlasmFrame(frm, 15);
+			fxPlasm16Frame(frm);
 //			gray_line();
 			clear_vram_buffer();
 			multi_vram_buffer_horz((unsigned char*) fire_array+0,16,NAMETABLE_A+frm*64+32+PLASMA16_POS_X + PLASMA16_POS_Y*32);
@@ -447,6 +560,12 @@ void setup_scrollerFX(void) {
 
 void main(void)
 {
+    music_play(0);
+
+	fxPlasmSetup();
+	while(1){
+		fxPlasm();
+	}
 
 	fxTwisterSetup();
 	while(1){
