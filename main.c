@@ -23,10 +23,10 @@ const unsigned char twisterData[]={0,0,0,0,0,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,1,1
 const unsigned char twisterSinX[]={16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,15,15,15,15,15,15,15,15,15,15,15,14,14,14,14,14,14,14,14,13,13,13,13,13,13,12,12,12,12,12,12,11,11,11,11,11,11,10,10,10,10,10,9,9,9,9,9,8,8,8,8,8,7,7,7,7,7,6,6,6,6,6,5,5,5,5,5,5,4,4,4,4,4,4,3,3,3,3,3,3,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,3,3,3,3,3,3,4,4,4,4,4,4,5,5,5,5,5,5,6,6,6,6,6,7,7,7,7,7,8,8,8,8,8,9,9,9,9,9,10,10,10,10,10,11,11,11,11,11,11,12,12,12,12,12,12,13,13,13,13,13,13,14,14,14,14,14,14,14,14,15,15,15,15,15,15,15,15,15,15,15,16,16,16,16,16,16,16,16,16,16,16,16,16,16};
 
 const unsigned char twisterChunks[]={
-	0,0x86,0x92,
-	0,0x92,0x7f,
-	0,0x7f,0x8c,
-	0,0x8c,0x86
+	0,0x80,0x9e,
+	0,0x9e,0x86,
+	0,0x86,0x98,
+	0,0x98,0x80
 };
 
 const unsigned char string_we_like_to[32*1]={
@@ -120,14 +120,20 @@ void fxTwisterSetup() {
 	vram_adr(NAMETABLE_B);
 	vram_fill(0,1024-24);
 
-	pal_col(1,0x11);
-	pal_col(2,0x25);
-	pal_col(3,0x2a);
+	pal_col(1,0x20);
+	pal_col(2,0x21);
+	pal_col(3,0x13);
 	cnrom_set_bank(TILESET_CHUNKS_FONT_INVADERS);
 	ppu_on_all();
 	
 	fxFrame = 0;
 }
+
+
+void setAttr(unsigned char x, unsigned char y, unsigned char attr) {
+}
+
+
 
 const twLines = 6;
 
@@ -156,6 +162,9 @@ const unsigned char twisterText[] = {
 
 void fxTwisterFrame(frm) {
 	unsigned char x, y, twisterAdr, yyy, x1, x2, y1, chunk, chunkAdr, yfrom, yto, tadr, tqty;
+	
+	memfill(fire_attr_array, 0, 48);
+	
 	memfill32(fire_array, 0, twLines);
 	yfrom = frm * twLines;
 	yto = yfrom + twLines;
@@ -182,9 +191,10 @@ void fxTwisterFrame(frm) {
 		if (
 			(twisterText[y + 2] == frm)
 			&& (twisterText[y + 0] <= fxFrame)
-			//&& (twisterText[y + 1] >= fxFrame)
+			&& (twisterText[y + 1] >= fxFrame)
 		) {
 			tadr = twisterText[y + 3] * 32 + twisterText[y + 4];
+			chunkAdr = 16 * (twisterText[y + 3] / 2) + x/2;
 			for (x = 0; x < twisterText[y + 5]; x++) {
 				fire_array[tadr] = twisterText[y + 6 + x];
 				tadr++;
