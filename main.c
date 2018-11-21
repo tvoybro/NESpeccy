@@ -2,6 +2,9 @@
 // Credits (alphabetically):
 // Adam Bazaroff, mr287cc, n1k-o, TmK
 
+#define txtS(chr) ((int)chr + 0xDA - 65)
+#define txtN(chr) ((int)chr + 0xD0 - 48)
+
 #include "snake_rattle_and_roll.h"
 #include "neslib.h"
 #include "nesdoug.h"
@@ -258,46 +261,46 @@ void fxTwister(void) {
 unsigned int plsmTextAdr = 0;
 const unsigned char plsmText[] = {
 	0 * plsmTextDelay1, plsmTextDelay2 - 3 * plsmTextDelay1,
-	0, 3*32+4,
+	1, 1*32+10,
 	6,
-	0xDE, 0xF1, 0xDC, 0xDE, 0xEC, 0xEC,
+	txtS('E'),txtS('X'),txtS('C'),txtS('E'),txtS('S'),txtS('S'),
 	
 	1 * plsmTextDelay1, plsmTextDelay2 - 2 * plsmTextDelay1,
-	1, 3*32+20,
-	6,
-	0xDE, 0xF1, 0xDC, 0xDE, 0xEC, 0xEC,
+	2, 2*32+20,
+	8,
+	txtS('D'),txtS('E'),txtS('M'),txtS('A'),txtS('R'),txtS('C'),txtS('H'),txtS('E'),
 	
 	2 * plsmTextDelay1, plsmTextDelay2 - 1 * plsmTextDelay1,
-	2, 3*32+4,
-	6,
-	0xDE, 0xF1, 0xDC, 0xDE, 0xEC, 0xEC,
+	3, 2*32+4,
+	8,
+	txtS('T'),txtS('H'),txtS('E'),txtS('S'),txtS('U'),txtS('P'),txtS('E'),txtS('R'),
 	
 	3 * plsmTextDelay1, plsmTextDelay2 - 0 * plsmTextDelay1,
-	3, 3*32+20,
-	6,
-	0xDE, 0xF1, 0xDC, 0xDE, 0xEC, 0xEC,
+	4, 3*32+16,
+	3,
+	txtS('A'),txtS('S'),txtS('D'),
 	
     //-------------------------
     
-	0 * plsmTextDelay1, plsmTextDelay2 - 4 * plsmTextDelay1,
-	0, 3*32+4,
+	0 * plsmTextDelay1, plsmTextDelay2 - 3 * plsmTextDelay1,
+	1, 1*32+10,
+	6,
+	txtS('E'),txtS('X'),txtS('C'),txtS('E'),txtS('S'),txtS('S'),
+	
+	1 * plsmTextDelay1, plsmTextDelay2 - 2 * plsmTextDelay1,
+	2, 2*32+20,
+	8,
+	txtS('D'),txtS('E'),txtS('M'),txtS('A'),txtS('R'),txtS('C'),txtS('H'),txtS('E'),
+	
+	2 * plsmTextDelay1, plsmTextDelay2 - 1 * plsmTextDelay1,
+	3, 2*32+4,
+	8,
+	txtS('T'),txtS('H'),txtS('E'),txtS('S'),txtS('U'),txtS('P'),txtS('E'),txtS('R'),
+	
+	3 * plsmTextDelay1, plsmTextDelay2 - 0 * plsmTextDelay1,
+	4, 3*32+16,
 	3,
-	0xEC, 0xEC, 0xEC,
-	
-	1 * plsmTextDelay1, plsmTextDelay2 - 3 * plsmTextDelay1,
-	1, 3*32+20,
-	6,
-	0xDE, 0xF1, 0xDC, 0xDE, 0xEC, 0xEC,
-	
-	2 * plsmTextDelay1, plsmTextDelay2 - 2 * plsmTextDelay1,
-	2, 3*32+4,
-	6,
-	0xDE, 0xF1, 0xDC, 0xDE, 0xEC, 0xEC,
-	
-	3 * plsmTextDelay1, plsmTextDelay2 - 1 * plsmTextDelay1,
-	3, 3*32+20,
-	6,
-	0xDE, 0xF1, 0xDC, 0xDE, 0xEC, 0xEC,
+	txtS('A'),txtS('S'),txtS('D'),
     
     //-------------------------
     255 //no text code
@@ -373,20 +376,20 @@ unsigned char y, x, yfrom, yto, tqty, txtadr, tadr;
 }
 
 void fxPlasm(void) {
-	for (frm = 0; frm < 5; frm++) {
+	for (frm = 0; frm < 6; frm++) {
         set_nmi_user_call_on();
-        set_nmi_user_vram_lines_qty(frm == 4 ? plsmLines-1 : plsmLines);
+        set_nmi_user_vram_lines_qty(plsmLines);
 		if (scrSwap == 0) {
 			scroll(0,0);
 			fxPlasmFrame(frm);
-			gray_line();
-            set_nmi_user_vram_adr(NAMETABLE_B + 96 + frm*32*plsmLines);
+			//gray_line();
+            set_nmi_user_vram_adr(NAMETABLE_B + frm*32*plsmLines);
 			ppu_wait_nmi();
 		} else {
             scroll(256,0);
 			fxPlasmFrame(frm);
-			gray_line();
-            set_nmi_user_vram_adr(NAMETABLE_A + 96 + frm*32*plsmLines);
+			//gray_line();
+            set_nmi_user_vram_adr(NAMETABLE_A + frm*32*plsmLines);
 			ppu_wait_nmi();
 		}
 
