@@ -5,18 +5,30 @@
 #define txtS(chr) ((int)chr + 0xDA - 65)
 #define txtN(chr) ((int)chr + 0xD0 - 48)
 
-#include "snake_rattle_and_roll.h"
-#include "neslib.h"
-#include "nesdoug.h"
+#include "Include\snake_rattle_and_roll.h"
+#include "Include\neslib.h"
+#include "Include\nesdoug.h"
 
-#include "nam_test1.h"
-#include "nam_test2.h"
+#include "Include\nam_finalScreen_qr.h"
+
+#include "Include\nam_invadersA.h"
+#include "Include\nam_invadersB.h"
+#include "Include\nam_scroll_squaresA.h"
+#include "Include\nam_scroll_squaresB.h"
+#include "Include\nam_scrollFX_arrowsA.h"
+#include "Include\nam_scrollFX_arrowsB.h"
+#include "Include\nam_scroll_gridA.h"
+#include "Include\nam_scroll_gridB.h"
+#include "Include\nam_paletteFX.h"
+#include "Include\nam_BigText.h"
 
 #define	PLASMA16_POS_X						8
 #define	PLASMA16_POS_Y						4
 
 #define	TILESET_FIRE_CHUNKS_ZX				0
 #define	TILESET_CHUNKS_FONT_INVADERS		1
+#define	TILESET_SCROLLER_FX					2
+#define	TILESET_BIG_FONT_RHOMBUS			3
 
 const unsigned char sinTbl1[]={4,6,7,8,8,8,7,6,4,2,1,0,0,0,1,2,4,6,7,8,8,8,7,6,4,2,1,0,0,0,1,2,4,6,7,8,8,8,7,6,4,2,1,0,0,0,1,2,4,6,7,8,8,8,7,6,4,2,1,0,0,0,1,2,4,6,7,8,8,8,7,6,4,2,1,0,0,0,1,2,4,6,7,8,8,8,7,6,4,2,1,0,0,0,1,2,4,6,7,8,8,8,7,6,4,2,1,0,0,0,1,2,4,6,7,8,8,8,7,6,4,2,1,0,0,0,1,2,4,6,7,8,8,8,7,6,4,2,1,0,0,0,1,2,4,6,7,8,8,8,7,6,4,2,1,0,0,0,1,2,4,6,7,8,8,8,7,6,4,2,1,0,0,0,1,2,4,6,7,8,8,8,7,6,4,2,1,0,0,0,1,2,4,6,7,8,8,8,7,6,4,2,1,0,0,0,1,2,4,6,7,8,8,8,7,6,4,2,1,0,0,0,1,2,4,6,7,8,8,8,7,6,4,2,1,0,0,0,1,2,4,6,7,8,8,8,7,6,4,2,1,0,0,0,1,2};
 const unsigned char sinTbl2[]={12,15,18,20,22,23,24,24,23,22,20,17,14,11,9,6,4,2,1,0,0,1,3,5,7,10,13,16,19,21,23,24,24,24,23,21,19,16,13,10,7,5,3,1,0,0,1,2,4,6,9,11,14,17,20,22,23,24,24,23,22,20,18,15,12,9,6,4,2,1,0,0,1,2,4,7,10,13,15,18,20,22,23,24,24,23,21,19,17,14,11,8,5,3,1,0,0,0,1,3,5,8,11,14,17,19,21,23,24,24,23,22,20,18,15,13,10,7,4,2,1,0,0,1,2,4,6,9,12,15,18,20,22,23,24,24,23,22,20,17,14,11,9,6,4,2,1,0,0,1,3,5,7,10,13,16,19,21,23,24,24,24,23,21,19,16,13,10,7,5,3,1,0,0,1,2,4,6,9,11,14,17,20,22,23,24,24,23,22,20,18,15,12,9,6,4,2,1,0,0,1,2,4,7,10,13,15,18,20,22,23,24,24,23,21,19,17,14,11,8,5,3,1,0,0,0,1,3,5,8,11,14,17,19,21,23,24,24,23,22,20,18,15,13,10,7,4,2,1,0,0,1,2,4,6,9};
@@ -67,6 +79,9 @@ unsigned char xy = 0;
 unsigned buffAdr = 0;
 unsigned val = 0;
 
+unsigned char palRoll = 0;
+unsigned char scrollFXpos = 0;
+
 #pragma bss-name (pop);
 
 unsigned char pad;
@@ -94,7 +109,7 @@ void _pal_fade_to(unsigned to)
 	}
 } 
 
-#include "sceneZXloading.h"
+#include "Include\sceneZXloading.h"
 
 void fxTwisterSetup() {
 
@@ -633,27 +648,103 @@ void setup_scene_fire(void) {
 	ppu_on_all();
 }
 
-void setup_scrollerFX(void) {
-	vram_adr(NAMETABLE_B);
-	vram_unrle(nam_test2);
+void setupRhombusFX(void) {
 	vram_adr(NAMETABLE_A);
-	vram_unrle(nam_test1);
+	vram_unrle(nam_paletteFX);
+	cnrom_set_bank(TILESET_BIG_FONT_RHOMBUS);
+	pal_col(1,0x01);
+	pal_col(2,0x19);
+	pal_col(3,0x28);
+	ppu_on_all();
+}
+
+void setupSquaresFX(void) {
+	cnrom_set_bank(TILESET_SCROLLER_FX);
+	ppu_off();
+	vram_adr(NAMETABLE_A);
+	vram_unrle(nam_scroll_squaresA);
+	vram_adr(NAMETABLE_B);
+	vram_unrle(nam_scroll_squaresB);
+	pal_col(2,0x03);
+	ppu_on_all();
+}
+
+void setupGridFX(void) {
+	cnrom_set_bank(TILESET_SCROLLER_FX);
+	ppu_off();
+	vram_adr(NAMETABLE_A);
+	vram_unrle(nam_scroll_gridA);
+	vram_adr(NAMETABLE_B);
+	vram_unrle(nam_scroll_gridB);
+	pal_col(2,0x03);
+	ppu_on_all();
+}
+
+void setupArrowsFX(void) {
+	cnrom_set_bank(TILESET_SCROLLER_FX);
+	ppu_off();
+	vram_adr(NAMETABLE_A);
+	vram_unrle(nam_scrollFX_arrowsA);
+	vram_adr(NAMETABLE_B);
+	vram_unrle(nam_scrollFX_arrowsB);
+	pal_col(2,0x03);
+	ppu_on_all();
+}
+
+void fxPaletteRoll(void) {
+	switch(palRoll) {
+		case 0:
+		pal_col(1,0x01);
+		pal_col(2,0x19);
+		pal_col(3,0x28);
+		break;
+
+		case 1:
+		pal_col(1,0x19);
+		pal_col(2,0x28);
+		pal_col(3,0x01);
+		break;
+
+		case 2:
+		pal_col(1,0x28);
+		pal_col(2,0x01);
+		pal_col(3,0x19);
+		break;
+	}
+	++palRoll;
+	if (palRoll>2) palRoll=0;
 }
 
 void main(void)
 {
-    music_play(0);
+//    music_play(0);
 
-	/*fxPlasmSetup();
-	while(1){
-		fxPlasm();
-	}*/
+//	fxPlasmSetup();
+//	while(1){
+//		fxPlasm();
+//	}
 
-	fxTwisterSetup();
-	while(1){
-		fxTwister();
-	}
+//	fxTwisterSetup();
+//	while(1){
+//		fxTwister();
+//	}
 
+//	setupRhombusFX();
+//	while(1){
+//		if (!(gfrm&3)) fxPaletteRoll();
+//		++gfrm;
+//		ppu_wait_nmi();
+//	};
+
+
+	setupArrowsFX();
+	while (1) {
+		scroll(scrollFXpos*64,0);
+		ppu_wait_nmi();
+		++gfrm;
+		if (!(gfrm&1)) ++scrollFXpos;
+		if (scrollFXpos>15) scrollFXpos=0;
+	};
 
 	cnrom_set_bank(TILESET_FIRE_CHUNKS_ZX);
 	bright=4;
@@ -671,23 +762,6 @@ void main(void)
 
 	setup_scene_water();
 	pal_spr(pal_water);
-
-// pal twistor
-/*
-	pal_col(1,0x11);
-	pal_col(2,0x25);
-	pal_col(3,0x2a);
-
-	cnrom_set_bank(TILESET_CHUNKS_FONT_INVADERS);
-
-	while(!(pad&PAD_START)){
-		pad=pad_trigger(0);
-		fxTwister();
-	}
-
-	set_nmi_user_call_off();
-*/
-
 
 	to_bright=4;
 
@@ -771,9 +845,6 @@ void main(void)
 		}
 		--gfrm;
 	}
-
-
-//	ppu_off();
 
 	while(1)
 	{

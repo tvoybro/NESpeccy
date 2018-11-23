@@ -273,13 +273,14 @@ sounds_data:
 
 
 .segment "CHR1"
-	.incbin "NESst\part1_zx_loading_chr.chr"
+	.incbin "NESst\chr_ZX_intro.chr"
+	.incbin "NESst\chr_full_screen_twister.chr"
 	
 .segment "CHR2"
 	.incbin "NESst\chr_Invaders_chunks_font.chr"
 	
 .segment "CHR3"
-;	.incbin "tileset3.chr"
+	.incbin "NESst\chr_scrollingFX.chr"
 	
 .segment "CHR4"
-;	.incbin "tileset4.chr"
+	.incbin "NESst\chr_rhombusBigFont.chr"
