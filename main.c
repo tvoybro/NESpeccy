@@ -25,11 +25,15 @@ const unsigned char twisterSin[]={ 63,63,63,63,63,63,63,63,63,63,63,63,63,62,62,
 const unsigned char twisterData[]={0,0,0,0,0,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,2,0,1,1,1,1,1,1,0,0,0,0,0,0,0,0,2,0,1,1,1,1,1,1,0,0,0,0,0,0,0,2,2,2,0,1,1,1,1,1,0,0,0,0,0,0,0,2,2,2,0,1,1,1,1,1,0,0,0,0,0,0,0,2,2,2,2,0,1,1,1,1,1,0,0,0,0,0,0,2,2,2,2,0,1,1,1,1,1,0,0,0,0,0,0,2,2,2,2,2,0,1,1,1,1,0,0,0,0,0,0,2,2,2,2,2,0,1,1,1,1,0,0,0,0,0,0,0,2,2,2,2,2,0,1,1,1,0,0,0,0,0,0,0,2,2,2,2,2,0,1,1,1,0,0,0,0,0,0,0,2,2,2,2,2,2,0,1,0,0,0,0,0,0,0,0,2,2,2,2,2,2,0,1,0,0,0,0,0,0,0,0,2,2,2,2,2,2,2,0,0,0,0,0,0,0,0,0,2,2,2,2,2,2,2,0,0,0,0,0};
 const unsigned char twisterSinX[]={16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,15,15,15,15,15,15,15,15,15,15,15,14,14,14,14,14,14,14,14,13,13,13,13,13,13,12,12,12,12,12,12,11,11,11,11,11,11,10,10,10,10,10,9,9,9,9,9,8,8,8,8,8,7,7,7,7,7,6,6,6,6,6,5,5,5,5,5,5,4,4,4,4,4,4,3,3,3,3,3,3,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,3,3,3,3,3,3,4,4,4,4,4,4,5,5,5,5,5,5,6,6,6,6,6,7,7,7,7,7,8,8,8,8,8,9,9,9,9,9,10,10,10,10,10,11,11,11,11,11,11,12,12,12,12,12,12,13,13,13,13,13,13,14,14,14,14,14,14,14,14,15,15,15,15,15,15,15,15,15,15,15,16,16,16,16,16,16,16,16,16,16,16,16,16,16};
 
+
+const unsigned char rotorTexture[] = {0,0,0,0,0,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,2,0,1,1,1,1,1,1,0,0,0,0,0,0,0,0,2,0,1,1,1,1,1,1,0,0,0,0,0,0,0,2,2,2,0,1,1,1,1,1,0,0,0,0,0,0,0,2,2,2,0,1,1,1,1,1,0,0,0,0,0,0,0,2,2,2,2,0,1,1,1,1,1,0,0,0,0,0,0,2,2,2,2,0,1,1,1,1,1,0,0,0,0,0,0,2,2,2,2,2,0,1,1,1,1,0,0,0,0,0,0,2,2,2,2,2,0,1,1,1,1,0,0,0,0,0,0,0,2,2,2,2,2,0,1,1,1,0,0,0,0,0,0,0,2,2,2,2,2,0,1,1,1,0,0,0,0,0,0,0,2,2,2,2,2,2,0,1,0,0,0,0,0,0,0,0,2,2,2,2,2,2,0,1,0,0,0,0,0,0,0,0,2,2,2,2,2,2,2,0,0,0,0,0,0,0,0,0,2,2,2,2,2,2,2,0,0,0,0,0};
+
+
 const unsigned char twisterChunks[]={
-	0,0x80,0x9e,
-	0,0x9e,0x86,
-	0,0x86,0x98,
-	0,0x98,0x80
+	0,0x8b,0x96,
+	0,0x96,0x90,
+	0,0x90,0x9b,
+	0,0x9b,0x8b
 };
 
 const unsigned char string_we_like_to[32*1]={
@@ -254,7 +258,7 @@ void fxTwister(void) {
 
 //----------------------------------------------------------------------
 #define plsmLines 5
-#define plsmTextDelay1 5
+#define plsmTextDelay1 0
 #define plsmTextDelay2 60
 
 
@@ -262,23 +266,23 @@ unsigned int plsmTextAdr = 0;
 const unsigned char plsmText[] = {
 	0 * plsmTextDelay1, plsmTextDelay2 - 3 * plsmTextDelay1,
 	1, 1*32+10,
-	6,
-	txtS('E'),txtS('X'),txtS('C'),txtS('E'),txtS('S'),txtS('S'),
+	11,
+	txtS('E'),txtS('X'),txtS('C'),txtS('E'),txtS('S'),txtS('S'),txtS('E'),txtS('X'),txtS('C'),txtS('E'),txtS('S'),
 	
 	1 * plsmTextDelay1, plsmTextDelay2 - 2 * plsmTextDelay1,
 	2, 2*32+20,
-	8,
-	txtS('D'),txtS('E'),txtS('M'),txtS('A'),txtS('R'),txtS('C'),txtS('H'),txtS('E'),
+	11,
+	txtS('E'),txtS('X'),txtS('C'),txtS('E'),txtS('S'),txtS('S'),txtS('E'),txtS('X'),txtS('C'),txtS('E'),txtS('S'),
 	
 	2 * plsmTextDelay1, plsmTextDelay2 - 1 * plsmTextDelay1,
 	3, 2*32+4,
-	8,
-	txtS('T'),txtS('H'),txtS('E'),txtS('S'),txtS('U'),txtS('P'),txtS('E'),txtS('R'),
+	11,
+	txtS('E'),txtS('X'),txtS('C'),txtS('E'),txtS('S'),txtS('S'),txtS('E'),txtS('X'),txtS('C'),txtS('E'),txtS('S'),
 	
 	3 * plsmTextDelay1, plsmTextDelay2 - 0 * plsmTextDelay1,
 	4, 3*32+16,
-	3,
-	txtS('A'),txtS('S'),txtS('D'),
+	11,
+	txtS('E'),txtS('X'),txtS('C'),txtS('E'),txtS('S'),txtS('S'),txtS('E'),txtS('X'),txtS('C'),txtS('E'),txtS('S'),
 	
     //-------------------------
     
@@ -360,7 +364,7 @@ unsigned char y, x, yfrom, yto, tqty, txtadr, tadr;
 			tadr = plsmText[txtadr + 3];
 			for (x = 0; x < plsmText[txtadr + 4]; x++) {
 				fire_array[tadr] = plsmText[txtadr + 5 + x];
-				tadr++;
+				++tadr;
 			}
 		}
 		txtadr += plsmText[txtadr + 4] + 5;
@@ -382,13 +386,13 @@ void fxPlasm(void) {
 		if (scrSwap == 0) {
 			scroll(0,0);
 			fxPlasmFrame(frm);
-			//gray_line();
+			gray_line();
             set_nmi_user_vram_adr(NAMETABLE_B + frm*32*plsmLines);
 			ppu_wait_nmi();
 		} else {
             scroll(256,0);
 			fxPlasmFrame(frm);
-			//gray_line();
+			gray_line();
             set_nmi_user_vram_adr(NAMETABLE_A + frm*32*plsmLines);
 			ppu_wait_nmi();
 		}
@@ -401,6 +405,78 @@ void fxPlasm(void) {
 	scrSwap ^= 1;
     fxFrame++;
 }
+//----------------------------------------------------------------------
+/*
+#define rotorLines 8
+void fxRotorSetup(void) {
+	ppu_off();
+    
+    pal_col(0,0x09);
+    pal_col(2,0x19);
+    pal_col(1,0x30);
+    pal_col(3,0x29);
+    
+	vram_adr(NAMETABLE_A);
+	vram_fill(0,1024-24);
+	vram_adr(NAMETABLE_B);
+	vram_fill(0,1024-24);
+
+	cnrom_set_bank(TILESET_CHUNKS_FONT_INVADERS);
+	ppu_on_all();
+	
+	fxFrame = 0;
+}
+
+void fxRotorFrame(frm) {
+unsigned char y, x;
+unsigned int tx, ty, tdx, tdy, stx, sty;
+	buffAdr = 0;
+	
+	tdx = twisterSin[xya];
+	tdy = twisterSin[(xya + 64) & 255];
+	
+	tx = 0; //frm * rotorLines * tdy;
+	ty = 0; //-frm * rotorLines * tdx;
+	
+	for (y = rotorLines; y > 0; --y) {
+		stx = tx;
+		sty = ty;
+		for (x = 32; x > 0; --x) {
+			fire_array[buffAdr] = 0x80 + (twisterSin[128+((ty/16))+((tx/256))] & 31);
+			tx += tdx;
+			ty += tdy;
+			++buffAdr;
+		}
+		tx = stx + tdy;
+		ty = sty - tdx;
+	}
+}
+
+void fxRotor(void) {
+	for (frm = 0; frm < 1; frm++) {
+        set_nmi_user_call_on();
+        set_nmi_user_vram_lines_qty(rotorLines);
+		if (scrSwap == 0) {
+			scroll(0,0);
+			fxRotorFrame(frm);
+			gray_line();
+            set_nmi_user_vram_adr(NAMETABLE_B + 64+ frm*32*rotorLines);
+			ppu_wait_nmi();
+		} else {
+            scroll(256,0);
+			fxRotorFrame(frm);
+			gray_line();
+            set_nmi_user_vram_adr(NAMETABLE_A + 64+ frm*32*rotorLines);
+			ppu_wait_nmi();
+		}
+
+	}
+	//xa+=1;
+	//ya+=1;
+	xya+=5;
+	scrSwap ^= 1;
+}
+*/
 
 //----------------------------------------------------------------------------
 void fxPlasm16Frame(frm) {  
@@ -568,10 +644,10 @@ void main(void)
 {
     music_play(0);
 
-	fxPlasmSetup();
+	/*fxPlasmSetup();
 	while(1){
 		fxPlasm();
-	}
+	}*/
 
 	fxTwisterSetup();
 	while(1){
