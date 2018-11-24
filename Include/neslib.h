@@ -36,6 +36,7 @@ void __fastcall__ set_nmi_user_call_off(void);
 void __fastcall__ set_nmi_user_vram_adr(int ppu_address);
 void __fastcall__ set_nmi_user_vram_lines_qty(unsigned char lines_qty);	
 void __fastcall__ memfill32(void *dst,unsigned char value,unsigned char len);
+unsigned int __fastcall__ get_mus_pos(void);
 
 // set bg and spr palettes, data is 32 bytes array
 void __fastcall__ pal_all(const char *data);

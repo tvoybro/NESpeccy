@@ -65,6 +65,7 @@ unsigned int gfrm;
 
 static unsigned char fire_array[256]={};
 
+unsigned int muspos = 0;
 unsigned int fxFrame = 0;
 unsigned char scrSwap = 0;
 unsigned char frm = 0;
@@ -109,16 +110,53 @@ void _pal_fade_to(unsigned to)
 	}
 } 
 
+void showmuspos(void)
+{
+	unsigned char muspos_l, muspos_h;
+
+	ppu_off();
+    
+    pal_col(0,0x09);
+	pal_col(1,0x30);
+    pal_col(2,0x19);
+    pal_col(3,0x29);
+    
+	vram_adr(NAMETABLE_A);
+	vram_fill(0,1024);
+
+	cnrom_set_bank(TILESET_CHUNKS_FONT_INVADERS);
+	ppu_on_all();
+
+	muspos = get_mus_pos();
+	muspos_h = muspos / 256;
+	muspos_l = muspos & 255;
+	
+	fire_array[0] = 0xD0 + (muspos_h / 16);
+	fire_array[1] = 0xD0 + (muspos_h & 15);
+	fire_array[2] = 0xD0 + (muspos_l / 16);
+	fire_array[3] = 0xD0 + (muspos_l & 15);
+	
+	ppu_wait_nmi();
+	scroll(0,0);
+	clear_vram_buffer();
+	multi_vram_buffer_horz((unsigned char*) fire_array, 4, NAMETABLE_A + 64);
+	ppu_wait_nmi();
+	
+	while(1){}
+}
+
+
 #include "Include\sceneZXloading.h"
 
 void fxTwisterSetup() {
 
 	ppu_off();
 	vram_adr(NAMETABLE_A);
-	vram_fill(0,1024-24);
+	vram_fill(0,1024);
 	vram_adr(NAMETABLE_B);
-	vram_fill(0,1024-24);
+	vram_fill(0,1024);
 
+	pal_col(0,0x0D);
 	pal_col(1,0x20);
 	pal_col(2,0x21);
 	pal_col(3,0x13);
@@ -281,23 +319,23 @@ unsigned int plsmTextAdr = 0;
 const unsigned char plsmText[] = {
 	0 * plsmTextDelay1, plsmTextDelay2 - 3 * plsmTextDelay1,
 	1, 1*32+10,
-	11,
-	txtS('E'),txtS('X'),txtS('C'),txtS('E'),txtS('S'),txtS('S'),txtS('E'),txtS('X'),txtS('C'),txtS('E'),txtS('S'),
+	6,
+	txtS('E'),txtS('X'),txtS('C'),txtS('E'),txtS('S'),txtS('S'),
 	
 	1 * plsmTextDelay1, plsmTextDelay2 - 2 * plsmTextDelay1,
 	2, 2*32+20,
-	11,
-	txtS('E'),txtS('X'),txtS('C'),txtS('E'),txtS('S'),txtS('S'),txtS('E'),txtS('X'),txtS('C'),txtS('E'),txtS('S'),
+	6,
+	txtS('E'),txtS('X'),txtS('C'),txtS('E'),txtS('S'),txtS('S'),
 	
 	2 * plsmTextDelay1, plsmTextDelay2 - 1 * plsmTextDelay1,
 	3, 2*32+4,
-	11,
-	txtS('E'),txtS('X'),txtS('C'),txtS('E'),txtS('S'),txtS('S'),txtS('E'),txtS('X'),txtS('C'),txtS('E'),txtS('S'),
+	6,
+	txtS('E'),txtS('X'),txtS('C'),txtS('E'),txtS('S'),txtS('S'),
 	
 	3 * plsmTextDelay1, plsmTextDelay2 - 0 * plsmTextDelay1,
 	4, 3*32+16,
-	11,
-	txtS('E'),txtS('X'),txtS('C'),txtS('E'),txtS('S'),txtS('S'),txtS('E'),txtS('X'),txtS('C'),txtS('E'),txtS('S'),
+	6,
+	txtS('E'),txtS('X'),txtS('C'),txtS('E'),txtS('S'),txtS('S'),
 	
     //-------------------------
     
@@ -336,9 +374,9 @@ void fxPlasmSetup(void) {
     pal_col(3,0x29);
     
 	vram_adr(NAMETABLE_A);
-	vram_fill(0,1024-24);
+	vram_fill(0,1024);
 	vram_adr(NAMETABLE_B);
-	vram_fill(0,1024-24);
+	vram_fill(0,1024);
 
 	cnrom_set_bank(TILESET_CHUNKS_FONT_INVADERS);
 	ppu_on_all();
@@ -346,7 +384,7 @@ void fxPlasmSetup(void) {
 	fxFrame = 0;
 }
 
-void fxPlasmFrame(frm) {  
+void fxPlasmFrame(frm) {
 unsigned char y, x, yfrom, yto, tqty, txtadr, tadr;
 	buffAdr = 0;
 	yfrom = frm * plsmLines;
@@ -687,7 +725,10 @@ void setupArrowsFX(void) {
 	vram_unrle(nam_scrollFX_arrowsA);
 	vram_adr(NAMETABLE_B);
 	vram_unrle(nam_scrollFX_arrowsB);
+	pal_col(0,0x0D);
+	pal_col(1,0x0D);
 	pal_col(2,0x03);
+	pal_col(3,0x0D);
 	ppu_on_all();
 }
 
@@ -717,35 +758,9 @@ void fxPaletteRoll(void) {
 
 void main(void)
 {
-//    music_play(0);
 
-//	fxPlasmSetup();
-//	while(1){
-//		fxPlasm();
-//	}
-
-//	fxTwisterSetup();
-//	while(1){
-//		fxTwister();
-//	}
-
-//	setupRhombusFX();
-//	while(1){
-//		if (!(gfrm&3)) fxPaletteRoll();
-//		++gfrm;
-//		ppu_wait_nmi();
-//	};
-
-
-	setupArrowsFX();
-	while (1) {
-		scroll(scrollFXpos*64,0);
-		ppu_wait_nmi();
-		++gfrm;
-		if (!(gfrm&1)) ++scrollFXpos;
-		if (scrollFXpos>15) scrollFXpos=0;
-	};
-
+	/* part 1 - begin */
+	
 	cnrom_set_bank(TILESET_FIRE_CHUNKS_ZX);
 	bright=4;
 
@@ -765,21 +780,23 @@ void main(void)
 
 	to_bright=4;
 
-	gfrm=20;
-	while(gfrm){
-		fxPlasm16();
-		if (gfrm<4){
-			++bright;
+	while (muspos < 1250+192) {
+		fxPlasm16(); // 8 frames
+		if (muspos > 1250+160){
+			if (bright < 8) {
+				++bright;
+			}
 			pal_bright(bright);
 		}
 		else
-		if(bright!=to_bright)
+		if (bright!=to_bright)
 		{
 			++bright;
 			pal_bright(bright);
 		}
-		--gfrm;
+		muspos = get_mus_pos();
 	}
+	
 
 	clear_vram_buffer();
 	multi_vram_buffer_horz((unsigned char *) string_we_like_to, 32, NAMETABLE_A+32 * 23);
@@ -787,11 +804,12 @@ void main(void)
 	ppu_wait_nmi();
 
 
-	gfrm=26;
-	while(gfrm){
+	while (muspos < 1250+192+192) {
 		fxPlasm16();	
-		if (gfrm<5){
-			++bright;
+		if (muspos > 1250+192+160){
+			if (bright < 8) {
+				++bright;
+			}
 			pal_bright(bright);
 		}
 		else
@@ -800,20 +818,21 @@ void main(void)
 			--bright;
 			pal_bright(bright);
 		}
-		--gfrm;
+		muspos = get_mus_pos();
 	}
 
 	ppu_off();
-
+	
 	setup_scene_fire();
 
 	to_bright=4;
 
-	gfrm=25;
-	while(gfrm){
+	while (muspos < 1250+192+192+192) {
 		fxFire();	
-		if (gfrm<5){
-			++bright;
+		if (muspos > 1250+192+192+160){
+			if (bright < 8) {
+				++bright;
+			}
 			pal_bright(bright);
 		}
 		else
@@ -822,19 +841,20 @@ void main(void)
 			--bright;
 			pal_bright(bright);
 		}
-		--gfrm;
+		muspos = get_mus_pos();
 	}
-
+	
 	clear_vram_buffer();
 	multi_vram_buffer_horz((unsigned char *) string_invite_you_to, 32, NAMETABLE_A+32 * 23);
 	multi_vram_buffer_horz((unsigned char *) string_invite_you_to, 32, NAMETABLE_B+32 * 23);
 	ppu_wait_nmi();
 
-	gfrm=28;
-	while(gfrm){
+	while (muspos < 1250+192+192+192+192) {
 		fxFire();	
-		if (gfrm<5){
-			++bright;
+		if (muspos > 1250+192+192+192+160){
+			if (bright > 0) {
+				--bright;
+			}
 			pal_bright(bright);
 		}
 		else
@@ -843,9 +863,80 @@ void main(void)
 			--bright;
 			pal_bright(bright);
 		}
-		--gfrm;
+		muspos = get_mus_pos();
 	}
 
+
+	clear_vram_buffer();
+	ppu_wait_nmi();
+
+	//showmuspos();
+	
+	/* pause */
+	while(muspos < 0x0818) {
+		muspos = get_mus_pos();
+	}
+	
+	/* blink */
+	pal_bright(8);
+	ppu_wait_nmi();
+
+	/* fx plasm */
+	fxPlasmSetup();
+	pal_bright(4);
+	while(muspos < (0x0818 + 192*4 - 4)){
+		fxPlasm();
+		muspos = get_mus_pos();
+	}
+	set_nmi_user_call_off();
+	
+	/* blink */
+	pal_bright(8);
+	ppu_wait_nmi();
+
+	/* fx twister */
+	fxTwisterSetup();
+	pal_bright(4);
+	while(muspos < (0x0818 + 192*8)){
+		fxTwister();
+		muspos = get_mus_pos();
+	}
+	set_nmi_user_call_off();
+	
+	/* blink */
+	pal_bright(8);
+	ppu_wait_nmi();
+	
+	/* fx arrows */
+	setupArrowsFX();
+	while (1) {
+		pal_bright(4);
+		scroll(scrollFXpos*64,0);
+		ppu_wait_nmi();
+		++gfrm;
+		if (!(gfrm&1)) ++scrollFXpos;
+		if (scrollFXpos>15) scrollFXpos=0;
+	};
+	
+	
+/*
+	fxPlasmSetup();
+	while(get_mus_pos() < 192){
+		fxPlasm();
+	}
+
+	fxTwisterSetup();
+	while(get_mus_pos() < 192*2){
+		fxTwister();
+	}
+	setupRhombusFX();
+	while(1){
+		if (!(gfrm&3)) fxPaletteRoll();
+		++gfrm;
+		ppu_wait_nmi();
+	};
+*/
+	
 	while(1)
 	{
 	}

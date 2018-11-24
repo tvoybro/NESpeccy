@@ -7,6 +7,7 @@ NMI_USER_FASTMOVE_ADR = $0352;
 
 	.export _set_nmi_user_call_on, _set_nmi_user_call_off, _set_nmi_user_vram_adr, _set_nmi_user_vram_lines_qty
 	.export _memfill32
+	.export _get_mus_pos
 
 	.export _pal_all,_pal_bg,_pal_spr,_pal_col,_pal_clear
 	.export _pal_bright,_pal_spr_bright,_pal_bg_bright
@@ -1860,7 +1861,11 @@ _memfill32:
 
 	rts
 	
-
+;unsigned int __fastcall__ get_mus_pos(void);
+_get_mus_pos:
+	lda FT_TEMP+3
+	ldx FT_TEMP+4
+	rts
 	
 	
 	

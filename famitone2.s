@@ -35,6 +35,9 @@ FT_TEMP_PTR			= FT_TEMP		;word
 FT_TEMP_PTR_L		= FT_TEMP_PTR+0
 FT_TEMP_PTR_H		= FT_TEMP_PTR+1
 FT_TEMP_VAR1		= FT_TEMP+2
+FT_MUSPOS			= FT_TEMP+3
+FT_MUSPOS_L			= FT_MUSPOS+0
+FT_MUSPOS_H			= FT_MUSPOS+1
 
 
 ;envelope structure offsets, 5 bytes per envelope, grouped by variable type
@@ -238,6 +241,9 @@ FamiToneInit:
 	.endif
 	sta FT_PAL_ADJUST
 
+	lda	#$05
+	sta FT_TEMP+5
+	
 	jsr FamiToneMusicStop	;initialize channels and envelopes
 
 	ldy #1
@@ -452,6 +458,27 @@ FamiToneUpdate:
 	jmp @update_sound
 
 @update:
+
+
+	inc FT_TEMP+3
+	bne @cnt1
+	inc FT_TEMP+4
+@cnt1:
+
+	lda FT_PAL_ADJUST
+	bne @cnt_ntsc
+
+	dec FT_TEMP+5
+	bne @cnt_ntsc
+	lda	#$05
+	sta FT_TEMP+5
+
+	inc FT_TEMP+3
+	bne @cnt_ntsc
+	inc FT_TEMP+4
+
+@cnt_ntsc:
+
 
 	clc						;update frame counter that considers speed, tempo, and PAL/NTSC
 	lda FT_TEMPO_ACC_L
