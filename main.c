@@ -849,9 +849,9 @@ void main(void)
 	multi_vram_buffer_horz((unsigned char *) string_invite_you_to, 32, NAMETABLE_B+32 * 23);
 	ppu_wait_nmi();
 
-	while (muspos < 1250+192+192+192+192) {
+	while (muspos < 1250+192+192+192+192+32) {
 		fxFire();	
-		if (muspos > 1250+192+192+192+160){
+		if (muspos > 1250+192+192+192+160+32){
 			if (bright > 0) {
 				--bright;
 			}
@@ -873,7 +873,7 @@ void main(void)
 	//showmuspos();
 	
 	/* pause */
-	while(muspos < 0x0818) {
+	while(muspos < 0x0814) {
 		muspos = get_mus_pos();
 	}
 	
@@ -884,7 +884,7 @@ void main(void)
 	/* fx plasm */
 	fxPlasmSetup();
 	pal_bright(4);
-	while(muspos < (0x0818 + 192*4 - 4)){
+	while(muspos < (0x0814 + 192*4)){
 		fxPlasm();
 		muspos = get_mus_pos();
 	}
@@ -897,7 +897,7 @@ void main(void)
 	/* fx twister */
 	fxTwisterSetup();
 	pal_bright(4);
-	while(muspos < (0x0818 + 192*8)){
+	while(muspos < (0x0814 + 192*8)){
 		fxTwister();
 		muspos = get_mus_pos();
 	}
