@@ -43,7 +43,7 @@ unsigned char pal_i, fr, i, spr, p, sq_scroll_pos, pause, imsb, scrollRow;
 unsigned int scrollPage;
 unsigned char from_x, tick;
 
-unsigned int frame;
+unsigned int frame, musCheckpoint;
 
 unsigned char p, fx, fy, bright, to_bright;
 unsigned int gfrm;
@@ -1010,16 +1010,56 @@ void main(void)
 		muspos = get_mus_pos();
 	}
 
+	musCheckpoint+=0x0814 + MUS_PATTERN*2 + MUS_PATTERN;
+
+	// 1:12 - Rhombus
 	oam_clear();
 	clear_vram_buffer();
 	ppu_wait_nmi();
 
 	setupRhombusFX();
-	while(muspos < (0x1114 + MUS_PATTERN)){
+	while(muspos < (musCheckpoint + MUS_BAR)){
 		if (!(gfrm&3)) fxPaletteRoll();
 		++gfrm;
 		ppu_wait_nmi();
 	};
+
+	/* blink */
+	pal_bright(8);
+	setupGridFX();
+	pal_bright(4);
+
+	while(muspos < (0x1114 + MUS_PATTERN + MUS_PATTERN)){
+		fxScroll32((unsigned char*) restoreBGscrollGrid);
+		muspos = get_mus_pos();
+	}
+
+	pal_bright(8);
+	clear_vram_buffer();
+	oam_clear();
+	setupBigTextPage();
+	scroll(0,0);
+	pal_bright(4);
+	ppu_wait_nmi();
+
+	while(muspos < (0x0814 + MUS_PATTERN + MUS_PATTERN + MUS_PATTERN)){
+//		fxScroll32((unsigned char*) restoreBGscrollSquares);
+		ppu_wait_nmi();
+		muspos = get_mus_pos();
+	}
+
+	pal_bright(8);
+	setupSquaresFX();
+	pal_bright(4);
+
+	while(muspos < (0x0814 + MUS_PATTERN + MUS_PATTERN*3)){
+		fxScroll32((unsigned char*) restoreBGscrollGrid);
+		muspos = get_mus_pos();
+	}
+
+	oam_clear();
+	clear_vram_buffer();
+	ppu_wait_nmi();
 
 
 /*
