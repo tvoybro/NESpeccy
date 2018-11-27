@@ -251,7 +251,7 @@ detectNTSC:
 .segment "RODATA"
 
 music_data:
-	.include "music.s"
+	.include "nq-nespeccy.s"
 ;	.include "bom_base.s"
 
 .if(FT_SFX_ENABLE)
