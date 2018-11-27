@@ -1,8 +1,3 @@
-const unsigned char char_space[2*2]={
-	0x00,0x00,
-	0x00,0x00
-};
-
 const unsigned char char_0[2*2]={
 	0x02,0x03,
 	0x12,0x13
@@ -40,7 +35,7 @@ const unsigned char char_6[2*2]={
 
 const unsigned char char_7[2*2]={
 	0x20,0x21,
-	0x30,0x31
+	0x00,0x31
 };
 
 const unsigned char char_8[2*2]={
@@ -99,8 +94,8 @@ const unsigned char char_I[2*2]={
 };
 
 const unsigned char char_J[2*2]={
-	0x48,0x49,
-	0x58,0x59
+	0x20,0x21,
+	0x00,0x31
 };
 
 const unsigned char char_K[2*2]={
@@ -109,7 +104,7 @@ const unsigned char char_K[2*2]={
 };
 
 const unsigned char char_L[2*2]={
-	0x4c,0x4d,
+	0x4c,0x00,
 	0x5c,0x5d
 };
 
@@ -203,18 +198,35 @@ const unsigned char char_exclamation[2*2]={
 	0x9d,0x00
 };
 
-const unsigned char tbl_ascii[42]={
-	' ', '0', '1', '2', '3', '4', '5', '6', '7', '8',
+const unsigned char char_question[2*2]={
+	0xc9,0xca,
+	0xcb,0xcc
+};
+
+const unsigned char char_colon[2*2]={
+	0xc8,0x00,
+	0x9a,0x00
+};
+
+const unsigned char char_quotation[2*2]={
+	0xc7,0x00,
+	0x00,0x00
+};
+
+
+
+const unsigned char tbl_ascii[44]={
+	'0', '1', '2', '3', '4', '5', '6', '7', '8',
 	'9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I',
 	'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S',
 	'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '.', ',', '-',
-	'!',
+	'!', '?', ':', '"',
 	0x0ff
 };
 
-const unsigned char const* tbl_alphabet[41]={
-char_space, char_0, char_1, char_2, char_3, char_4, char_5, char_6, char_7, char_8, char_9,
+const unsigned char const* tbl_alphabet[43]={
+char_0, char_1, char_2, char_3, char_4, char_5, char_6, char_7, char_8, char_9,
 char_A, char_B, char_C, char_D, char_E, char_F, char_G, char_H, char_I, char_J, char_K, char_L,
 char_M, char_N, char_O, char_P, char_Q, char_R, char_S, char_T, char_U, char_V, char_W, char_X,
-char_Y, char_Z, char_period, char_comma, char_hyphen, char_exclamation
+char_Y, char_Z, char_period, char_comma, char_hyphen, char_exclamation, char_question, char_colon, char_quotation
 };

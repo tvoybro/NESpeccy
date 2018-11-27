@@ -30,33 +30,20 @@
 #define	TILESET_SCROLLER_FX					2
 #define	TILESET_BIG_FONT_RHOMBUS			3
 
-const unsigned char sinTbl1[]={4,6,7,8,8,8,7,6,4,2,1,0,0,0,1,2,4,6,7,8,8,8,7,6,4,2,1,0,0,0,1,2,4,6,7,8,8,8,7,6,4,2,1,0,0,0,1,2,4,6,7,8,8,8,7,6,4,2,1,0,0,0,1,2,4,6,7,8,8,8,7,6,4,2,1,0,0,0,1,2,4,6,7,8,8,8,7,6,4,2,1,0,0,0,1,2,4,6,7,8,8,8,7,6,4,2,1,0,0,0,1,2,4,6,7,8,8,8,7,6,4,2,1,0,0,0,1,2,4,6,7,8,8,8,7,6,4,2,1,0,0,0,1,2,4,6,7,8,8,8,7,6,4,2,1,0,0,0,1,2,4,6,7,8,8,8,7,6,4,2,1,0,0,0,1,2,4,6,7,8,8,8,7,6,4,2,1,0,0,0,1,2,4,6,7,8,8,8,7,6,4,2,1,0,0,0,1,2,4,6,7,8,8,8,7,6,4,2,1,0,0,0,1,2,4,6,7,8,8,8,7,6,4,2,1,0,0,0,1,2,4,6,7,8,8,8,7,6,4,2,1,0,0,0,1,2};
-const unsigned char sinTbl2[]={12,15,18,20,22,23,24,24,23,22,20,17,14,11,9,6,4,2,1,0,0,1,3,5,7,10,13,16,19,21,23,24,24,24,23,21,19,16,13,10,7,5,3,1,0,0,1,2,4,6,9,11,14,17,20,22,23,24,24,23,22,20,18,15,12,9,6,4,2,1,0,0,1,2,4,7,10,13,15,18,20,22,23,24,24,23,21,19,17,14,11,8,5,3,1,0,0,0,1,3,5,8,11,14,17,19,21,23,24,24,23,22,20,18,15,13,10,7,4,2,1,0,0,1,2,4,6,9,12,15,18,20,22,23,24,24,23,22,20,17,14,11,9,6,4,2,1,0,0,1,3,5,7,10,13,16,19,21,23,24,24,24,23,21,19,16,13,10,7,5,3,1,0,0,1,2,4,6,9,11,14,17,20,22,23,24,24,23,22,20,18,15,12,9,6,4,2,1,0,0,1,2,4,7,10,13,15,18,20,22,23,24,24,23,21,19,17,14,11,8,5,3,1,0,0,0,1,3,5,8,11,14,17,19,21,23,24,24,23,22,20,18,15,13,10,7,4,2,1,0,0,1,2,4,6,9};
-const unsigned char sinTbl3[]={8,10,11,12,14,15,15,16,16,16,15,15,14,12,11,10,8,6,5,4,2,1,1,0,0,0,1,1,2,4,5,6,8,10,11,12,14,15,15,16,16,16,15,15,14,12,11,10,8,6,5,4,2,1,1,0,0,0,1,1,2,4,5,6,8,10,11,12,14,15,15,16,16,16,15,15,14,12,11,10,8,6,5,4,2,1,1,0,0,0,1,1,2,4,5,6,8,10,11,12,14,15,15,16,16,16,15,15,14,12,11,10,8,6,5,4,2,1,1,0,0,0,1,1,2,4,5,6,8,10,11,12,14,15,15,16,16,16,15,15,14,12,11,10,8,6,5,4,2,1,1,0,0,0,1,1,2,4,5,6,8,10,11,12,14,15,15,16,16,16,15,15,14,12,11,10,8,6,5,4,2,1,1,0,0,0,1,1,2,4,5,6,8,10,11,12,14,15,15,16,16,16,15,15,14,12,11,10,8,6,5,4,2,1,1,0,0,0,1,1,2,4,5,6,8,10,11,12,14,15,15,16,16,16,15,15,14,12,11,10,8,6,5,4,2,1,1,0,0,0,1,1,2,4,5,6};
-const unsigned char twisterSin[]={63,63,63,63,63,63,63,63,63,63,63,63,63,62,62,62,62,61,61,61,60,60,59,59,59,58,58,57,57,56,56,55,55,54,53,53,52,52,51,50,50,49,48,48,47,46,46,45,44,44,43,42,41,41,40,39,38,37,37,36,35,34,34,33,32,31,30,30,29,28,27,27,26,25,24,23,23,22,21,20,20,19,18,18,17,16,16,15,14,14,13,12,12,11,11,10,9,9,8,8,7,7,6,6,5,5,5,4,4,3,3,3,2,2,2,2,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,2,2,2,2,3,3,3,4,4,5,5,5,6,6,7,7,8,8,9,9,10,11,11,12,12,13,14,14,15,16,16,17,18,18,19,20,20,21,22,23,23,24,25,26,27,27,28,29,30,30,31,32,33,34,34,35,36,37,37,38,39,40,41,41,42,43,44,44,45,46,46,47,48,48,49,50,50,51,52,52,53,53,54,55,55,56,56,57,57,58,58,59,59,59,60,60,61,61,61,62,62,62,62,63,63,63,63,63,63,63,63,63,63,63,63};
-const unsigned char twisterData[]={0,0,0,0,0,16,16,16,16,16,16,16,0,0,0,0,0,0,0,0,0,16,16,16,16,15,15,15,0,0,0,0,0,0,0,0,1,0,15,15,15,15,14,14,0,0,0,0,0,0,0,0,1,0,15,14,14,14,14,13,0,0,0,0,0,0,0,1,1,2,0,14,14,13,13,12,0,0,0,0,0,0,0,1,2,2,0,13,13,13,12,12,0,0,0,0,0,0,0,1,2,2,3,0,13,12,12,11,11,0,0,0,0,0,0,2,2,3,3,0,12,12,11,11,10,0,0,0,0,0,0,2,3,3,4,4,0,11,11,10,10,0,0,0,0,0,0,3,3,4,4,5,0,11,10,10,9,0,0,0,0,0,0,0,4,4,5,5,5,0,10,10,9,0,0,0,0,0,0,0,4,5,5,6,6,0,10,9,9,0,0,0,0,0,0,0,5,6,6,6,6,7,0,9,0,0,0,0,0,0,0,0,6,6,7,7,7,7,0,9,0,0,0,0,0,0,0,0,7,7,7,8,8,8,8,0,0,0,0,0,0,0,0,0,8,8,8,8,8,8,8,0,0,0,0,0};
-const unsigned char twisterSinX[]={16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,15,15,15,15,15,15,15,15,15,15,15,14,14,14,14,14,14,14,14,13,13,13,13,13,13,12,12,12,12,12,12,11,11,11,11,11,11,10,10,10,10,10,9,9,9,9,9,8,8,8,8,8,7,7,7,7,7,6,6,6,6,6,5,5,5,5,5,5,4,4,4,4,4,4,3,3,3,3,3,3,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,3,3,3,3,3,3,4,4,4,4,4,4,5,5,5,5,5,5,6,6,6,6,6,7,7,7,7,7,8,8,8,8,8,9,9,9,9,9,10,10,10,10,10,11,11,11,11,11,11,12,12,12,12,12,12,13,13,13,13,13,13,14,14,14,14,14,14,14,14,15,15,15,15,15,15,15,15,15,15,15,16,16,16,16,16,16,16,16,16,16,16,16,16,16};
-
-//const unsigned char rotorTexture[] = {0,0,0,0,0,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,2,0,1,1,1,1,1,1,0,0,0,0,0,0,0,0,2,0,1,1,1,1,1,1,0,0,0,0,0,0,0,2,2,2,0,1,1,1,1,1,0,0,0,0,0,0,0,2,2,2,0,1,1,1,1,1,0,0,0,0,0,0,0,2,2,2,2,0,1,1,1,1,1,0,0,0,0,0,0,2,2,2,2,0,1,1,1,1,1,0,0,0,0,0,0,2,2,2,2,2,0,1,1,1,1,0,0,0,0,0,0,2,2,2,2,2,0,1,1,1,1,0,0,0,0,0,0,0,2,2,2,2,2,0,1,1,1,0,0,0,0,0,0,0,2,2,2,2,2,0,1,1,1,0,0,0,0,0,0,0,2,2,2,2,2,2,0,1,0,0,0,0,0,0,0,0,2,2,2,2,2,2,0,1,0,0,0,0,0,0,0,0,2,2,2,2,2,2,2,0,0,0,0,0,0,0,0,0,2,2,2,2,2,2,2,0,0,0,0,0};
-
-const unsigned char twisterChunks[]={
-	0, 0xc0,0xc1,0xc2,0xc3,0xc4,0xc5,0xc6,0xc7,	0xb8,0xb9,0xba,0xbb,0xbc,0xbd,0xbe,0xbf, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-	0, 0xc8,0xc9,0xca,0xcb,0xcc,0xcd,0xce,0xcf,	0xc0,0xc1,0xc2,0xc3,0xc4,0xc5,0xc6,0xc7, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-	0, 0xb0,0xb1,0xb2,0xb3,0xb4,0xb5,0xb6,0xb7,	0xc8,0xc9,0xca,0xcb,0xcc,0xcd,0xce,0xcf, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-	0, 0xb8,0xb9,0xba,0xbb,0xbc,0xbd,0xbe,0xbf,	0xb0,0xb1,0xb2,0xb3,0xb4,0xb5,0xb6,0xb7, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-};
-
-const unsigned char string_we_like_to[32*1]={
-	0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x6a,0x6b,0xd7,0xa0,0xa1,0xa2,0xa3,0xdc,0xbb,0xbc,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00
-};
-
-const unsigned char string_invite_you_to[32*1]={
-	0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0xbd,0xbe,0xbf,0xc0,0xc1,0xc2,0xc3,0xc4,0xc5,0xc6,0xc7,0xc8,0xc9,0xca,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0xff
-};
-
-
+// Паттерн - условное название квадрата из 4 реальных паттернов
+#define MUS_PATTERN							4*192
+// Bar - реальный паттерн, 1/4 квадрата.
+#define MUS_BAR								192
+#define MUS_HALF_BAR						96
+#define MUS_QUARTER_BAR						48
 
 #pragma bss-name (push,"ZEROPAGE")
+
+unsigned char pal_i, fr, i, spr, p, sq_scroll_pos, pause, imsb, scrollRow;
+unsigned int scrollPage;
+unsigned char from_x, tick;
+
+unsigned int frame;
 
 unsigned char p, fx, fy, bright, to_bright;
 unsigned int gfrm;
@@ -83,12 +70,8 @@ unsigned char scrollFXpos = 0;
 
 #pragma bss-name (pop);
 
-unsigned char pad;
-
-const unsigned char pal_part1[16]={ 0x0f,0x05,0x2c,0x10,0x0f,0x30,0x10,0x06,0x0f,0x0f,0x10,0x0f,0x0f,0x0f,0x0f,0x0f };
-const unsigned char pal_water[16]={ 0x0f,0x0c,0x21,0x1c,0x0f,0x0b,0x1b,0x2b,0x0f,0x2d,0x20,0x10,0x0f,0x3d,0x3d,0x0f };
-
-const unsigned char bus_conflict[4]={ 0x00,0x01,0x02,0x03 };
+// Данные здесь:
+#include "Include\consttables.h"
 
 void cnrom_set_bank(unsigned char bank)
 {
@@ -689,23 +672,14 @@ void setup_scene_fire(void) {
 }
 
 void setupRhombusFX(void) {
+	ppu_off();
 	vram_adr(NAMETABLE_A);
 	vram_unrle(nam_paletteFX);
 	cnrom_set_bank(TILESET_BIG_FONT_RHOMBUS);
 	pal_col(1,0x01);
 	pal_col(2,0x19);
 	pal_col(3,0x28);
-	ppu_on_all();
-}
-
-void setupSquaresFX(void) {
-	cnrom_set_bank(TILESET_SCROLLER_FX);
-	ppu_off();
-	vram_adr(NAMETABLE_A);
-	vram_unrle(nam_scroll_squaresA);
-	vram_adr(NAMETABLE_B);
-	vram_unrle(nam_scroll_squaresB);
-	pal_col(2,0x03);
+	scroll(0,0);
 	ppu_on_all();
 }
 
@@ -716,7 +690,20 @@ void setupGridFX(void) {
 	vram_unrle(nam_scroll_gridA);
 	vram_adr(NAMETABLE_B);
 	vram_unrle(nam_scroll_gridB);
-	pal_col(2,0x03);
+	pal_bg(pal_scrollerFX);
+	pal_spr(pal_scrollerFX);
+	ppu_on_all();
+}
+
+void setupSquaresFX(void) {
+	cnrom_set_bank(TILESET_SCROLLER_FX);
+	ppu_off();
+	vram_adr(NAMETABLE_A);
+	vram_unrle(nam_scroll_squaresA);
+	vram_adr(NAMETABLE_B);
+	vram_unrle(nam_scroll_squaresB);
+	pal_bg(pal_scrollerFX);
+	pal_spr(pal_scrollerFX);
 	ppu_on_all();
 }
 
@@ -758,15 +745,119 @@ void fxPaletteRoll(void) {
 	if (palRoll>2) palRoll=0;
 }
 
+void fxScroll32(unsigned char* restore_array) {
+		clear_vram_buffer();
+
+		// Calculate page and address to restore BG
+		if (from_x>5 && from_x<14){
+			imsb=(from_x-6)<<2;
+			scrollPage=NAMETABLE_B;
+		}
+		if (from_x<6){
+			imsb=8+(from_x<<2);
+			scrollPage=NAMETABLE_A;
+		}
+		if (from_x>13){
+			imsb=(from_x-14)<<2;
+			scrollPage=NAMETABLE_A;
+		}
+		// Restore BG
+		scrollRow=from_x<<2;
+		multi_vram_buffer_horz((unsigned char*) restore_array + scrollRow, 4, scrollPage+32*8+(imsb));
+		scrollRow+=64;
+		multi_vram_buffer_horz((unsigned char*) restore_array + scrollRow, 4, scrollPage+32*9+(imsb));
+		scrollRow+=64;
+		multi_vram_buffer_horz((unsigned char*) restore_array + scrollRow, 4, scrollPage+32*10+(imsb));
+		scrollRow+=64;
+		multi_vram_buffer_horz((unsigned char*) restore_array + scrollRow, 4, scrollPage+32*11+(imsb));
+
+		if (from_x>4 && from_x<13){
+			imsb=(from_x-5)<<2;
+			scrollPage=NAMETABLE_B;
+		}
+		if (from_x<5){
+			imsb=12+(from_x<<2);
+			scrollPage=NAMETABLE_A;
+		}
+		if (from_x>12){
+			imsb=(from_x-13)<<2;
+			scrollPage=NAMETABLE_A;
+		}
+		scrollRow=0;
+		multi_vram_buffer_horz((unsigned char*) logo_bottom1_BG + scrollRow, 4, scrollPage+32*8+(imsb));
+		multi_vram_buffer_horz((unsigned char*) logo_bottom1_BG + scrollRow+4, 4, scrollPage+32*9+(imsb));
+		multi_vram_buffer_horz((unsigned char*) logo_bottom1_BG + scrollRow+8, 4, scrollPage+32*10+(imsb));
+		multi_vram_buffer_horz((unsigned char*) logo_bottom1_BG + scrollRow+12, 4, scrollPage+32*11+(imsb));
+
+		if (from_x>3 && from_x<12){
+			imsb=(from_x-4)<<2;
+			scrollPage=NAMETABLE_B;
+		}
+		if (from_x<4){
+			imsb=16+(from_x<<2);
+			scrollPage=NAMETABLE_A;
+		}
+		if (from_x>11){
+			imsb=(from_x-12)<<2;
+			scrollPage=NAMETABLE_A;
+		}
+		scrollRow=0;
+		multi_vram_buffer_horz((unsigned char*) logo_bottom2_BG + scrollRow, 4, scrollPage+32*8+(imsb));
+		multi_vram_buffer_horz((unsigned char*) logo_bottom2_BG + scrollRow+4, 4, scrollPage+32*9+(imsb));
+		multi_vram_buffer_horz((unsigned char*) logo_bottom2_BG + scrollRow+8, 4, scrollPage+32*10+(imsb));
+		multi_vram_buffer_horz((unsigned char*) logo_bottom2_BG + scrollRow+12, 4, scrollPage+32*11+(imsb));
+
+		one_vram_buffer(0,attr_tbl1[from_x]);
+		one_vram_buffer((1 << 6) | (1 << 4) | (1 << 2) | (1 << 0),attr_tbl2[from_x]);
+		one_vram_buffer((1 << 6) | (1 << 4) | (1 << 2) | (1 << 0),attr_tbl3[from_x]);
+
+		scroll(sq_scroll_pos<<5, 0);
+
+		ppu_wait_nmi();
+		if (!(fr&1)) {
+			++sq_scroll_pos;
+			++from_x;
+		}
+
+		++fr;
+
+		if (fr>29) {
+			fr=0;
+		}
+
+		if (from_x>15) sq_scroll_pos=from_x=0;
+		
+		spr=0;
+		spr=oam_meta_spr(12*8,12*8-1,spr,logo_bottom);
+		spr=oam_meta_spr(12*8,16*8-1,spr,logo_title);
+};
+
+void setupBigTextPage(void) {
+	cnrom_set_bank(TILESET_BIG_FONT_RHOMBUS);
+	ppu_off();
+	vram_adr(NAMETABLE_A);
+	vram_unrle(nam_BigText);
+	vram_adr(NAMETABLE_B);
+	vram_unrle(nam_BigText);
+	pal_bg(pal_bigText);
+//	pal_spr(pal_scrollerFX);
+	ppu_on_all();
+
+};
+
 void main(void)
 {
-	
 
-	fxTwisterSetup();
-	while(1){
-		fxTwister();
-	}
-	
+
+
+
+	set_vram_buffer();
+	clear_vram_buffer();
+
+	sq_scroll_pos=0;
+	pause=10;
+
+	p=0;
 
 	/* part 1 - begin */
 	
@@ -789,7 +880,7 @@ void main(void)
 
 	to_bright=4;
 
-	while (muspos < 1250+192) {
+	while (muspos < 1250+MUS_BAR) {
 		fxPlasm16(); // 8 frames
 		if (muspos > 1250+160){
 			if (bright < 8) {
@@ -813,9 +904,9 @@ void main(void)
 	ppu_wait_nmi();
 
 
-	while (muspos < 1250+192+192) {
+	while (muspos < 1250+MUS_BAR*2) {
 		fxPlasm16();	
-		if (muspos > 1250+192+160){
+		if (muspos > 1250+MUS_BAR*2-32){
 			if (bright < 8) {
 				++bright;
 			}
@@ -836,9 +927,9 @@ void main(void)
 
 	to_bright=4;
 
-	while (muspos < 1250+192+192+192) {
+	while (muspos < 1250+MUS_BAR*3) {
 		fxFire();	
-		if (muspos > 1250+192+192+160){
+		if (muspos > 1250+MUS_BAR*3-32){
 			if (bright < 8) {
 				++bright;
 			}
@@ -858,9 +949,9 @@ void main(void)
 	multi_vram_buffer_horz((unsigned char *) string_invite_you_to, 32, NAMETABLE_B+32 * 23);
 	ppu_wait_nmi();
 
-	while (muspos < 1250+192+192+192+192+32) {
+	while (muspos < 1250+MUS_PATTERN+32) {
 		fxFire();	
-		if (muspos > 1250+192+192+192+160+32){
+		if (muspos > 1250+MUS_PATTERN){
 			if (bright > 0) {
 				--bright;
 			}
@@ -879,8 +970,8 @@ void main(void)
 	clear_vram_buffer();
 	ppu_wait_nmi();
 
-	//showmuspos();
-	
+//	showmuspos();
+		
 	/* pause */
 	while(muspos < 0x0814) {
 		muspos = get_mus_pos();
@@ -888,9 +979,51 @@ void main(void)
 	
 	/* blink */
 	pal_bright(8);
+	setupSquaresFX();
+	pal_bright(4);
+
+	while(muspos < (0x0814 + MUS_BAR*3)){
+		fxScroll32((unsigned char*) restoreBGscrollSquares);
+		muspos = get_mus_pos();
+	}
+
+	pal_bright(8);
+	clear_vram_buffer();
+	oam_clear();
+	setupBigTextPage();
+	scroll(0,0);
+	pal_bright(4);
 	ppu_wait_nmi();
 
-	/* fx plasm */
+	while(muspos < (0x0814 + MUS_BAR*3+MUS_BAR*5)){
+//		fxScroll32((unsigned char*) restoreBGscrollSquares);
+		ppu_wait_nmi();
+		muspos = get_mus_pos();
+	}
+
+	pal_bright(8);
+	setupSquaresFX();
+	pal_bright(4);
+
+	while(muspos < (0x0814 + MUS_PATTERN*2 + MUS_PATTERN)){
+		fxScroll32((unsigned char*) restoreBGscrollSquares);
+		muspos = get_mus_pos();
+	}
+
+	oam_clear();
+	clear_vram_buffer();
+	ppu_wait_nmi();
+
+	setupRhombusFX();
+	while(muspos < (0x1114 + MUS_PATTERN)){
+		if (!(gfrm&3)) fxPaletteRoll();
+		++gfrm;
+		ppu_wait_nmi();
+	};
+
+
+/*
+	// fx plasm 
 	fxPlasmSetup();
 	pal_bright(4);
 	while(muspos < (0x0814 + 192*4)){
@@ -899,24 +1032,25 @@ void main(void)
 	}
 	set_nmi_user_call_off();
 	
-	/* blink */
+	// blink
 	pal_bright(8);
 	ppu_wait_nmi();
 
-	/* fx twister */
+	// fx twister
 	fxTwisterSetup();
 	pal_bright(4);
 	while(muspos < (0x0814 + 192*8)){
 		fxTwister();
 		muspos = get_mus_pos();
 	}
+
 	set_nmi_user_call_off();
 	
-	/* blink */
+	// blink
 	pal_bright(8);
 	ppu_wait_nmi();
 	
-	/* fx arrows */
+	// fx arrows
 	setupArrowsFX();
 	while (1) {
 		pal_bright(4);
@@ -928,7 +1062,6 @@ void main(void)
 	};
 	
 	
-/*
 	fxPlasmSetup();
 	while(get_mus_pos() < 192){
 		fxPlasm();
@@ -938,12 +1071,6 @@ void main(void)
 	while(get_mus_pos() < 192*2){
 		fxTwister();
 	}
-	setupRhombusFX();
-	while(1){
-		if (!(gfrm&3)) fxPaletteRoll();
-		++gfrm;
-		ppu_wait_nmi();
-	};
 */
 	
 	while(1)
