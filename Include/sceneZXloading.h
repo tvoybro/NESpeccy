@@ -16,6 +16,7 @@ const unsigned char nametable_part1_music[22*1]={
 };
 
 void setup_scene1(void) {
+	cnrom_set_bank(TILESET_FIRE_CHUNKS_ZX);
 	pal_bg(pal_zx_loading);
 	vram_adr(NAMETABLE_B);
 	vram_unrle(part1_zx_loading_nam);

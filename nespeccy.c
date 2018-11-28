@@ -696,8 +696,8 @@ void setupGridFX(void) {
 }
 
 void setupSquaresFX(void) {
-	cnrom_set_bank(TILESET_SCROLLER_FX);
 	ppu_off();
+	cnrom_set_bank(TILESET_SCROLLER_FX);
 	vram_adr(NAMETABLE_A);
 	vram_unrle(nam_scroll_squaresA);
 	vram_adr(NAMETABLE_B);
@@ -707,9 +707,21 @@ void setupSquaresFX(void) {
 	ppu_on_all();
 }
 
-void setupArrowsFX(void) {
-	cnrom_set_bank(TILESET_SCROLLER_FX);
+void setupInvadersFX(void) {
 	ppu_off();
+	cnrom_set_bank(TILESET_CHUNKS_FONT_INVADERS);
+	vram_adr(NAMETABLE_A);
+	vram_unrle(nam_InvadersA);
+	vram_adr(NAMETABLE_B);
+	vram_unrle(nam_InvadersB);
+	pal_bg(pal_scrollerFX);
+	pal_spr(pal_scrollerFX);
+	ppu_on_all();
+}
+
+void setupArrowsFX(void) {
+	ppu_off();
+	cnrom_set_bank(TILESET_SCROLLER_FX);
 	vram_adr(NAMETABLE_A);
 	vram_unrle(nam_scrollFX_arrowsA);
 	vram_adr(NAMETABLE_B);
@@ -832,7 +844,56 @@ void fxScroll32(unsigned char* restore_array) {
 		spr=oam_meta_spr(12*8,16*8-1,spr,logo_title);
 };
 
-void setupBigTextPage(void) {
+void fxScroll96(void) {
+	scroll(sq_scroll_pos*96, 0);
+
+	ppu_wait_nmi();
+	if (!(fr&1)) {
+		++sq_scroll_pos;
+		++from_x;
+	}
+
+	++fr;
+
+	if (fr>29) {
+		fr=0;
+	}
+
+	if (from_x>15) sq_scroll_pos=from_x=0;
+	
+};
+
+void fxScroll64(void) {
+	scroll(sq_scroll_pos<<6, 0);
+
+	ppu_wait_nmi();
+	if (!(fr&1)) {
+		++sq_scroll_pos;
+		++from_x;
+	}
+
+	++fr;
+
+	if (fr>29) {
+		fr=0;
+	}
+
+	if (from_x>7) sq_scroll_pos=from_x=0;
+	
+};
+
+unsigned char findsym(unsigned char substr){
+unsigned char fs=0;
+	
+	while(tbl_ascii[fs]!=substr) ++fs;
+	return fs;
+}
+
+void setupBigTextPage(const unsigned char *page) {
+unsigned char x, y, sym;
+unsigned int pos;
+const unsigned char *bigSymbol;
+
 	cnrom_set_bank(TILESET_BIG_FONT_RHOMBUS);
 	ppu_off();
 	vram_adr(NAMETABLE_A);
@@ -841,16 +902,42 @@ void setupBigTextPage(void) {
 	vram_unrle(nam_BigText);
 	pal_bg(pal_bigText);
 //	pal_spr(pal_scrollerFX);
+
+	for (y=0;y<8;++y) {
+		pos=NAMETABLE_B+5*32+1+(y*96);
+		for (x=0;x<16;++x) {
+			sym=*page++;
+			if (sym!=' ') {
+				bigSymbol=tbl_alphabet[findsym(sym)];
+				vram_adr(pos);
+				vram_write(bigSymbol, 2);
+				vram_adr(pos+32);
+				vram_write(bigSymbol+2, 2);
+				pos+=2;
+			}
+			else
+				pos+=1;
+		}
+	}
+
 	ppu_on_all();
 
 };
 
+
+const unsigned char infoPage1[8][16] = {
+	"I WILL LOOK     ",
+	"FORWARD TO MEET ",
+	"YOU AT THE PARTY",
+	"AND WOULD       ",
+	"APPRECIATE IF   ",
+	"YOU COULD       ",
+	"CONFIRM YOUR    ",
+	"PRESENCE        "
+};
+
 void main(void)
 {
-
-
-
-
 	set_vram_buffer();
 	clear_vram_buffer();
 
@@ -861,10 +948,14 @@ void main(void)
 
 	/* part 1 - begin */
 	
-	cnrom_set_bank(TILESET_FIRE_CHUNKS_ZX);
 	bright=4;
 
-	set_vram_buffer();
+/// Testing polygon
+
+	setupBigTextPage(infoPage1[0]);
+	while(1) {};
+
+///
 
 	setup_scene1();
 	music_play(0);
@@ -990,7 +1081,7 @@ void main(void)
 	pal_bright(8);
 	clear_vram_buffer();
 	oam_clear();
-	setupBigTextPage();
+	setupBigTextPage(infoPage1[0]);
 	scroll(0,0);
 	pal_bright(4);
 	ppu_wait_nmi();
@@ -1010,7 +1101,7 @@ void main(void)
 		muspos = get_mus_pos();
 	}
 
-	musCheckpoint+=0x0814 + MUS_PATTERN*2 + MUS_PATTERN;
+	musCheckpoint=muspos;
 
 	// 1:12 - Rhombus
 	oam_clear();
@@ -1018,18 +1109,37 @@ void main(void)
 	ppu_wait_nmi();
 
 	setupRhombusFX();
-	while(muspos < (musCheckpoint + MUS_BAR)){
+	while(muspos < (musCheckpoint + MUS_PATTERN)){
 		if (!(gfrm&3)) fxPaletteRoll();
 		++gfrm;
 		ppu_wait_nmi();
+		muspos = get_mus_pos();
 	};
+
+	/// ZX
+
+	ppu_off();
+	setup_scene1();
+
+	pal_col(5,0x30);
+	pal_col(6,0x0f);
+	pal_col(7,0x06);
+
+	pal_col(9,0x0f);
+	pal_col(10,0x0f);
+
+	ppu_on_all();
+
+	zx_loading(musCheckpoint + MUS_PATTERN+76, 0x2c, 0x05, 4, 0);
 
 	/* blink */
 	pal_bright(8);
 	setupGridFX();
 	pal_bright(4);
 
-	while(muspos < (0x1114 + MUS_PATTERN + MUS_PATTERN)){
+	musCheckpoint=muspos;
+
+	while(muspos < (musCheckpoint + MUS_PATTERN)){
 		fxScroll32((unsigned char*) restoreBGscrollGrid);
 		muspos = get_mus_pos();
 	}
@@ -1037,41 +1147,94 @@ void main(void)
 	pal_bright(8);
 	clear_vram_buffer();
 	oam_clear();
-	setupBigTextPage();
+	setupBigTextPage(infoPage1[0]);
 	scroll(0,0);
 	pal_bright(4);
 	ppu_wait_nmi();
 
-	while(muspos < (0x0814 + MUS_PATTERN + MUS_PATTERN + MUS_PATTERN)){
+	while(muspos < (musCheckpoint + MUS_PATTERN + MUS_PATTERN)){
 //		fxScroll32((unsigned char*) restoreBGscrollSquares);
 		ppu_wait_nmi();
 		muspos = get_mus_pos();
 	}
 
 	pal_bright(8);
-	setupSquaresFX();
+	setupGridFX();
 	pal_bright(4);
 
-	while(muspos < (0x0814 + MUS_PATTERN + MUS_PATTERN*3)){
+	while(muspos < (musCheckpoint + MUS_PATTERN + MUS_PATTERN + MUS_PATTERN)){
 		fxScroll32((unsigned char*) restoreBGscrollGrid);
 		muspos = get_mus_pos();
 	}
 
-	oam_clear();
+
 	clear_vram_buffer();
+	oam_clear();
+	setupInvadersFX();
+	
+	while(muspos < (musCheckpoint + MUS_PATTERN*4)){
+		fxScroll96();
+		ppu_wait_nmi();
+		muspos = get_mus_pos();
+	}
+
+	musCheckpoint=muspos;
 	ppu_wait_nmi();
 
+	setupArrowsFX();
 
-/*
+	while(muspos < (musCheckpoint + MUS_PATTERN)) {
+		pal_bright(4);
+		scroll(scrollFXpos*64,0);
+		ppu_wait_nmi();
+		++gfrm;
+		if (!(gfrm&1)) ++scrollFXpos;
+		if (scrollFXpos>15) scrollFXpos=0;
+		muspos = get_mus_pos();
+	};
+
+
+	pal_bright(8);
+	clear_vram_buffer();
+	oam_clear();
+	setupBigTextPage(infoPage1[0]);
+	scroll(0,0);
+	pal_bright(4);
+	ppu_wait_nmi();
+
+	while(muspos < (musCheckpoint + MUS_PATTERN + MUS_PATTERN)) {
+		ppu_wait_nmi();
+		muspos = get_mus_pos();
+	}
+
+	setupArrowsFX();
+
+	// Обрывок следующего паттерна + "зависон" консоли = 64*3 кадра. "дёргаем" на 0х22*3 и на 0х36*3 кадре
+	// остаток "зависона" = 0x1f*3 кадра. глитчи на 0, 0х08*3, 0х10*3 кадрах
+
+	while(muspos < (musCheckpoint + MUS_PATTERN + MUS_PATTERN + MUS_PATTERN)) {
+		pal_bright(4);
+		scroll(scrollFXpos*64,0);
+		ppu_wait_nmi();
+		++gfrm;
+		if (!(gfrm&1)) ++scrollFXpos;
+		if (scrollFXpos>15) scrollFXpos=0;
+		muspos = get_mus_pos();
+	};
+
+
+	oam_clear();
+	clear_vram_buffer();
+
 	// fx plasm 
 	fxPlasmSetup();
 	pal_bright(4);
-	while(muspos < (0x0814 + 192*4)){
+	while(1){
 		fxPlasm();
 		muspos = get_mus_pos();
 	}
 	set_nmi_user_call_off();
-	
+/*	
 	// blink
 	pal_bright(8);
 	ppu_wait_nmi();
@@ -1091,17 +1254,7 @@ void main(void)
 	ppu_wait_nmi();
 	
 	// fx arrows
-	setupArrowsFX();
-	while (1) {
-		pal_bright(4);
-		scroll(scrollFXpos*64,0);
-		ppu_wait_nmi();
-		++gfrm;
-		if (!(gfrm&1)) ++scrollFXpos;
-		if (scrollFXpos>15) scrollFXpos=0;
-	};
-	
-	
+		
 	fxPlasmSetup();
 	while(get_mus_pos() < 192){
 		fxPlasm();

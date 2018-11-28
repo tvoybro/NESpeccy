@@ -1,6 +1,6 @@
 @cd /d "%~dp0"
 
-@set name="main"
+@set name="nespeccy"
 
 @echo off
 

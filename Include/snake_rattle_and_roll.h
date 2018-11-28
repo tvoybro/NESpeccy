@@ -214,7 +214,7 @@ const unsigned char char_quotation[2*2]={
 };
 
 
-
+/*
 const unsigned char tbl_ascii[44]={
 	'0', '1', '2', '3', '4', '5', '6', '7', '8',
 	'9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I',
@@ -223,6 +223,9 @@ const unsigned char tbl_ascii[44]={
 	'!', '?', ':', '"',
 	0x0ff
 };
+*/
+
+const unsigned char tbl_ascii[]={ "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ.,-!?:'@" };
 
 const unsigned char const* tbl_alphabet[43]={
 char_0, char_1, char_2, char_3, char_4, char_5, char_6, char_7, char_8, char_9,
