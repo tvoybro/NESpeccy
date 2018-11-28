@@ -39,6 +39,8 @@
 
 #pragma bss-name (push,"ZEROPAGE")
 
+unsigned char bigTextX, bigTextY;
+
 unsigned char pal_i, fr, i, spr, p, sq_scroll_pos, pause, imsb, scrollRow;
 unsigned int scrollPage;
 unsigned char from_x, tick;
@@ -72,6 +74,18 @@ unsigned char scrollFXpos = 0;
 
 // Данные здесь:
 #include "Include\consttables.h"
+
+const unsigned int sineTableAtoB[48]={
+0, 0, 1, 2, 4, 7, 10, 13, 17, 22, 27, 33, 39, 45, 52, 59, 
+66, 74, 81, 90, 98, 106, 115, 123, 132, 140, 149, 157, 165, 174, 181, 
+189, 196, 203, 210, 216, 222, 228, 233, 238, 242, 245, 248, 251, 253, 254, 
+255, 255
+};
+
+const unsigned int sineTableTextBobbling[16]={
+	0, 0, 1, 2, 4, 5, 6, 7, 8, 7, 6, 5, 3, 2, 1, 0
+};
+
 
 void cnrom_set_bank(unsigned char bank)
 {
@@ -710,6 +724,7 @@ void setupSquaresFX(void) {
 void setupInvadersFX(void) {
 	ppu_off();
 	cnrom_set_bank(TILESET_CHUNKS_FONT_INVADERS);
+	bank_spr(0);
 	vram_adr(NAMETABLE_A);
 	vram_unrle(nam_InvadersA);
 	vram_adr(NAMETABLE_B);
@@ -844,11 +859,11 @@ void fxScroll32(unsigned char* restore_array) {
 		spr=oam_meta_spr(12*8,16*8-1,spr,logo_title);
 };
 
-void fxScroll96(void) {
+void fxInvaders(void) {
 	scroll(sq_scroll_pos*96, 0);
 
 	ppu_wait_nmi();
-	if (!(fr&1)) {
+	if (!(fr&7)) {
 		++sq_scroll_pos;
 		++from_x;
 	}
@@ -894,13 +909,15 @@ unsigned char x, y, sym;
 unsigned int pos;
 const unsigned char *bigSymbol;
 
-	cnrom_set_bank(TILESET_BIG_FONT_RHOMBUS);
 	ppu_off();
+	cnrom_set_bank(TILESET_BIG_FONT_RHOMBUS);
+	bank_spr(0);
 	vram_adr(NAMETABLE_A);
 	vram_unrle(nam_BigText);
 	vram_adr(NAMETABLE_B);
 	vram_unrle(nam_BigText);
 	pal_bg(pal_bigText);
+	pal_spr(pal_bigText);
 //	pal_spr(pal_scrollerFX);
 
 	for (y=0;y<8;++y) {
@@ -919,13 +936,47 @@ const unsigned char *bigSymbol;
 				pos+=1;
 		}
 	}
-
+	scroll(0,0);
+	oam_spr(0,3*8,0x8c,3,0);
+	bigTextX=0; 
 	ppu_on_all();
 
 };
 
+void fxBigPage(void) {
+	scroll(0,0);
+	ppu_wait_nmi();
+	// Пичаль беда split не умеет скроллить Y (см. neslib.h)
+	split(sineTableAtoB[bigTextX],sineTableTextBobbling[bigTextY]);
+	if (bigTextX<47) ++bigTextX;
+	// Но функционал оставим
+	++bigTextY;
+	if (bigTextY>15) bigTextY=0;
+}
 
 const unsigned char infoPage1[8][16] = {
+	"I WILL LOOK     ",
+	"FORWARD TO MEET ",
+	"YOU AT THE PARTY",
+	"AND WOULD       ",
+	"APPRECIATE IF   ",
+	"YOU COULD       ",
+	"CONFIRM YOUR    ",
+	"PRESENCE        "
+};
+
+const unsigned char infoPage2[8][16] = {
+	"I WILL LOOK     ",
+	"FORWARD TO MEET ",
+	"YOU AT THE PARTY",
+	"AND WOULD       ",
+	"APPRECIATE IF   ",
+	"YOU COULD       ",
+	"CONFIRM YOUR    ",
+	"PRESENCE        "
+};
+
+const unsigned char infoPage3[8][16] = {
 	"I WILL LOOK     ",
 	"FORWARD TO MEET ",
 	"YOU AT THE PARTY",
@@ -949,13 +1000,6 @@ void main(void)
 	/* part 1 - begin */
 	
 	bright=4;
-
-/// Testing polygon
-
-	setupBigTextPage(infoPage1[0]);
-	while(1) {};
-
-///
 
 	setup_scene1();
 	music_play(0);
@@ -1071,6 +1115,7 @@ void main(void)
 	/* blink */
 	pal_bright(8);
 	setupSquaresFX();
+	ppu_wait_nmi();
 	pal_bright(4);
 
 	while(muspos < (0x0814 + MUS_BAR*3)){
@@ -1081,14 +1126,12 @@ void main(void)
 	pal_bright(8);
 	clear_vram_buffer();
 	oam_clear();
-	setupBigTextPage(infoPage1[0]);
-	scroll(0,0);
+	setupBigTextPage(*infoPage1);
 	pal_bright(4);
 	ppu_wait_nmi();
 
 	while(muspos < (0x0814 + MUS_BAR*3+MUS_BAR*5)){
-//		fxScroll32((unsigned char*) restoreBGscrollSquares);
-		ppu_wait_nmi();
+		fxBigPage();
 		muspos = get_mus_pos();
 	}
 
@@ -1147,14 +1190,13 @@ void main(void)
 	pal_bright(8);
 	clear_vram_buffer();
 	oam_clear();
-	setupBigTextPage(infoPage1[0]);
+	setupBigTextPage(*infoPage1);
 	scroll(0,0);
 	pal_bright(4);
 	ppu_wait_nmi();
 
 	while(muspos < (musCheckpoint + MUS_PATTERN + MUS_PATTERN)){
-//		fxScroll32((unsigned char*) restoreBGscrollSquares);
-		ppu_wait_nmi();
+		fxBigPage();
 		muspos = get_mus_pos();
 	}
 
@@ -1173,8 +1215,7 @@ void main(void)
 	setupInvadersFX();
 	
 	while(muspos < (musCheckpoint + MUS_PATTERN*4)){
-		fxScroll96();
-		ppu_wait_nmi();
+		fxInvaders();
 		muspos = get_mus_pos();
 	}
 
@@ -1197,7 +1238,7 @@ void main(void)
 	pal_bright(8);
 	clear_vram_buffer();
 	oam_clear();
-	setupBigTextPage(infoPage1[0]);
+	setupBigTextPage(*infoPage1);
 	scroll(0,0);
 	pal_bright(4);
 	ppu_wait_nmi();
