@@ -475,6 +475,26 @@ const unsigned char twisterText[] = {
 	3, 3*32+20,
 	6,
 	0xDE, 0xF1, 0xDC, 0xDE, 0xEC, 0xEC,
+
+	0 * twTextDelay1, twTextDelay2 - 3 * twTextDelay1,
+	0, 3*32+4,
+	6,
+	0xDE, 0xF1, 0xDC, 0xDE, 0xEC, 0xEC,
+	
+	1 * twTextDelay1, twTextDelay2 - 2 * twTextDelay1,
+	1, 3*32+20,
+	6,
+	0xDE, 0xF1, 0xDC, 0xDE, 0xEC, 0xEC,
+	
+	2 * twTextDelay1, twTextDelay2 - 1 * twTextDelay1,
+	2, 3*32+4,
+	6,
+	0xDE, 0xF1, 0xDC, 0xDE, 0xEC, 0xEC,
+	
+	3 * twTextDelay1, twTextDelay2 - 0 * twTextDelay1,
+	3, 3*32+20,
+	6,
+	0xDE, 0xF1, 0xDC, 0xDE, 0xEC, 0xEC,
 	
     //-------------------------
     
@@ -1148,7 +1168,12 @@ void fxScroll32(unsigned char* restore_array) {
 
 		scroll(sq_scroll_pos<<5, 0);
 
+		spr=0;
+		spr=oam_meta_spr(12*8,12*8-1,spr,logo_bottom);
+		spr=oam_meta_spr(12*8,16*8-1,spr,logo_title);
+
 		ppu_wait_nmi();
+
 		if (!(fr&1)) {
 			++sq_scroll_pos;
 			++from_x;
@@ -1162,9 +1187,6 @@ void fxScroll32(unsigned char* restore_array) {
 
 		if (from_x>15) sq_scroll_pos=from_x=0;
 		
-		spr=0;
-		spr=oam_meta_spr(12*8,12*8-1,spr,logo_bottom);
-		spr=oam_meta_spr(12*8,16*8-1,spr,logo_title);
 };
 
 void showPlatforms(void) {
@@ -1252,7 +1274,10 @@ const unsigned char *bigSymbol;
 				vram_write(bigSymbol, 2);
 				vram_adr(pos+32);
 				vram_write(bigSymbol+2, 2);
-				pos+=2;
+				if (sym=='.' || sym==',' || sym=='-' || sym=='!' || sym==':' || sym=='"')
+					pos+=1;
+				else
+					pos+=2;
 			}
 			else
 				pos+=1;
@@ -1281,39 +1306,39 @@ void fxBigPage(void) {
 }
 
 const unsigned char infoPage1[9][16] = {
-	"I WILL LOOK     ",
-	"FORWARD TO MEET ",
-	"YOU AT THE PARTY",
-	"AND WOULD       ",
-	"APPRECIATE IF   ",
-	"YOU COULD       ",
-	"CONFIRM YOUR    ",
-	"PRESENCE        ",
-	"PRESENCE   999  "
+	"TRUE DEMOSCENE  ",
+	"WEEKEND IN      ",
+	"KAZAN, RUSSIA.  ",
+	"MULTIPLATFORM   ",
+	"DEMOPARTY AT    ",
+	"25-27 OCTOBER   ",
+	"   CAFE 2019    ",
+	"NEWSKOOL AND    ", 
+	"OLDSKOOL.       "
 };
 
 const unsigned char infoPage2[9][16] = {
-	"I WILL LOOK     ",
-	"FORWARD TO MEET ",
-	"YOU AT THE PARTY",
-	"AND WOULD       ",
-	"APPRECIATE IF   ",
-	"YOU COULD       ",
-	"CONFIRM YOUR    ",
-	"PRESENCE        ",
-	"PRESENCE   999  "
+	"UP TO 400 PPL!  ",
+	"BBQ ZONE, HOME  ",
+	"FOOD AND DRINKS,",
+	"VIP LOUNGE FOR  ",
+	"SCENERS WITH    ", 
+	"PRODS, RETRO-   ", 
+	"MUSEUM, CALM    ",
+	"FOREST OUTDOOR, ",
+	"CHEAP HOTEL.    "
 };
 
 const unsigned char infoPage3[9][16] = {
-	"I WILL LOOK     ",
-	"FORWARD TO MEET ",
-	"YOU AT THE PARTY",
-	"AND WOULD       ",
-	"APPRECIATE IF   ",
-	"YOU COULD       ",
-	"CONFIRM YOUR    ",
-	"PRESENCE        ",
-	"PRESENCE   999  "
+	"WARM, FRIENDLY  ",
+	"AND WELCOMING   ",
+	"ATHMOSPHERE,    ", 
+	"GREAT PRIZES,   ",
+	"SPECIAL GUESTS: ",
+	"SCENE STARS.    ",
+	"NON-STOP PARTY! ", 
+	"REMOTE ENTRIES  ",
+	"ARE ALLOWED!    "
 };
 
 void chr_to_nametable(unsigned int nametable, unsigned char *src) {
@@ -1564,7 +1589,7 @@ void main(void)
 	pal_bright(8);
 	clear_vram_buffer();
 	oam_clear();
-	setupBigTextPage(*infoPage1);
+	setupBigTextPage(*infoPage2);
 	scroll(0,0);
 	pal_bright(4);
 	ppu_wait_nmi();
@@ -1624,7 +1649,7 @@ void main(void)
 	pal_bright(8);
 	clear_vram_buffer();
 	oam_clear();
-	setupBigTextPage(*infoPage1);
+	setupBigTextPage(*infoPage3);
 	scroll(0,0);
 	pal_bright(4);
 	ppu_wait_nmi();
