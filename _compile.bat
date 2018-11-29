@@ -13,7 +13,7 @@ cc65\bin\cc65 -Oi %name%.c --add-source
 cc65\bin\ca65 crt0.s
 cc65\bin\ca65 %name%.s
 
-cc65\bin\ld65 -C cnrom_horz.cfg -o %name%.nes crt0.o %name%.o runtime.lib
+cc65\bin\ld65 -C cnrom_horz.cfg -o %name%.nes crt0.o %name%.o runtime.lib -Ln labels.txt
 
 
 %name%.nes

@@ -2,8 +2,7 @@
 ;with improvements by VEG
 ;Feel free to do anything you want with this code, consider it Public Domain
 
-NMI_USER_FASTMOVE_ADR = $0352;
-
+NMI_USER_FASTMOVE_ADR = $0356
 
 	.export _set_nmi_user_call_on, _set_nmi_user_call_off, _set_nmi_user_vram_adr, _set_nmi_user_vram_lines_qty
 	.export _memfill32
