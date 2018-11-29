@@ -27,7 +27,7 @@
 #include "Include\nam_scroll_gridA.h"
 #include "Include\nam_scroll_gridB.h"
 
-#include "Include\nam_paletteFX.h"
+// 1026#include "Include\nam_paletteFX.h"
 
 #include "Include\nam_BigText.h"
 
@@ -788,6 +788,17 @@ void fxPlasm(void) {
 }
 //----------------------------------------------------------------------
 
+void chr_to_nametable(unsigned int nametable, unsigned char *src) {
+unsigned char p;
+	for (p=0;p<4;++p) {
+		/// vram read dst, size
+		vram_adr(src+(p*256));
+		vram_read(buffa, 256);
+		vram_adr(nametable+(p*256));
+		vram_write(buffa, 256);
+	}
+}
+
 void fxRotorSetup(void) {
 	ppu_off();
     
@@ -1022,9 +1033,8 @@ void setup_scene_fire(void) {
 
 void setupRhombusFX(void) {
 	ppu_off();
-	vram_adr(NAMETABLE_A);
-	vram_unrle(nam_paletteFX);
 	cnrom_set_bank(TILESET_BIG_FONT_RHOMBUS);
+	chr_to_nametable(NAMETABLE_A, nam_rhombus);
 	pal_col(1,0x01);
 	pal_col(2,0x19);
 	pal_col(3,0x28);
@@ -1372,17 +1382,7 @@ const unsigned char infoPage3[9][16] = {
 	"ARE ALLOWED!    "
 };
 
-void chr_to_nametable(unsigned int nametable, unsigned char *src) {
-unsigned char p;
-	for (p=0;p<4;++p) {
-		/// vram read dst, size
-		vram_adr(src+(p*256));
-		vram_read(buffa, 256);
-		vram_adr(nametable+(p*256));
-		vram_write(buffa, 256);
-	}
-}
-
+/*
 void setupArrowsFX(void) {
 	ppu_off();
 	cnrom_set_bank(TILESET_BIG_FONT_RHOMBUS);
@@ -1398,19 +1398,13 @@ void setupArrowsFX(void) {
 	cnrom_set_bank(TILESET_SCROLLER_FX);
 	ppu_on_all();
 }
+*/
 
 void main(void)
 {
 	set_vram_buffer();
 	clear_vram_buffer();
-	
-	fxRotorSetup();
-	while(1){
-		fxRotor();
-		muspos = get_mus_pos();
-	}
-	
-	
+		
 /*
 	setupArrowsFX();
 	while(1) {};
@@ -1790,6 +1784,7 @@ void main(void)
 		fxRotor();
 		muspos = get_mus_pos();
 	}
+
 	set_nmi_user_call_off();
 	
 	scroll(0,0); ppu_wait_nmi();
