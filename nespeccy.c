@@ -1347,10 +1347,10 @@ void main(void)
 {
 	set_vram_buffer();
 	clear_vram_buffer();
-
+/*
 	setupArrowsFX();
 	while(1) {};
-
+*/
 
 /*
 	// fx twister
@@ -1695,13 +1695,9 @@ void main(void)
 		muspos = get_mus_pos();
 	}
 
-	pal_bright(8);
-	ppu_wait_nmi();
-
+	pal_bright(8); ppu_wait_nmi();
 	fxPlasmSetup();
-
-	ppu_wait_nmi();
-	pal_bright(4);
+	pal_bright(4); ppu_wait_nmi();
 
 	musCheckpoint=muspos;
 
@@ -1710,26 +1706,21 @@ void main(void)
 		fxPlasm();
 		muspos = get_mus_pos();
 	}
-
 	set_nmi_user_call_off();
 
-	pal_bright(8);
-	ppu_wait_nmi();
-
+	pal_bright(8); ppu_wait_nmi();
 	fxTwisterSetup();
-
-	ppu_wait_nmi();
-	pal_bright(4);
-	
+	pal_bright(4); ppu_wait_nmi();
 
 	// fx twister
-	pal_bright(4);
 	while(muspos < (musCheckpoint + MUS_PATTERN*2)){
 		fxTwister();
 		muspos = get_mus_pos();
 	}
 
 	set_nmi_user_call_off();
+	
+	scroll(0,0); ppu_wait_nmi();
 
 	fxSetupFinalScreen();
 
