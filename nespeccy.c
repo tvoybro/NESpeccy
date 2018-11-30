@@ -73,7 +73,7 @@ unsigned char colorAdd = 0;
 unsigned char xx = 0;
 unsigned char yy = 0;
 unsigned char xy = 0;
-unsigned buffAdr = 0;
+unsigned char buffAdr = 0;
 unsigned val = 0;
 
 unsigned char palRoll = 0;
@@ -864,7 +864,8 @@ void fxRotorSetup(void) {
 	fxFrame = 0;
 }
 
-#define rotorLines 5
+#define rotorLines 4
+#define rotorSz rotorLines*32
 unsigned char y, x;
 unsigned int tx, ty;
 unsigned int tdx, tdy, stx, sty;
@@ -877,7 +878,7 @@ void fxRotorFrame() {
 	tdx = 4*(twisterSin[xya] - 16);
 	tdy = 4*(twisterSin[(xya + 64) & 255] - 24);
 
-	for (y = rotorLines; y > 0; --y) {
+	while (buffAdr < rotorSz) {
 		stx = tx;
 		sty = ty;
 		for (x = 32; x > 0; --x) {
@@ -892,9 +893,8 @@ void fxRotorFrame() {
 	}
 }
 
-void showPlatforms(void) {
-unsigned char i;
 unsigned char objPos, objY, objX, objTimer, objFrame, objID;
+void showPlatforms(void) {
 	for (i=0;i<4;++i)
 	{
 		objPos=i*5;
@@ -927,22 +927,24 @@ void fxRotor(void) {
 	
 	tx = 128*twisterSin[xa];
 	ty = 64*twisterSin[ya];
-	
-	for (frm = 0; frm < 5; frm++) {
+
+	for (frm = 0; frm < 6; frm++) {
         set_nmi_user_call_on();
         set_nmi_user_vram_lines_qty(rotorLines);
 		if (scrSwap == 0) {
 			scroll(0,0);
 			fxRotorFrame();
-//			gray_line();
+			//gray_line();
+		spr=0;	
+		showPlatforms();
             set_nmi_user_vram_adr(NAMETABLE_B + 96 + frm*32*rotorLines);
-			spr=0;	
-			showPlatforms();
 			ppu_wait_nmi();
 		} else {
             scroll(256,0);
 			fxRotorFrame();
-//			gray_line();
+			//gray_line();
+		spr=0;	
+		showPlatforms();
             set_nmi_user_vram_adr(NAMETABLE_A + 96 + frm*32*rotorLines);
 			ppu_wait_nmi();
 		}
@@ -1438,6 +1440,7 @@ void setupArrowsFX(void) {
 
 void main(void)
 {
+	
 	set_vram_buffer();
 	clear_vram_buffer();
 
