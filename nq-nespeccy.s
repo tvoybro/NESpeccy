@@ -259,15 +259,15 @@ nq_nespeccy_music_data:
 	.byte $80,$5c,$5e,$87,$b2,$62,$81
 @ref19:
 	.byte $82,$5e,$85,$b0,$5f,$01,$5f,$01,$80,$51,$b2,$5f,$b0,$59,$82,$51
-	.byte $b0,$59,$82,$59,$01,$b2,$59,$80,$55,$01,$b0,$59,$82,$55,$b0,$59
-	.byte $01,$80,$51,$b2,$59,$b0,$55,$82,$51,$80,$52,$54,$83,$01,$b2,$55
-	.byte $80,$4e,$50,$83,$01,$82,$54,$81
+	.byte $b0,$59,$82,$59,$01,$b2,$59,$80,$55,$82,$59,$b0,$59,$82,$55,$b0
+	.byte $59,$01,$80,$51,$b2,$59,$b0,$55,$82,$51,$80,$52,$54,$83,$01,$b2
+	.byte $55,$80,$4e,$50,$83,$01,$82,$54,$81
 @ref20:
 	.byte $50,$85,$b0,$59,$01,$80,$59,$01,$55,$b2,$59,$80,$58,$82,$54,$80
 	.byte $59,$01,$55,$82,$59,$80,$5e,$82,$54,$b0,$5f,$82,$55,$80,$59,$b2
 	.byte $5f,$80,$62,$82,$58,$b0,$63,$80,$5c,$5e,$83,$68,$82,$5e,$b0,$69
-	.byte $80,$60,$62,$83,$6c,$68,$62,$5e,$68,$62,$5e,$58,$b0,$62,$82,$5e
-	.byte $80,$58,$82,$50
+	.byte $80,$60,$62,$83,$6c,$68,$62,$5e,$68,$62,$82,$5e,$58,$62,$5e,$58
+	.byte $80,$50
 @ref21:
 	.byte $00,$f9,$83
 @ref22:
@@ -277,7 +277,7 @@ nq_nespeccy_music_data:
 @ref24:
 	.byte $00,$f9,$83
 @ref25:
-	.byte $80,$5a,$a5,$82,$5b,$50,$81
+	.byte $5a,$a5,$82,$5b,$50,$81
 	.byte $ff,$19
 	.word @ref9
 	.byte $ff,$1b
@@ -361,9 +361,9 @@ nq_nespeccy_music_data:
 	.byte $ff,$2c
 	.word @ref20
 @ref60:
-	.byte $80,$52,$54,$87,$82,$55,$b0,$43,$4d,$51,$55,$4d,$b2,$51,$80,$5b
-	.byte $b2,$55,$80,$56,$58,$83,$5b,$82,$59,$80,$52,$54,$87,$82,$5b,$b0
-	.byte $43,$4d,$51,$55,$80,$3d,$43,$4d,$51,$b0,$35,$3d,$43,$4c,$81
+	.byte $52,$54,$87,$82,$55,$b0,$43,$4d,$51,$55,$4d,$b2,$51,$80,$5b,$b2
+	.byte $55,$80,$56,$58,$83,$5b,$82,$59,$80,$52,$54,$87,$82,$5b,$b0,$43
+	.byte $4d,$51,$55,$80,$3d,$43,$4d,$51,$b0,$35,$3d,$43,$4c,$81
 @ref61:
 	.byte $80,$52,$54,$87,$82,$55,$b0,$43,$4d,$51,$55,$b2,$4d,$51,$80,$5b
 	.byte $82,$55,$80,$56,$58,$83,$5b,$82,$59,$80,$58,$5a,$87,$82,$5b,$b0
@@ -414,7 +414,7 @@ nq_nespeccy_music_data:
 @ref77:
 	.byte $8e,$3c,$95,$3c,$a5,$3c,$95,$3c,$a5
 @ref78:
-	.byte $92,$38,$95,$38,$a5,$38,$95,$38,$95,$38,$8d
+	.byte $92,$38,$95,$38,$a5,$38,$95,$38,$95,$90,$38,$8d
 	.byte $ff,$08
 	.word @ref75
 	.byte $ff,$0a
@@ -499,8 +499,8 @@ nq_nespeccy_music_data:
 	.word @ref76
 	.byte $ff,$08
 	.word @ref77
-@ref121:
-	.byte $92,$38,$95,$38,$a5,$38,$95,$38,$95,$90,$38,$8d
+	.byte $ff,$0a
+	.word @ref78
 	.byte $ff,$08
 	.word @ref75
 	.byte $ff,$0a
@@ -574,16 +574,25 @@ nq_nespeccy_music_data:
 	.word @ref142
 	.byte $ff,$21
 	.word @ref143
-	.byte $ff,$21
-	.word @ref144
-	.byte $ff,$21
-	.word @ref141
+@ref148:
+	.byte $9c,$41,$80,$1b,$33,$01,$a0,$49,$80,$33,$9c,$41,$80,$25,$9c,$41
+	.byte $80,$25,$33,$01,$a0,$49,$80,$25,$21,$29,$9c,$41,$80,$1b,$33,$9c
+	.byte $41,$a0,$49,$80,$33,$9c,$41,$80,$25,$a0,$49,$49,$80,$21,$a4,$49
+	.byte $a0,$49,$80,$25,$94,$20,$85
+@ref149:
+	.byte $9c,$41,$80,$1d,$1d,$9c,$41,$a0,$49,$80,$2b,$9c,$41,$80,$35,$9c
+	.byte $41,$80,$35,$25,$2b,$a0,$49,$80,$2b,$21,$1d,$9c,$41,$80,$1d,$01
+	.byte $1d,$a0,$49,$80,$2b,$9c,$41,$80,$35,$9c,$41,$80,$35,$25,$2b,$a0
+	.byte $49,$80,$2b,$21,$a4,$48,$81
 	.byte $ff,$21
 	.word @ref142
 	.byte $ff,$21
 	.word @ref143
-	.byte $ff,$21
-	.word @ref144
+@ref152:
+	.byte $9c,$41,$80,$1b,$33,$01,$a0,$49,$80,$33,$9c,$41,$80,$25,$9c,$41
+	.byte $80,$25,$33,$01,$a0,$49,$80,$25,$21,$29,$9c,$41,$80,$1b,$33,$9c
+	.byte $41,$a0,$49,$80,$33,$9c,$41,$80,$25,$9c,$40,$85,$a0,$49,$96,$2a
+	.byte $91
 @ref153:
 	.byte $9c,$41,$80,$1d,$01,$1c,$85,$2b,$9c,$41,$80,$35,$a0,$49,$80,$35
 	.byte $25,$2b,$01,$2b,$21,$1d,$9c,$41,$80,$1d,$01,$1d,$01,$2b,$9c,$41
@@ -598,7 +607,7 @@ nq_nespeccy_music_data:
 	.byte $9c,$41,$80,$1b,$33,$00,$85,$33,$9c,$41,$80,$25,$a0,$49,$80,$25
 	.byte $33,$00,$85,$25,$21,$29,$9c,$41,$80,$1b,$33,$9c,$41,$a0,$49,$80
 	.byte $33,$9c,$41,$80,$25,$a0,$48,$85,$80,$21,$29,$a0,$49,$80,$25,$21
-	.byte $a4,$48,$81
+	.byte $1a,$81
 @ref157:
 	.byte $00,$ad
 	.byte $ff,$21
@@ -607,48 +616,51 @@ nq_nespeccy_music_data:
 	.word @ref142
 	.byte $ff,$21
 	.word @ref143
+@ref161:
+	.byte $9c,$41,$80,$1b,$33,$01,$a0,$49,$80,$33,$9c,$41,$80,$25,$9c,$41
+	.byte $80,$25,$33,$01,$a0,$49,$80,$25,$21,$29,$9c,$41,$80,$1b,$32,$85
+	.byte $9c,$41,$80,$33,$9c,$41,$80,$25,$a0,$48,$85,$96,$32,$91,$a0,$48
+	.byte $81
 	.byte $ff,$21
-	.word @ref144
+	.word @ref149
+	.byte $ff,$21
+	.word @ref142
+	.byte $ff,$21
+	.word @ref143
+	.byte $ff,$20
+	.word @ref148
 	.byte $ff,$21
 	.word @ref141
 	.byte $ff,$21
 	.word @ref142
 	.byte $ff,$21
 	.word @ref143
+	.byte $ff,$1d
+	.word @ref152
+	.byte $ff,$21
+	.word @ref141
+	.byte $ff,$21
+	.word @ref141
 	.byte $ff,$21
 	.word @ref144
+	.byte $ff,$1e
+	.word @ref161
+	.byte $ff,$21
+	.word @ref149
+	.byte $ff,$21
+	.word @ref142
+	.byte $ff,$21
+	.word @ref143
+	.byte $ff,$1d
+	.word @ref152
 	.byte $ff,$21
 	.word @ref141
 	.byte $ff,$21
 	.word @ref142
 	.byte $ff,$21
 	.word @ref143
-	.byte $ff,$21
-	.word @ref144
-	.byte $ff,$21
-	.word @ref141
-	.byte $ff,$21
-	.word @ref141
-	.byte $ff,$21
-	.word @ref144
-	.byte $ff,$21
-	.word @ref144
-	.byte $ff,$21
-	.word @ref141
-	.byte $ff,$21
-	.word @ref142
-	.byte $ff,$21
-	.word @ref143
-	.byte $ff,$21
-	.word @ref144
-	.byte $ff,$21
-	.word @ref141
-	.byte $ff,$21
-	.word @ref142
-	.byte $ff,$21
-	.word @ref143
-	.byte $ff,$21
-	.word @ref144
+	.byte $ff,$20
+	.word @ref148
 @ref182:
 	.byte $9c,$41,$80,$1d,$01,$1d,$a0,$49,$80,$2b,$9c,$41,$80,$35,$9c,$41
 	.byte $80,$35,$25,$2b,$a0,$49,$80,$2b,$21,$1d,$9c,$41,$80,$4c,$a5,$4a
@@ -661,21 +673,18 @@ nq_nespeccy_music_data:
 	.word @ref142
 	.byte $ff,$21
 	.word @ref143
-@ref187:
-	.byte $9c,$41,$80,$1b,$33,$01,$a0,$49,$80,$33,$9c,$41,$80,$25,$9c,$41
-	.byte $80,$25,$33,$01,$a0,$49,$80,$25,$21,$29,$9c,$41,$80,$1b,$33,$9c
-	.byte $41,$a0,$49,$80,$33,$9c,$41,$80,$25,$9c,$40,$85,$a0,$49,$96,$2a
-	.byte $91
+	.byte $ff,$1d
+	.word @ref152
 	.byte $ff,$21
-	.word @ref141
+	.word @ref149
 	.byte $ff,$21
 	.word @ref142
 	.byte $ff,$21
 	.word @ref143
+	.byte $ff,$20
+	.word @ref148
 	.byte $ff,$21
-	.word @ref144
-	.byte $ff,$21
-	.word @ref141
+	.word @ref149
 	.byte $ff,$21
 	.word @ref141
 	.byte $ff,$21
@@ -744,16 +753,20 @@ nq_nespeccy_music_data:
 	.word @ref208
 	.byte $ff,$21
 	.word @ref209
-	.byte $ff,$21
-	.word @ref210
+@ref214:
+	.byte $9e,$18,$85,$98,$1d,$21,$a2,$12,$85,$a8,$1c,$85,$98,$1d,$21,$03
+	.byte $1d,$a2,$14,$85,$98,$1d,$21,$9e,$18,$85,$98,$1d,$21,$a2,$12,$85
+	.byte $a8,$1c,$85,$a2,$15,$15,$98,$03,$a6,$13,$a2,$14,$8d
 	.byte $ff,$21
 	.word @ref207
 	.byte $ff,$21
 	.word @ref208
 	.byte $ff,$21
 	.word @ref209
-	.byte $ff,$21
-	.word @ref210
+@ref218:
+	.byte $9e,$18,$85,$98,$1d,$21,$a2,$12,$85,$a8,$1c,$85,$98,$1d,$21,$03
+	.byte $1d,$a2,$14,$85,$98,$1d,$21,$9e,$18,$85,$98,$1d,$21,$a2,$12,$85
+	.byte $a8,$1c,$85,$9e,$18,$85,$a2,$14,$85,$9a,$1e,$8d
 @ref219:
 	.byte $9e,$18,$85,$98,$1d,$20,$89,$a8,$1c,$85,$a2,$12,$85,$98,$03,$1c
 	.byte $89,$1d,$21,$9e,$18,$85,$98,$1d,$21,$00,$85,$a8,$1c,$85,$a2,$14
@@ -767,57 +780,59 @@ nq_nespeccy_music_data:
 @ref222:
 	.byte $9e,$18,$85,$98,$1d,$20,$89,$a8,$1c,$85,$a2,$14,$85,$98,$03,$1c
 	.byte $89,$1d,$21,$9e,$18,$85,$98,$1d,$21,$a2,$12,$85,$a8,$1c,$85,$a2
-	.byte $14,$85,$98,$03,$1d,$a2,$14,$85,$98,$1d,$a6,$12,$81
+	.byte $14,$85,$98,$03,$1d,$a2,$14,$85,$9a,$02,$85
 @ref223:
-	.byte $00,$9d,$9a,$1e,$8d
+	.byte $00,$9d,$1e,$8d
 	.byte $ff,$21
 	.word @ref207
 	.byte $ff,$21
 	.word @ref208
 	.byte $ff,$21
 	.word @ref209
-	.byte $ff,$21
-	.word @ref210
-	.byte $ff,$21
-	.word @ref207
-	.byte $ff,$21
-	.word @ref208
-	.byte $ff,$21
-	.word @ref209
-	.byte $ff,$21
-	.word @ref210
+@ref227:
+	.byte $9e,$18,$85,$98,$1d,$21,$a2,$12,$85,$a8,$1c,$85,$98,$1d,$21,$03
+	.byte $1d,$a2,$14,$85,$98,$1d,$21,$9e,$18,$85,$98,$1d,$21,$9e,$18,$85
+	.byte $a8,$1c,$85,$a2,$14,$85,$98,$03,$1c,$85,$9a,$1e,$85,$a2,$14,$81
 	.byte $ff,$21
 	.word @ref207
 	.byte $ff,$21
 	.word @ref208
 	.byte $ff,$21
 	.word @ref209
-	.byte $ff,$21
-	.word @ref210
-	.byte $ff,$21
-	.word @ref207
-	.byte $ff,$21
-	.word @ref207
-	.byte $ff,$21
-	.word @ref210
-	.byte $ff,$21
-	.word @ref210
+	.byte $ff,$1e
+	.word @ref214
 	.byte $ff,$21
 	.word @ref207
 	.byte $ff,$21
 	.word @ref208
 	.byte $ff,$21
 	.word @ref209
+	.byte $ff,$1e
+	.word @ref218
+	.byte $ff,$21
+	.word @ref207
+	.byte $ff,$21
+	.word @ref207
 	.byte $ff,$21
 	.word @ref210
+	.byte $ff,$21
+	.word @ref227
 	.byte $ff,$21
 	.word @ref207
 	.byte $ff,$21
 	.word @ref208
 	.byte $ff,$21
 	.word @ref209
+	.byte $ff,$1e
+	.word @ref218
 	.byte $ff,$21
-	.word @ref210
+	.word @ref207
+	.byte $ff,$21
+	.word @ref208
+	.byte $ff,$21
+	.word @ref209
+	.byte $ff,$1e
+	.word @ref214
 @ref248:
 	.byte $9e,$18,$85,$98,$1d,$21,$a2,$12,$85,$a8,$1c,$85,$98,$1d,$21,$03
 	.byte $1d,$a2,$14,$85,$98,$1d,$21,$9e,$19,$80,$1a,$a5,$16,$91
@@ -829,18 +844,16 @@ nq_nespeccy_music_data:
 	.word @ref208
 	.byte $ff,$21
 	.word @ref209
-@ref253:
-	.byte $9e,$18,$85,$98,$1d,$21,$a2,$12,$85,$a8,$1c,$85,$98,$1d,$21,$03
-	.byte $1d,$a2,$14,$85,$98,$1d,$21,$9e,$18,$85,$98,$1d,$21,$a2,$12,$85
-	.byte $a8,$1c,$85,$9e,$18,$85,$a2,$14,$85,$9a,$1e,$8d
+	.byte $ff,$1e
+	.word @ref218
 	.byte $ff,$21
 	.word @ref207
 	.byte $ff,$21
 	.word @ref208
 	.byte $ff,$21
 	.word @ref209
-	.byte $ff,$21
-	.word @ref210
+	.byte $ff,$1e
+	.word @ref214
 	.byte $ff,$21
 	.word @ref207
 	.byte $ff,$21
