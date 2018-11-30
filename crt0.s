@@ -13,7 +13,7 @@ FT_SFX_STREAMS = 4			        ;number of sound effects played at once, 1..4
 .define FT_SFX_ENABLE   1			;undefine to exclude all sound effects code
 
 
-	.export _nam_rhombus, _nam_scrollFX_arrowsB
+	.export _nam_rhombus, _nam_qr_A, _nam_qr_B
     .export _exit,__STARTUP__:absolute=1
 	.import initlib,push0,popa,popax,_main,zerobss,copydata
 
@@ -281,10 +281,13 @@ sounds_data:
 	
 .segment "CHR3"
 	.incbin "NESst\chr_scrollingFX.chr"
-	
+	.incbin "NESst\chr_zxQR.chr"
+
 .segment "CHR4"
 	.incbin "NESst\chr_rhombusBigFont.chr"
+_nam_qr_A:
+	.incbin "Include\nam_QR_pilotoneA.bin"
+_nam_qr_B:
+	.incbin "Include\nam_QR_pilotoneB.bin"
 _nam_rhombus:
 	.incbin "Include\pal_effect_nametable.bin"
-_nam_scrollFX_arrowsB:
-	.incbin "Include\scrollerFX_arrows_P2_2CHR.bin"

@@ -13,7 +13,7 @@
 #include "Include\neslib.h"
 #include "Include\nesdoug.h"
 
-#include "Include\nam_finalScreen_qr.h"
+// #include "Include\nam_finalScreen_qr.h"
 
 #include "Include\nam_invadersA.h"
 #include "Include\nam_invadersB.h"
@@ -52,7 +52,7 @@ unsigned char bigTextX, bigTextY;
 
 unsigned char pal_i, fr, i, spr, sq_scroll_pos, imsb, scrollRow;
 unsigned int scrollPage;
-unsigned char from_x, tick;
+unsigned char from_x;
 
 unsigned int frame, musCheckpoint;
 
@@ -107,6 +107,72 @@ unsigned char buffa[256];
 #define OBJ_ATARI				6
 #define OBJ_BK					7
 #define OBJ_OTHER				8
+
+const unsigned char infoPage1[9][16] = {
+	"TRUE DEMOSCENE  ",
+	"WEEKEND IN      ",
+	"KAZAN, RUSSIA.  ",
+	"MULTIPLATFORM   ",
+	"DEMOPARTY AT    ",
+	"25-27 OCTOBER   ",
+	"CAFE 2019       ",
+	"NEWSKOOL AND    ", 
+	"OLDSKOOL.       "
+};
+
+const unsigned char infoPage2[9][16] = {
+	"UP TO 400 PPL!  ",
+	"BBQ ZONE, HOME  ",
+	"FOOD AND DRINKS,",
+	"VIP LOUNGE FOR  ",
+	"SCENERS WITH    ", 
+	"PRODS, RETRO-   ", 
+	"MUSEUM, CALM    ",
+	"FOREST OUTDOOR, ",
+	"CHEAP HOTEL.    "
+};
+
+const unsigned char infoPage3[9][16] = {
+	"WARM, FRIENDLY  ",
+	"AND WELCOMING   ",
+	"ATHMOSPHERE,    ", 
+	"GREAT PRIZES,   ",
+	"SPECIAL GUESTS: ",
+	"SCENE STARS.    ",
+	"NON-STOP PARTY! ", 
+	"REMOTE ENTRIES  ",
+	"ARE ALLOWED!    "
+};
+
+const unsigned char features1[32*2]={
+	0xa5,0xa6,0x28,0x29,0x46,0x47,0x42,0x43,0xa4,0xa5,0x6a,0x6b,0x2a,0x2b,0x68,0x69,0x2e,0x2f,0x2e,0x2f,0x60,0x61,0xaa,0xa8,0xa9,0xaa,0xa8,0xa9,0xaa,0xa8,0xa9,0x00,
+	0xa6,0xa4,0x38,0x39,0x56,0x57,0x52,0x53,0xa5,0xa6,0x7a,0x7b,0x3a,0x3b,0x78,0x79,0x3e,0x3f,0x3e,0x3f,0x70,0x71,0xa9,0xaa,0xa8,0xa9,0xaa,0xa8,0xa9,0xaa,0xa8,0x00
+};
+
+const unsigned char features2[32*2]={
+	0xa6,0xa4,0x4e,0x4f,0x26,0x27,0x6a,0x6b,0x6a,0x6b,0x46,0x47,0x80,0x81,0x2e,0x2f,0xa9,0xaa,0x26,0x27,0x6e,0x6f,0x2c,0x2d,0x46,0x47,0x62,0x63,0xa9,0xaa,0xa8,0x00,
+	0xa4,0xa5,0x5e,0x5f,0x36,0x37,0x7a,0x7b,0x7a,0x7b,0x56,0x57,0x90,0x91,0x3e,0x3f,0xa8,0xa9,0x36,0x37,0x7e,0x7f,0x3c,0x3d,0x56,0x57,0x72,0x73,0xa8,0xa9,0xaa,0x00
+};
+
+const unsigned char features3[32*2]={
+	0xa4,0xa5,0x6a,0x6b,0x2e,0x2f,0x4e,0x4f,0x46,0x47,0x60,0x61,0x26,0x27,0x68,0x69,0x6a,0x6b,0xaa,0xa8,0xa9,0xaa,0xa8,0xa9,0xaa,0xa8,0xa9,0xaa,0xa8,0xa9,0xaa,0x00,
+	0xa5,0xa6,0x7a,0x7b,0x3e,0x3f,0x5e,0x5f,0x56,0x57,0x70,0x71,0x36,0x37,0x78,0x79,0x7a,0x7b,0xa9,0xaa,0xa8,0xa9,0xaa,0xa8,0xa9,0xaa,0xa8,0xa9,0xaa,0xa8,0xa9,0x00
+};
+
+const unsigned char features4[32*2]={
+	0xb9,0xb8,0x2c,0x2d,0x00,0x49,0x00,0x00,0x80,0x81,0x00,0x49,0xb9,0xb8,0x6a,0x6b,0x2e,0x2f,0x6c,0x6d,0x6a,0x6b,0xb6,0xb5,0xb4,0xb6,0xb5,0xb4,0xb6,0xb5,0xb4,0x00,
+	0xb7,0xb9,0x3c,0x3d,0x58,0x59,0x9b,0x00,0x90,0x91,0x58,0x59,0xb7,0xb9,0x7a,0x7b,0x3e,0x3f,0x7c,0x7d,0x7a,0x7b,0xb5,0xb4,0xb6,0xb5,0xb4,0xb6,0xb5,0xb4,0xb6,0x00
+};
+
+const unsigned char features5[32*2]={
+	0xb7,0xb9,0x62,0x63,0x6e,0x6f,0x6c,0x6d,0x2c,0x2d,0x62,0x63,0x62,0x63,0x68,0x69,0xb5,0xb4,0x26,0x27,0x68,0x69,0x2e,0x2f,0x26,0x27,0xb4,0xb6,0xb5,0xb4,0xb6,0x00,
+	0xb8,0xb7,0x72,0x73,0x7e,0x7f,0x7c,0x7d,0x3c,0x3d,0x72,0x73,0x72,0x73,0x78,0x79,0xb4,0xb6,0x36,0x37,0x78,0x79,0x3e,0x3f,0x36,0x37,0xb6,0xb5,0xb4,0xb6,0xb5,0x00
+};
+
+const unsigned char features6[32*2]={
+	0xb8,0xb7,0x04,0x05,0xb7,0xb9,0x6a,0x6b,0x6c,0x6d,0x2e,0x2f,0x64,0x65,0xb9,0xa7,0x44,0x45,0x62,0x63,0x6c,0x6d,0x2e,0x2f,0x4c,0x00,0xb6,0xb5,0xb4,0xb6,0xb5,0x00,
+	0xb9,0xb8,0x14,0x15,0xb8,0xb7,0x7a,0x7b,0x7c,0x7d,0x3e,0x3f,0x74,0x75,0xb7,0xac,0x54,0x55,0x72,0x73,0x7c,0x7d,0x3e,0x3f,0x5c,0x5d,0xb5,0xb4,0xb6,0xb5,0xb4,0x00
+};
 
 const unsigned char sinTbl1[]={4,6,7,8,8,8,7,6,4,2,1,0,0,0,1,2,4,6,7,8,8,8,7,6,4,2,1,0,0,0,1,2,4,6,7,8,8,8,7,6,4,2,1,0,0,0,1,2,4,6,7,8,8,8,7,6,4,2,1,0,0,0,1,2,4,6,7,8,8,8,7,6,4,2,1,0,0,0,1,2,4,6,7,8,8,8,7,6,4,2,1,0,0,0,1,2,4,6,7,8,8,8,7,6,4,2,1,0,0,0,1,2,4,6,7,8,8,8,7,6,4,2,1,0,0,0,1,2,4,6,7,8,8,8,7,6,4,2,1,0,0,0,1,2,4,6,7,8,8,8,7,6,4,2,1,0,0,0,1,2,4,6,7,8,8,8,7,6,4,2,1,0,0,0,1,2,4,6,7,8,8,8,7,6,4,2,1,0,0,0,1,2,4,6,7,8,8,8,7,6,4,2,1,0,0,0,1,2,4,6,7,8,8,8,7,6,4,2,1,0,0,0,1,2,4,6,7,8,8,8,7,6,4,2,1,0,0,0,1,2,4,6,7,8,8,8,7,6,4,2,1,0,0,0,1,2};
 const unsigned char sinTbl2[]={12,15,18,20,22,23,24,24,23,22,20,17,14,11,9,6,4,2,1,0,0,1,3,5,7,10,13,16,19,21,23,24,24,24,23,21,19,16,13,10,7,5,3,1,0,0,1,2,4,6,9,11,14,17,20,22,23,24,24,23,22,20,18,15,12,9,6,4,2,1,0,0,1,2,4,7,10,13,15,18,20,22,23,24,24,23,21,19,17,14,11,8,5,3,1,0,0,0,1,3,5,8,11,14,17,19,21,23,24,24,23,22,20,18,15,13,10,7,4,2,1,0,0,1,2,4,6,9,12,15,18,20,22,23,24,24,23,22,20,17,14,11,9,6,4,2,1,0,0,1,3,5,7,10,13,16,19,21,23,24,24,24,23,21,19,16,13,10,7,5,3,1,0,0,1,2,4,6,9,11,14,17,20,22,23,24,24,23,22,20,18,15,12,9,6,4,2,1,0,0,1,2,4,7,10,13,15,18,20,22,23,24,24,23,21,19,17,14,11,8,5,3,1,0,0,0,1,3,5,8,11,14,17,19,21,23,24,24,23,22,20,18,15,13,10,7,4,2,1,0,0,1,2,4,6,9};
@@ -191,8 +257,8 @@ unsigned char pad;
 const unsigned char pal_part1[16]={ 0x0f,0x05,0x2c,0x10,0x0f,0x30,0x10,0x06,0x0f,0x0f,0x10,0x0f,0x0f,0x0f,0x0f,0x0f };
 const unsigned char pal_water[16]={ 0x0f,0x0c,0x21,0x1c,0x0f,0x0b,0x1b,0x2b,0x0f,0x2d,0x20,0x10,0x0f,0x3d,0x3d,0x0f };
 const unsigned char pal_scrollerFX[16]={ 0x0f,0x0f,0x03,0x02,0x0f,0x0f,0x28,0x11,0x0f,0x07,0x17,0x27,0x0f,0x0b,0x1b,0x2b };
-const unsigned char pal_bigText[16]={ 0x0f,0x16,0x27,0x0f,0x0f,0x0c,0x1c,0x2c,0x0f,0x0f,0x0f,0x0f,0x0f,0x0f,0x0f,0x0f };
-
+const unsigned char pal_bigText[16]={ 0x0f,0x16,0x27,0x0f,0x0f,0x01,0x1c,0x2c,0x0f,0x05,0x15,0x25,0x0f,0x0f,0x0f,0x0f };
+const unsigned char pal_wewill[16]={ 0x0f,0x01,0x03,0x10,0x0f,0x30,0x05,0x10,0x0f,0x06,0x08,0x27,0x0f,0x27,0x0c,0x02 };
 
 const unsigned char bus_conflict[4]={ 0x00,0x01,0x02,0x03 };
 
@@ -368,6 +434,33 @@ const unsigned char platforms_7_data[]={
 
 };
 
+const unsigned char wewill_1_data[]={
+
+	-28,- 4,0xf0,0,
+	-20,- 4,0xde,1,
+	- 4,- 4,0xf0,2,
+	  4,- 4,0xe2,3,
+	 12,- 4,0xe5,0,
+	 20,- 4,0xe5,1,
+	128
+
+};
+
+const unsigned char wewill_2_data[]={
+
+	-40,- 4,0xf0,1,
+	-32,- 4,0xda,2,
+	-24,- 4,0xe2,3,
+	-16,- 4,0xed,0,
+	  0,- 4,0xd4,1,
+	 16,- 4,0xf2,2,
+	 24,- 4,0xe8,3,
+	 32,- 4,0xee,1,
+	128
+
+};
+
+
 const unsigned char* const platforms_list[]={
 	platforms_0_data,
 	platforms_1_data,
@@ -376,10 +469,10 @@ const unsigned char* const platforms_list[]={
 	platforms_4_data,
 	platforms_5_data,
 	platforms_6_data,
-	platforms_7_data
+	platforms_7_data,
+	wewill_1_data,
+	wewill_2_data
 };
-
-
 
 const unsigned int sineTableAtoB[48]={
 0, 0, 1, 2, 4, 7, 10, 13, 17, 22, 27, 33, 39, 45, 52, 59, 
@@ -549,6 +642,23 @@ const unsigned char twisterText[] = {
 	//BBQ COMPO : )
 	9, txtS('B'),txtS('B'),txtS('Q'),0x00,txtS('C'),txtS('O'),txtS('M'),txtS('P'),txtS('O'),
 	
+	//--------------------------------
+	
+	0, 3*32+16,
+	//AND
+	3, txtS('A'),txtS('N'),txtS('D'),
+
+	1, 3*32+4,
+	//SO
+	2, txtS('S'),txtS('O'),
+
+	2, 3*32+20,
+	//MUCH
+	4, txtS('M'),txtS('U'),txtS('C'),txtS('H'),
+
+	3, 3*32+8,
+	//MORE!
+	5, txtS('M'),txtS('O'),txtS('R'),txtS('E'),0xf6,
     255 //no text code
     
 };
@@ -702,21 +812,42 @@ void fxPlasm(void) {
 void chr_to_nametable(unsigned int nametable, unsigned char *src) {
 unsigned char p;
 	for (p=0;p<4;++p) {
-		/// vram read dst, size
-		vram_adr(src+(p*256));
+		vram_adr((int) src+(p*256));
 		vram_read(buffa, 256);
 		vram_adr(nametable+(p*256));
 		vram_write(buffa, 256);
 	}
 }
 
+/*
+BIG SCREEN
+MASSIVE AUDIO
+SEMINARS
+DJ, VJ SETS
+OUTDOOR AREA
+1 STEP HOTEL
+*/
+
 void fxRotorSetup(void) {
 	ppu_off();
     
-    pal_col(0,0x0d);
-    pal_col(2,0x04);
-    pal_col(1,0x30);
-    pal_col(3,0x27);
+	platforms[0]=9;
+	platforms[1]=128;
+	platforms[2]=120-16;
+
+	platforms[5]=10;
+	platforms[6]=128;
+	platforms[7]=136-16;
+	
+	platforms[10]=0;
+	platforms[15]=0;
+
+	pal_clear();
+
+    pal_col(2,0x01);
+    pal_col(3,0x11);
+//    pal_col(2,0x04);
+//    pal_col(3,0x27);
     
 	vram_adr(NAMETABLE_A);
 	vram_fill(0,1024-24);
@@ -725,6 +856,9 @@ void fxRotorSetup(void) {
 
 	cnrom_set_bank(TILESET_CHUNKS_FONT_INVADERS);
 	bank_bg(0);
+	bank_spr(0);
+
+	pal_spr(pal_Platforms);
 	ppu_on_all();
 
 	fxFrame = 0;
@@ -758,6 +892,37 @@ void fxRotorFrame() {
 	}
 }
 
+void showPlatforms(void) {
+unsigned char i;
+unsigned char objPos, objY, objX, objTimer, objFrame, objID;
+	for (i=0;i<4;++i)
+	{
+		objPos=i*5;
+		objID=platforms[objPos+OBJ_ID];
+
+		if (objID!=OBJ_NULL) {
+
+			objX=platforms[objPos+OBJ_X];
+			objY=platforms[objPos+OBJ_Y];
+			objTimer=platforms[objPos+OBJ_TIMER];
+			objFrame=platforms[objPos+OBJ_FRAME];
+
+			spr=oam_meta_spr(objX, objY+sineTableTextBobbling[platforms[objPos+OBJ_FRAME]], spr, platforms_list[objID-1]);
+
+			if (!objTimer)
+				++objFrame;
+			if (objFrame>31) objFrame=0;
+			++objTimer;
+			objTimer&=1;
+
+			platforms[objPos+OBJ_Y]=objY;
+			platforms[objPos+OBJ_TIMER]=objTimer;
+			platforms[objPos+OBJ_FRAME]=objFrame;
+		}
+	}
+}
+
+
 void fxRotor(void) {
 	
 	tx = 128*twisterSin[xa];
@@ -769,17 +934,20 @@ void fxRotor(void) {
 		if (scrSwap == 0) {
 			scroll(0,0);
 			fxRotorFrame();
-			gray_line();
+//			gray_line();
             set_nmi_user_vram_adr(NAMETABLE_B + 96 + frm*32*rotorLines);
+			spr=0;	
+			showPlatforms();
 			ppu_wait_nmi();
 		} else {
             scroll(256,0);
 			fxRotorFrame();
-			gray_line();
+//			gray_line();
             set_nmi_user_vram_adr(NAMETABLE_A + 96 + frm*32*rotorLines);
 			ppu_wait_nmi();
 		}
 	}
+	
 	xa+=2;
 	ya+=3;
 	xya+=5;
@@ -953,19 +1121,20 @@ void setupRhombusFX(void) {
 	ppu_on_all();
 }
 
-void setupGridFX(void) {
-	cnrom_set_bank(TILESET_SCROLLER_FX);
+void setupGridFX(unsigned char color) {
 	ppu_off();
+	cnrom_set_bank(TILESET_SCROLLER_FX);
 	vram_adr(NAMETABLE_A);
 	vram_unrle(nam_scroll_gridA);
 	vram_adr(NAMETABLE_B);
 	vram_unrle(nam_scroll_gridB);
 	pal_bg(pal_scrollerFX);
 	pal_spr(pal_scrollerFX);
+	pal_col(2,color);
 	ppu_on_all();
 }
 
-void setupSquaresFX(void) {
+void setupSquaresFX(unsigned char color) {
 	ppu_off();
 	cnrom_set_bank(TILESET_SCROLLER_FX);
 	vram_adr(NAMETABLE_A);
@@ -974,6 +1143,7 @@ void setupSquaresFX(void) {
 	vram_unrle(nam_scroll_squaresB);
 	pal_bg(pal_scrollerFX);
 	pal_spr(pal_scrollerFX);
+	pal_col(2,color);
 	ppu_on_all();
 }
 
@@ -1019,12 +1189,17 @@ unsigned char i,tag,byte;
 void fxSetupFinalScreen(void) {
 	ppu_off();
 	cnrom_set_bank(TILESET_BIG_FONT_RHOMBUS);
-	bank_bg(0);
-	vram_adr(NAMETABLE_A);
-	vram_unrle(nam_finalScreen_qr);
-	pal_col(1,0x30);
-	pal_col(2,0x02);
-	pal_col(3,0x21);
+	chr_to_nametable(NAMETABLE_A, nam_qr_A);
+	chr_to_nametable(NAMETABLE_B, nam_qr_B);
+	cnrom_set_bank(TILESET_SCROLLER_FX);
+	bank_bg(1);
+	pal_bg(pal_part1);
+	pal_col(1,0x0f);
+	pal_col(2,0x0f);
+	pal_col(3,0x0f);
+	pal_col(5,0x0f);
+	pal_col(6,0x0f);
+	pal_col(7,0x0f);
 	ppu_on_all();
 }
 
@@ -1141,37 +1316,6 @@ void fxScroll32(unsigned char* restore_array) {
 		
 };
 
-void showPlatforms(void) {
-unsigned char i;
-unsigned char objPos, objY, objX, objTimer, objFrame, objID;
-	for (i=0;i<4;++i)
-	{
-		objPos=i*5;
-		objID=platforms[objPos+OBJ_ID];
-
-		if (objID!=OBJ_NULL) {
-
-			objX=platforms[objPos+OBJ_X];
-			objY=platforms[objPos+OBJ_Y];
-			objTimer=platforms[objPos+OBJ_TIMER];
-			objFrame=platforms[objPos+OBJ_FRAME];
-
-			spr=oam_meta_spr(objX, objY+sineTableTextBobbling[platforms[objPos+OBJ_FRAME]], spr, platforms_list[objID-1]);
-
-			if (!objTimer)
-				++objFrame;
-			if (objFrame>31) objFrame=0;
-			++objTimer;
-			objTimer&=1;
-
-			platforms[objPos+OBJ_Y]=objY;
-			platforms[objPos+OBJ_TIMER]=objTimer;
-			platforms[objPos+OBJ_FRAME]=objFrame;
-		}
-	}
-
-}
-
 void fxInvaders(void) {
 	scroll(sq_scroll_pos*96, 0);
 	ppu_wait_nmi();
@@ -1200,7 +1344,7 @@ unsigned char fs=0;
 	return fs;
 }
 
-void setupBigTextPage(const unsigned char *page) {
+void setupBigTextPage(const unsigned char *page, unsigned char setattr) {
 unsigned char x, y, sym;
 unsigned int pos;
 const unsigned char *bigSymbol;
@@ -1235,6 +1379,10 @@ const unsigned char *bigSymbol;
 				pos+=1;
 		}
 	}
+	if (setattr) {
+		vram_adr(NAMETABLE_B+0x03e8);
+		vram_fill((2 << 6) | (2 << 4) | (2 << 2) | (2 << 0),8);
+	};
 	scroll(0,0);
 	oam_spr(0,8,0x8c,3,0);
 	bigTextX=0;
@@ -1245,6 +1393,19 @@ const unsigned char *bigSymbol;
 
 void fxBigPage(void) {
 	scroll(0,0);
+	++gfrm;
+	gfrm&=7;
+	if (!gfrm) ++fx;
+	fx&=1;
+	if (fx) {
+		pal_col(1,0x16);
+		pal_col(2,0x27);
+	}
+	else
+	{
+		pal_col(2,0x16);
+		pal_col(1,0x27);
+	}
 	ppu_wait_nmi();
 	if (bigTextX<47){
 		split(sineTableAtoB[bigTextX],0);
@@ -1256,42 +1417,6 @@ void fxBigPage(void) {
 	++bigTextY;
 	if (bigTextY>31) bigTextY=0;
 }
-
-const unsigned char infoPage1[9][16] = {
-	"TRUE DEMOSCENE  ",
-	"WEEKEND IN      ",
-	"KAZAN, RUSSIA.  ",
-	"MULTIPLATFORM   ",
-	"DEMOPARTY AT    ",
-	"25-27 OCTOBER   ",
-	"   CAFE 2019    ",
-	"NEWSKOOL AND    ", 
-	"OLDSKOOL.       "
-};
-
-const unsigned char infoPage2[9][16] = {
-	"UP TO 400 PPL!  ",
-	"BBQ ZONE, HOME  ",
-	"FOOD AND DRINKS,",
-	"VIP LOUNGE FOR  ",
-	"SCENERS WITH    ", 
-	"PRODS, RETRO-   ", 
-	"MUSEUM, CALM    ",
-	"FOREST OUTDOOR, ",
-	"CHEAP HOTEL.    "
-};
-
-const unsigned char infoPage3[9][16] = {
-	"WARM, FRIENDLY  ",
-	"AND WELCOMING   ",
-	"ATHMOSPHERE,    ", 
-	"GREAT PRIZES,   ",
-	"SPECIAL GUESTS: ",
-	"SCENE STARS.    ",
-	"NON-STOP PARTY! ", 
-	"REMOTE ENTRIES  ",
-	"ARE ALLOWED!    "
-};
 
 /*
 void setupArrowsFX(void) {
@@ -1316,34 +1441,12 @@ void main(void)
 	set_vram_buffer();
 	clear_vram_buffer();
 
-/*
-	setupArrowsFX();
-	while(1) {};
-*/
-
-/*
-	// fx twister
-	fxTwisterSetup();
-	pal_bright(4);
-	while(gfrm<32){
-		fxTwister();
-		++gfrm;
-	}
-
-//	set_nmi_user_call_off();
-
-	fxSetupFinalScreen();
-
-	while(1) {};
-*/
 	sq_scroll_pos=0;
 
 	p=0;
 
 	/* part 1 - begin */
 	
-	bright=4;
-
 	setup_scene1();
 	music_play(0);
 	scene1_ZXloading();
@@ -1450,14 +1553,14 @@ void main(void)
 
 //	showmuspos();
 		
-	/* pause */
+	// pause
 	while(muspos < 0x0814) {
 		muspos = get_mus_pos();
 	}
 	
-	/* blink */
+	// blink
 	pal_bright(8);
-	setupSquaresFX();
+	setupSquaresFX(0x03);
 	ppu_wait_nmi();
 	pal_bright(4);
 
@@ -1469,7 +1572,9 @@ void main(void)
 	pal_bright(8);
 	clear_vram_buffer();
 	oam_clear();
-	setupBigTextPage(*infoPage1);
+	gfrm=255;
+	setupBigTextPage(*infoPage1, 1);
+	gfrm=0;
 	pal_bright(4);
 	ppu_wait_nmi();
 
@@ -1479,7 +1584,7 @@ void main(void)
 	}
 
 	pal_bright(8);
-	setupSquaresFX();
+	setupSquaresFX(0x04);
 	pal_bright(4);
 
 	while(muspos < (0x0814 + MUS_PATTERN*2 + MUS_PATTERN)){
@@ -1494,13 +1599,23 @@ void main(void)
 	clear_vram_buffer();
 	ppu_wait_nmi();
 
+	fy=0;
 	setupRhombusFX();
 	while(muspos < (musCheckpoint + MUS_PATTERN)){
 		if (!(gfrm&3)) fxPaletteRoll();
 		++gfrm;
+		if (muspos == musCheckpoint || muspos == musCheckpoint+0x20*3 || muspos == musCheckpoint+0x20*3*2 || muspos == musCheckpoint+0x20*3*4 || muspos == musCheckpoint+0x20*3*5 || muspos == musCheckpoint+0x20*3*6)
+		{
+			clear_vram_buffer();
+			multi_vram_buffer_horz(features1+fy*64, 64, NAMETABLE_A+32*4+fy*128);
+			++fy;
+		}
 		ppu_wait_nmi();
 		muspos = get_mus_pos();
 	};
+
+	clear_vram_buffer();
+	ppu_wait_nmi();
 
 	/// ZX
 
@@ -1518,10 +1633,12 @@ void main(void)
 
 	zx_loading(musCheckpoint + MUS_PATTERN+76, 0x2c, 0x05, 4, 0);
 
-	/* blink */
+	musCheckpoint=muspos;
+
 	pal_bright(8);
-	setupGridFX();
+	setupGridFX(0x05);
 	pal_bright(4);
+	ppu_wait_nmi();
 
 	musCheckpoint=muspos;
 
@@ -1533,7 +1650,7 @@ void main(void)
 	pal_bright(8);
 	clear_vram_buffer();
 	oam_clear();
-	setupBigTextPage(*infoPage2);
+	setupBigTextPage(*infoPage2, 0);
 	scroll(0,0);
 	pal_bright(4);
 	ppu_wait_nmi();
@@ -1544,7 +1661,7 @@ void main(void)
 	}
 
 	pal_bright(8);
-	setupGridFX();
+	setupGridFX(0x06);
 	pal_bright(4);
 
 	while(muspos < (musCheckpoint + MUS_PATTERN + MUS_PATTERN + MUS_PATTERN)){
@@ -1582,18 +1699,17 @@ void main(void)
 	musCheckpoint=muspos;
 	ppu_wait_nmi();
 
-	setupSquaresFX();
+	setupSquaresFX(0x0A);
 
 	while(muspos < (musCheckpoint + MUS_PATTERN)){
 		fxScroll32((unsigned char*) restoreBGscrollSquares);
 		muspos = get_mus_pos();
 	}
 
-
 	pal_bright(8);
 	clear_vram_buffer();
 	oam_clear();
-	setupBigTextPage(*infoPage3);
+	setupBigTextPage(*infoPage3, 0);
 	scroll(0,0);
 	pal_bright(4);
 	ppu_wait_nmi();
@@ -1603,13 +1719,7 @@ void main(void)
 		muspos = get_mus_pos();
 	}
 
-	setupSquaresFX();
-
-//	< 0x24*3 - normal effect
-//  < 0x36*3 - glitch 1
-//  < 0x36*3+0x08*3 - gl2
-//  < 0x36*3+0x10*3 - gl3
-//  < 0x36*3+0x1F*3 - gl4
+	setupSquaresFX(0x0B);
 
 	musCheckpoint=muspos;
 	while(muspos < (musCheckpoint + 0x24*3)){
@@ -1655,7 +1765,7 @@ void main(void)
 		ppu_wait_nmi();
 		muspos = get_mus_pos();
 	}
-
+	pal_col(2,0x10);
 	cnrom_set_bank(TILESET_CHUNKS_FONT_INVADERS);
 
 	// Crash 4
@@ -1689,6 +1799,7 @@ void main(void)
 	}
 	set_nmi_user_call_off();
 	
+
 	pal_bright(8); ppu_wait_nmi();
 	fxRotorSetup();
 	pal_bright(4); ppu_wait_nmi();
@@ -1698,12 +1809,39 @@ void main(void)
 	}
 
 	set_nmi_user_call_off();
-	
-	scroll(0,0); ppu_wait_nmi();
 
+	oam_clear();	
+	scroll(0,0); ppu_wait_nmi();
 	fxSetupFinalScreen();
 
-	while(1)
-	{
+	musCheckpoint=muspos=get_mus_pos();
+
+	zx_loading(musCheckpoint+0x14*3, 0x00, 0x0f, 4, 0);
+	zx_loading(musCheckpoint+0x18*3, 0x28, 0x01, 5, 256);
+
+	pal_col(5,0x30);
+	pal_col(6,0x02);
+	pal_col(1,0x0f);
+	pal_col(2,0x0f);
+	ppu_wait_nmi();
+	
+	while(muspos < musCheckpoint+0x23*3) {
+		ppu_wait_nmi();
+		muspos=get_mus_pos();
 	}
+
+	zx_loading(musCheckpoint+0x34*3, 0x2c, 0x05, 4, 0);
+	zx_loading(musCheckpoint+0x38*3, 0x28, 0x01, 5, 256);
+	pal_col(7,0x10);
+
+	zx_border(0x06);
+
+	//skip_frames(40);
+	while (muspos < musCheckpoint+0x38*3+25) {
+		muspos = get_mus_pos();
+	}
+	
+	zx_border(0x0f);
+	music_stop();
+	while(1) {};
 }
