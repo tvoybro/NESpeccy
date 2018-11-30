@@ -109,7 +109,7 @@ unsigned char buffa[256];
 #define OBJ_OTHER				8
 
 const unsigned char infoPage1[9][16] = {
-	"CAFEPARTY 2019: ",
+	"CAFEPARTY 2019. ",
 	"TRUE DEMOSCENE  ",
 	"WEEKEND IN      ",
 	"KAZAN, RUSSIA.  ",
@@ -318,26 +318,22 @@ const unsigned char logo_bottom[]={
 	 40, 24,0xed,1,
 	 48, 24,0xee,1,
 	 56, 24,0xef,1,
-	128
-};
-
-const unsigned char logo_title[]={
-	  0,  0,0xf0,1,
-	  8,  0,0xf1,1,
-	 16,  0,0xf2,1,
-	 24,  0,0xf3,1,
-	 32,  0,0xf4,1,
-	 40,  0,0xf5,1,
-	 48,  0,0xf6,1,
-	 56,  0,0xf7,1,
-	  0,  8,0xf8,1,
-	  8,  8,0xf9,1,
-	 16,  8,0xfa,1,
-	 24,  8,0xfb,1,
-	 32,  8,0xfc,1,
-	 40,  8,0xfd,1,
-	 48,  8,0xfe,1,
-	 56,  8,0xff,1,
+	  0, 32,0xf0,1,
+	  8, 32,0xf1,1,
+	 16, 32,0xf2,1,
+	 24, 32,0xf3,1,
+	 32, 32,0xf4,1,
+	 40, 32,0xf5,1,
+	 48, 32,0xf6,1,
+	 56, 32,0xf7,1,
+	  0, 40,0xf8,1,
+	  8, 40,0xf9,1,
+	 16, 40,0xfa,1,
+	 24, 40,0xfb,1,
+	 32, 40,0xfc,1,
+	 40, 40,0xfd,1,
+	 48, 40,0xfe,1,
+	 56, 40,0xff,1,
 	128
 };
 
@@ -1284,7 +1280,7 @@ void fxScroll32(unsigned char* restore_array) {
 
 		spr=0;
 		spr=oam_meta_spr(12*8,12*8-1,spr,logo_bottom);
-		spr=oam_meta_spr(12*8,16*8-1,spr,logo_title);
+//		spr=oam_meta_spr(12*8,16*8-1,spr,logo_title);
 
 		ppu_wait_nmi();
 
