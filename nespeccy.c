@@ -60,7 +60,8 @@ unsigned char p, fx, fy, bright, to_bright;
 unsigned int gfrm;
 
 static unsigned char fire_array[256]={};
-
+unsigned char invaders_lim;
+unsigned char objPos, objY, objX, objTimer, objFrame, objID;
 unsigned int muspos = 0;
 unsigned int fxFrame = 0;
 unsigned char scrSwap = 0;
@@ -897,7 +898,6 @@ void fxRotorFrame() {
 }
 
 void showPlatforms(void) {
-unsigned char objPos, objY, objX, objTimer, objFrame, objID;
 	for (i=0;i<4;++i)
 	{
 		objPos=i*5;
@@ -1302,18 +1302,13 @@ void fxScroll32(unsigned char* restore_array) {
 void fxInvaders(void) {
 	scroll(sq_scroll_pos*96, 0);
 	ppu_wait_nmi();
-	if (fr>23) {
+	if (fr>invaders_lim) {
 		++sq_scroll_pos;
 		++from_x;
 		fr=0;
+		pal_col(2, (rand8()&3)+1);
 	}
-
 	++fr;
-
-	if (fr>29) {
-		fr=0;
-	}
-
 	if (from_x>15) sq_scroll_pos=from_x=0;
 	spr=0;	
 	showPlatforms();
@@ -1380,7 +1375,8 @@ const unsigned char *bigSymbol;
 	};
 
 	if (setattr==3) {
-		vram_adr(NAMETABLE_B+0x03e8);
+		vram_adr(NAMETABLE_B+0x03d8);
+		vram_fill((2 << 6) | (2 << 4) | (1 << 2) | (1 << 0),8);
 		vram_fill((2 << 6) | (2 << 4) | (2 << 2) | (2 << 0),8);
 	};
 
@@ -1439,7 +1435,11 @@ void setupArrowsFX(void) {
 
 void main(void)
 {
-	
+	if (ppu_system())
+		invaders_lim=23;
+	else
+		invaders_lim=19;
+
 	set_vram_buffer();
 	clear_vram_buffer();
 	sq_scroll_pos=0;
@@ -1447,6 +1447,7 @@ void main(void)
 	p=0;
 
 	/* part 1 - begin */
+	music_play(0);
 
 	muspos=musCheckpoint=0;
 	
@@ -1612,6 +1613,8 @@ void main(void)
 			multi_vram_buffer_horz(features1+fy*64, 64, NAMETABLE_A+32*4+fy*128);
 			++fy;
 		}
+		if (muspos == musCheckpoint+0x20*3*3) pal_bright(8);
+		if (muspos == musCheckpoint+0x20*3*3+3) pal_bright(4);
 		if (muspos == musCheckpoint+0x0f*3 || muspos == musCheckpoint+0x2f*3 || muspos == musCheckpoint+0x4f*3 || muspos == musCheckpoint+0x8f*3  || muspos == musCheckpoint+0x8f*3+96 || muspos == musCheckpoint+0x8f*3+(96*2))
 		{
 			clear_vram_buffer();
@@ -1695,7 +1698,10 @@ void main(void)
 			if (p==3 && muspos==musCheckpoint+MUS_HALF_BAR-24) {
 				pal_bright(8);
 				ppu_wait_nmi();
+			} 
+			if (p==3 && muspos==musCheckpoint+MUS_HALF_BAR-20) {
 				pal_bright(4);
+				ppu_wait_nmi();
 				oam_clear();
 				platforms[0]=0;
 				platforms[5]=0;
