@@ -109,15 +109,15 @@ unsigned char buffa[256];
 #define OBJ_OTHER				8
 
 const unsigned char infoPage1[9][16] = {
+	"CAFEPARTY 2019: ",
 	"TRUE DEMOSCENE  ",
 	"WEEKEND IN      ",
 	"KAZAN, RUSSIA.  ",
 	"MULTIPLATFORM   ",
 	"DEMOPARTY AT    ",
 	"25-27 OCTOBER   ",
-	"CAFE 2019       ",
 	"NEWSKOOL AND    ", 
-	"OLDSKOOL.       "
+	"OLDSKOOL ENTRIES"
 };
 
 const unsigned char infoPage2[9][16] = {
@@ -144,6 +144,15 @@ const unsigned char infoPage3[9][16] = {
 	"ARE ALLOWED!    "
 };
 
+const unsigned char features_attrs[6*8]={
+	4, 5, 4, 5, 5, 1, 0, 0,
+	4, 5, 5, 5, 4, 5, 5, 0,
+	4, 5, 5, 5, 1, 0, 0, 0,
+	4, 1, 5, 5, 0, 0, 0, 0,
+	4, 5, 5, 5, 4, 5, 1, 0,
+	4, 4, 5, 1, 5, 5, 1, 0
+};
+
 const unsigned char features1[32*2]={
 	0xa5,0xa6,0x28,0x29,0x46,0x47,0x42,0x43,0xa4,0xa5,0x6a,0x6b,0x2a,0x2b,0x68,0x69,0x2e,0x2f,0x2e,0x2f,0x60,0x61,0xaa,0xa8,0xa9,0xaa,0xa8,0xa9,0xaa,0xa8,0xa9,0x00,
 	0xa6,0xa4,0x38,0x39,0x56,0x57,0x52,0x53,0xa5,0xa6,0x7a,0x7b,0x3a,0x3b,0x78,0x79,0x3e,0x3f,0x3e,0x3f,0x70,0x71,0xa9,0xaa,0xa8,0xa9,0xaa,0xa8,0xa9,0xaa,0xa8,0x00
@@ -160,8 +169,8 @@ const unsigned char features3[32*2]={
 };
 
 const unsigned char features4[32*2]={
-	0xb9,0xb8,0x2c,0x2d,0x00,0x49,0x00,0x00,0x80,0x81,0x00,0x49,0xb9,0xb8,0x6a,0x6b,0x2e,0x2f,0x6c,0x6d,0x6a,0x6b,0xb6,0xb5,0xb4,0xb6,0xb5,0xb4,0xb6,0xb5,0xb4,0x00,
-	0xb7,0xb9,0x3c,0x3d,0x58,0x59,0x9b,0x00,0x90,0x91,0x58,0x59,0xb7,0xb9,0x7a,0x7b,0x3e,0x3f,0x7c,0x7d,0x7a,0x7b,0xb5,0xb4,0xb6,0xb5,0xb4,0xb6,0xb5,0xb4,0xb6,0x00
+	0xb9,0xb8,0x2c,0x2d,0x00,0x49,0xb9,0xb8,0x6a,0x6b,0x2e,0x2f,0x6c,0x6d,0x6a,0x6b,0xb4,0xb6,0xb5,0xb4,0xb6,0xb5,0xb4,0xb5,0xb4,0xb6,0xb5,0xb4,0xb6,0xb5,0xb4,0x00,
+	0xb7,0xb9,0x3c,0x3d,0x58,0x59,0xb7,0xb9,0x7a,0x7b,0x3e,0x3f,0x7c,0x7d,0x7a,0x7b,0xb6,0xb5,0xb4,0xb6,0xb5,0xb4,0xb6,0xb4,0xb6,0xb5,0xb4,0xb6,0xb5,0xb4,0xb6,0x00
 };
 
 const unsigned char features5[32*2]={
@@ -640,7 +649,7 @@ const unsigned char twisterText[] = {
 
 	3, 3*32+16,
 	//BBQ COMPO : )
-	9, txtS('B'),txtS('B'),txtS('Q'),0x00,txtS('C'),txtS('O'),txtS('M'),txtS('P'),txtS('O'),
+	11, txtS('B'),txtS('B'),txtS('Q'),0x00,txtS('C'),txtS('O'),txtS('M'),txtS('P'),txtS('O'),0x00,0xf6,
 	
 	//--------------------------------
 	
@@ -754,9 +763,7 @@ void fxPlasmSetup(void) {
     pal_col(3,0x29);
     
 	vram_adr(NAMETABLE_A);
-	vram_fill(0,1024);
-	vram_adr(NAMETABLE_B);
-	vram_fill(0,1024);
+	vram_fill(0,2048);
 
 	cnrom_set_bank(TILESET_CHUNKS_FONT_INVADERS);
 	ppu_on_all();
@@ -1119,6 +1126,9 @@ void setupRhombusFX(void) {
 	pal_col(1,0x01);
 	pal_col(2,0x19);
 	pal_col(3,0x28);
+	pal_col(5,0x00);
+	pal_col(6,0x10);
+	pal_col(7,0x30);
 	scroll(0,0);
 	ppu_on_all();
 }
@@ -1160,32 +1170,6 @@ void setupInvadersFX(void) {
 	pal_bg(pal_scrollerFX);
 	pal_spr(pal_Platforms);
 	ppu_on_all();
-}
-
-void unrle(unsigned char *dst,const unsigned char *src)
-{
-unsigned char i,tag,byte;
-	tag=*src++;
-	byte=0;
-	while(1)
-	{
-		i=*src++;
-		if(i==tag)
-		{
-			i=*src++;
-			if(!i) break;
-			while(i)
-			{
-				*dst++=byte;
-				--i;
-			}
-		}
-		else
-		{
-			byte=i;;
-			*dst++=byte;
-		}
-	}
 }
 
 void fxSetupFinalScreen(void) {
@@ -1321,9 +1305,10 @@ void fxScroll32(unsigned char* restore_array) {
 void fxInvaders(void) {
 	scroll(sq_scroll_pos*96, 0);
 	ppu_wait_nmi();
-	if (!(fr&15)) {
+	if (fr>23) {
 		++sq_scroll_pos;
 		++from_x;
+		fr=0;
 	}
 
 	++fr;
@@ -1357,7 +1342,9 @@ const unsigned char *bigSymbol;
 	vram_adr(NAMETABLE_A);
 	vram_unrle(nam_BigText);
 	vram_adr(NAMETABLE_B);
-	vram_unrle(nam_BigText);
+	vram_fill(0, 960);
+	vram_adr(NAMETABLE_B+960);
+	vram_fill((1 << 6) | (1 << 4) | (1 << 2) | (1 << 0), 64);
 	pal_bg(pal_bigText);
 	pal_spr(pal_bigText);
 //	pal_spr(pal_scrollerFX);
@@ -1381,10 +1368,25 @@ const unsigned char *bigSymbol;
 				pos+=1;
 		}
 	}
-	if (setattr) {
+
+
+	if (setattr==1) {
+		vram_adr(NAMETABLE_B+0x03c0);
+		vram_fill((2 << 6) | (2 << 4) | (2 << 2) | (2 << 0),8);
+		vram_fill((1 << 6) | (1 << 4) | (2 << 2) | (2 << 0),8);
+	};
+
+	if (setattr==2) {
+		vram_adr(NAMETABLE_B+0x03c0);
+		vram_fill((2 << 6) | (2 << 4) | (2 << 2) | (2 << 0),8);
+		vram_fill((1 << 6) | (1 << 4) | (2 << 2) | (2 << 0),8);
+	};
+
+	if (setattr==3) {
 		vram_adr(NAMETABLE_B+0x03e8);
 		vram_fill((2 << 6) | (2 << 4) | (2 << 2) | (2 << 0),8);
 	};
+
 	scroll(0,0);
 	oam_spr(0,8,0x8c,3,0);
 	bigTextX=0;
@@ -1396,7 +1398,7 @@ const unsigned char *bigSymbol;
 void fxBigPage(void) {
 	scroll(0,0);
 	++gfrm;
-	gfrm&=7;
+	gfrm&=3;
 	if (!gfrm) ++fx;
 	fx&=1;
 	if (fx) {
@@ -1443,7 +1445,6 @@ void main(void)
 	
 	set_vram_buffer();
 	clear_vram_buffer();
-
 	sq_scroll_pos=0;
 
 	p=0;
@@ -1603,6 +1604,7 @@ void main(void)
 	ppu_wait_nmi();
 
 	fy=0;
+	fx=0;
 	setupRhombusFX();
 	while(muspos < (musCheckpoint + MUS_PATTERN)){
 		if (!(gfrm&3)) fxPaletteRoll();
@@ -1612,6 +1614,12 @@ void main(void)
 			clear_vram_buffer();
 			multi_vram_buffer_horz(features1+fy*64, 64, NAMETABLE_A+32*4+fy*128);
 			++fy;
+		}
+		if (muspos == musCheckpoint+0x0f*3 || muspos == musCheckpoint+0x2f*3 || muspos == musCheckpoint+0x4f*3 || muspos == musCheckpoint+0x8f*3  || muspos == musCheckpoint+0x8f*3+96 || muspos == musCheckpoint+0x8f*3+(96*2))
+		{
+			clear_vram_buffer();
+			multi_vram_buffer_horz(features_attrs+fx*8, 8, NAMETABLE_A+0x03c8+fx*8);
+			++fx;
 		}
 		ppu_wait_nmi();
 		muspos = get_mus_pos();
@@ -1653,7 +1661,7 @@ void main(void)
 	pal_bright(8);
 	clear_vram_buffer();
 	oam_clear();
-	setupBigTextPage(*infoPage2, 0);
+	setupBigTextPage(*infoPage2, 2);
 	scroll(0,0);
 	pal_bright(4);
 	ppu_wait_nmi();
@@ -1664,7 +1672,7 @@ void main(void)
 	}
 
 	pal_bright(8);
-	setupGridFX(0x06);
+	setupGridFX(0x25);
 	pal_bright(4);
 
 	while(muspos < (musCheckpoint + MUS_PATTERN + MUS_PATTERN + MUS_PATTERN)){
@@ -1680,6 +1688,7 @@ void main(void)
 
 	setupInvadersFX();
 
+	fr=0;
 	for (p=0;p<8;++p) {
 		musCheckpoint=muspos;
 		platforms[(p&3)*5]=p+1;
@@ -1712,7 +1721,7 @@ void main(void)
 	pal_bright(8);
 	clear_vram_buffer();
 	oam_clear();
-	setupBigTextPage(*infoPage3, 0);
+	setupBigTextPage(*infoPage3, 3);
 	scroll(0,0);
 	pal_bright(4);
 	ppu_wait_nmi();
