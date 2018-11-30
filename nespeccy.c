@@ -1447,6 +1447,8 @@ void main(void)
 	p=0;
 
 	/* part 1 - begin */
+
+	muspos=musCheckpoint=0;
 	
 	setup_scene1();
 	music_play(0);
