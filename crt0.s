@@ -13,7 +13,7 @@ FT_SFX_STREAMS = 4			        ;number of sound effects played at once, 1..4
 .define FT_SFX_ENABLE   1			;undefine to exclude all sound effects code
 
 
-	.export _nam_rhombus, _nam_qr_A, _nam_qr_B
+	.export _nam_rhombus, _nam_qr_A, _nam_qr_B, _nam_Invites
     .export _exit,__STARTUP__:absolute=1
 	.import initlib,push0,popa,popax,_main,zerobss,copydata
 
@@ -291,3 +291,5 @@ _nam_qr_B:
 	.incbin "Include\nam_QR_pilotoneB.bin"
 _nam_rhombus:
 	.incbin "Include\pal_effect_nametable.bin"
+_nam_Invites:
+	.incbin "Include\nam_Invites.bin"

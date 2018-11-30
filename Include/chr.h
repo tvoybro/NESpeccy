@@ -1,6 +1,6 @@
 #ifndef CHR_H
 #define CHR_H
 
-extern char nam_rhombus[], nam_qr_A[], nam_qr_B[];
+extern char nam_rhombus[], nam_qr_A[], nam_qr_B[], nam_Invites[];
 
 #endif
