@@ -117,7 +117,7 @@ const unsigned char infoPage1[9][16] = {
 	"DEMOPARTY AT    ",
 	"25-27 OCTOBER   ",
 	"NEWSKOOL AND    ", 
-	"OLDSKOOL ENTRIES"
+	"OLDSKOOL PRODS. "
 };
 
 const unsigned char infoPage2[9][16] = {
@@ -318,6 +318,10 @@ const unsigned char logo_bottom[]={
 	 40, 24,0xed,1,
 	 48, 24,0xee,1,
 	 56, 24,0xef,1,
+	128
+};
+
+const unsigned char logo_title[]={
 	  0,  0,0xf0,1,
 	  8,  0,0xf1,1,
 	 16,  0,0xf2,1,
@@ -1280,7 +1284,7 @@ void fxScroll32(unsigned char* restore_array) {
 
 		spr=0;
 		spr=oam_meta_spr(12*8,12*8-1,spr,logo_bottom);
-//		spr=oam_meta_spr(12*8,16*8-1,spr,logo_title);
+		spr=oam_meta_spr(12*8,16*8-1,spr,logo_title);
 
 		ppu_wait_nmi();
 
