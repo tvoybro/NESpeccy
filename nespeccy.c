@@ -452,6 +452,13 @@ void showmuspos(void)
 
 #include "Include\sceneZXloading.h"
 
+#define twLines 6
+#define twTextDelay 192
+unsigned char x, y, twisterAdr, yyy, x1, x2, y1, chunk, chunkAdr, yfrom, yto, tadr, tqty, txtadr;
+unsigned int twTextTimer = 0;
+unsigned int twTextAdr = 0;
+
+
 void fxTwisterSetup() {
 
 	ppu_off();
@@ -474,76 +481,74 @@ void fxTwisterSetup() {
 	fxFrame = 0;
 }
 
-#define twLines 6
-#define twTextDelay1 5
-#define twTextDelay2 60
+/*
+NEWSKOOL
+OLDSKOOL
+DEMO
+INTRO
+GRAPHICS
+MUSIC
+GAMES
+REALITME
+PROCEDURAL
+TEXTMODE
+WILD
+BBQ COMPO : )
+*/
 
-
-unsigned int twTextAdr = 0;
 const unsigned char twisterText[] = {
-	0 * twTextDelay1, twTextDelay2 - 3 * twTextDelay1,
-	0, 3*32+4,
-	6,
-	0xDE, 0xF1, 0xDC, 0xDE, 0xEC, 0xEC,
-	
-	1 * twTextDelay1, twTextDelay2 - 2 * twTextDelay1,
-	1, 3*32+20,
-	6,
-	0xDE, 0xF1, 0xDC, 0xDE, 0xEC, 0xEC,
-	
-	2 * twTextDelay1, twTextDelay2 - 1 * twTextDelay1,
-	2, 3*32+4,
-	6,
-	0xDE, 0xF1, 0xDC, 0xDE, 0xEC, 0xEC,
-	
-	3 * twTextDelay1, twTextDelay2 - 0 * twTextDelay1,
-	3, 3*32+20,
-	6,
-	0xDE, 0xF1, 0xDC, 0xDE, 0xEC, 0xEC,
+	0, 3*32+8,
+	//NEWSKOOL
+	8, txtS('N'),txtS('E'),txtS('W'),txtS('S'),txtS('K'),txtS('O'),txtS('O'),txtS('L'),
 
-	0 * twTextDelay1, twTextDelay2 - 3 * twTextDelay1,
-	0, 3*32+4,
-	6,
-	0xDE, 0xF1, 0xDC, 0xDE, 0xEC, 0xEC,
-	
-	1 * twTextDelay1, twTextDelay2 - 2 * twTextDelay1,
 	1, 3*32+20,
-	6,
-	0xDE, 0xF1, 0xDC, 0xDE, 0xEC, 0xEC,
-	
-	2 * twTextDelay1, twTextDelay2 - 1 * twTextDelay1,
+	//OLDSKOOL
+	8, txtS('O'),txtS('L'),txtS('D'),txtS('S'),txtS('K'),txtS('O'),txtS('O'),txtS('L'),
+
 	2, 3*32+4,
-	6,
-	0xDE, 0xF1, 0xDC, 0xDE, 0xEC, 0xEC,
+	//DEMO
+	4, txtS('D'),txtS('E'),txtS('M'),txtS('O'),
+
+	3, 3*32+16,
+	//INTRO
+	5, txtS('I'),txtS('N'),txtS('T'),txtS('R'),txtS('O'),
+
+	//--------------------------------
 	
-	3 * twTextDelay1, twTextDelay2 - 0 * twTextDelay1,
-	3, 3*32+20,
-	6,
-	0xDE, 0xF1, 0xDC, 0xDE, 0xEC, 0xEC,
-	
-    //-------------------------
-    
-	0 * twTextDelay1, twTextDelay2 - 4 * twTextDelay1,
-	0, 3*32+4,
-	3,
-	0xEC, 0xEC, 0xEC,
-	
-	1 * twTextDelay1, twTextDelay2 - 3 * twTextDelay1,
+	0, 3*32+16,
+	//GRAPHICS
+	8, txtS('G'),txtS('R'),txtS('A'),txtS('P'),txtS('H'),txtS('I'),txtS('C'),txtS('S'),
+
+	1, 3*32+4,
+	//MUSIC
+	5, txtS('M'),txtS('U'),txtS('S'),txtS('I'),txtS('C'),
+
+	2, 3*32+20,
+	//GAMES
+	5, txtS('G'),txtS('A'),txtS('M'),txtS('E'),txtS('S'),
+
+	3, 3*32+8,
+	//REALITME
+	8, txtS('R'),txtS('E'),txtS('A'),txtS('L'),txtS('I'),txtS('T'),txtS('M'),txtS('E'),
+
+	//--------------------------------
+
+	0, 3*32+8,
+	//PROCEDURAL
+	10, txtS('P'),txtS('R'),txtS('O'),txtS('C'),txtS('E'),txtS('D'),txtS('U'),txtS('R'),txtS('A'),txtS('L'),
+
 	1, 3*32+20,
-	6,
-	0xDE, 0xF1, 0xDC, 0xDE, 0xEC, 0xEC,
-	
-	2 * twTextDelay1, twTextDelay2 - 2 * twTextDelay1,
+	//TEXTMODE
+	8, txtS('T'),txtS('E'),txtS('X'),txtS('T'),txtS('M'),txtS('O'),txtS('D'),txtS('E'),
+
 	2, 3*32+4,
-	6,
-	0xDE, 0xF1, 0xDC, 0xDE, 0xEC, 0xEC,
+	//WILD
+	4, txtS('W'),txtS('I'),txtS('L'),txtS('D'),
+
+	3, 3*32+16,
+	//BBQ COMPO : )
+	9, txtS('B'),txtS('B'),txtS('Q'),0x00,txtS('C'),txtS('O'),txtS('M'),txtS('P'),txtS('O'),
 	
-	3 * twTextDelay1, twTextDelay2 - 1 * twTextDelay1,
-	3, 3*32+20,
-	6,
-	0xDE, 0xF1, 0xDC, 0xDE, 0xEC, 0xEC,
-    
-    //-------------------------
     255 //no text code
     
 };
@@ -551,18 +556,13 @@ const unsigned char twisterText[] = {
 
 /*
 для каждого frm мы строим 6 строк
-
-1б - начиная с какого фрейма показывать
-1б - длительность показа
+1б - длина сообщения
 1б - номер frm
 1б - адрес
-1б - длина сообщения
 Xб - само сообщение
 */
 
-
 void fxTwisterFrame(frm) {
-	unsigned char x, y, twisterAdr, yyy, x1, x2, y1, chunk, chunkAdr, yfrom, yto, tadr, tqty, txtadr;
 	memfill32(fire_array, 0, twLines);
 	yfrom = frm * twLines;
 	yto = yfrom + twLines;
@@ -590,26 +590,17 @@ void fxTwisterFrame(frm) {
     }
     
 	while (tqty > 0) {
-		if (
-			(twisterText[txtadr + 2] == frm)
-			&& (twisterText[txtadr + 0] <= fxFrame)
-			&& (twisterText[txtadr + 1] >= fxFrame)
-		) {
-			tadr = twisterText[txtadr + 3];
-			for (x = 0; x < twisterText[txtadr + 4]; x++) {
-				fire_array[tadr] = twisterText[txtadr + 5 + x];
+		if (twisterText[txtadr] == frm) {
+			tadr = twisterText[txtadr + 1];
+			for (x = 0; x < twisterText[txtadr + 2]; x++) {
+				fire_array[tadr] = twisterText[txtadr + 3 + x];
 				tadr++;
 			}
 		}
-		txtadr += twisterText[txtadr + 4] + 5;
+		txtadr += twisterText[txtadr + 2] + 3;
 		--tqty;
 	}
-	
-    if (fxFrame >= twTextDelay2 - 1) {
-        fxFrame = 0;
-        twTextAdr = txtadr;
-    }
-	
+
 }
 
 void fxTwister(void) {
@@ -619,79 +610,30 @@ void fxTwister(void) {
 		if (scrSwap == 0) {
 			scroll(0,0);
 			fxTwisterFrame(frm);
-			gray_line();
 			set_nmi_user_vram_adr(NAMETABLE_B + 64+32 + frm*32*twLines);
 			ppu_wait_nmi();
 		} else {
 			scroll(256,0);
 			fxTwisterFrame(frm);
-			gray_line();
 			set_nmi_user_vram_adr(NAMETABLE_A + 64+32 + frm*32*twLines);
 			ppu_wait_nmi();
 		}
 	}
+	
+    if (muspos >= twTextTimer) {
+		twTextTimer += twTextDelay;
+        twTextAdr = txtadr;
+    }
+	muspos = get_mus_pos();
+
 	xa += 8;
 	za += 12;
 	ya += 4;
 	scrSwap ^= 1;
-	fxFrame++;
 }
 
 //----------------------------------------------------------------------
 #define plsmLines 5
-#define plsmTextDelay1 0
-#define plsmTextDelay2 60
-
-
-unsigned int plsmTextAdr = 0;
-const unsigned char plsmText[] = {
-	0 * plsmTextDelay1, plsmTextDelay2 - 3 * plsmTextDelay1,
-	1, 1*32+10,
-	6,
-	txtS('E'),txtS('X'),txtS('C'),txtS('E'),txtS('S'),txtS('S'),
-	
-	1 * plsmTextDelay1, plsmTextDelay2 - 2 * plsmTextDelay1,
-	2, 2*32+20,
-	6,
-	txtS('E'),txtS('X'),txtS('C'),txtS('E'),txtS('S'),txtS('S'),
-	
-	2 * plsmTextDelay1, plsmTextDelay2 - 1 * plsmTextDelay1,
-	3, 2*32+4,
-	6,
-	txtS('E'),txtS('X'),txtS('C'),txtS('E'),txtS('S'),txtS('S'),
-	
-	3 * plsmTextDelay1, plsmTextDelay2 - 0 * plsmTextDelay1,
-	4, 3*32+16,
-	6,
-	txtS('E'),txtS('X'),txtS('C'),txtS('E'),txtS('S'),txtS('S'),
-	
-    //-------------------------
-    
-	0 * plsmTextDelay1, plsmTextDelay2 - 3 * plsmTextDelay1,
-	1, 1*32+10,
-	6,
-	txtS('E'),txtS('X'),txtS('C'),txtS('E'),txtS('S'),txtS('S'),
-	
-	1 * plsmTextDelay1, plsmTextDelay2 - 2 * plsmTextDelay1,
-	2, 2*32+20,
-	8,
-	txtS('D'),txtS('E'),txtS('M'),txtS('A'),txtS('R'),txtS('C'),txtS('H'),txtS('E'),
-	
-	2 * plsmTextDelay1, plsmTextDelay2 - 1 * plsmTextDelay1,
-	3, 2*32+4,
-	8,
-	txtS('T'),txtS('H'),txtS('E'),txtS('S'),txtS('U'),txtS('P'),txtS('E'),txtS('R'),
-	
-	3 * plsmTextDelay1, plsmTextDelay2 - 0 * plsmTextDelay1,
-	4, 3*32+16,
-	3,
-	txtS('A'),txtS('S'),txtS('D'),
-    
-    //-------------------------
-    255 //no text code
-    
-};
-
 
 void fxPlasmSetup(void) {
 	ppu_off();
@@ -713,7 +655,6 @@ void fxPlasmSetup(void) {
 }
 
 void fxPlasmFrame(frm) {
-unsigned char y, x, yfrom, yto, tqty, txtadr, tadr;
 	buffAdr = 0;
 	yfrom = frm * plsmLines;
 	yto = frm * plsmLines + plsmLines;
@@ -729,35 +670,7 @@ unsigned char y, x, yfrom, yto, tqty, txtadr, tadr;
 		}
 		++yy;
 	}
-    
-	tqty = 4;
-	txtadr = plsmTextAdr;
-    if (plsmText[txtadr] == 255) {
-        return;
-    }
-    
-	while (tqty > 0) {
-		if (
-			(plsmText[txtadr + 2] == frm)
-			&& (plsmText[txtadr + 0] <= fxFrame)
-			&& (plsmText[txtadr + 1] >= fxFrame)
-		) {
-			tadr = plsmText[txtadr + 3];
-			for (x = 0; x < plsmText[txtadr + 4]; x++) {
-				fire_array[tadr] = plsmText[txtadr + 5 + x];
-				++tadr;
-			}
-		}
-		txtadr += plsmText[txtadr + 4] + 5;
-		--tqty;
-	}
-	
-    if (fxFrame >= twTextDelay2 - 1) {
-        fxFrame = 0;
-        plsmTextAdr = txtadr;
-    }
-    
-    
+
 }
 
 void fxPlasm(void) {
@@ -767,13 +680,11 @@ void fxPlasm(void) {
 		if (scrSwap == 0) {
 			scroll(0,0);
 			fxPlasmFrame(frm);
-			gray_line();
             set_nmi_user_vram_adr(NAMETABLE_B + frm*32*plsmLines);
 			ppu_wait_nmi();
 		} else {
             scroll(256,0);
 			fxPlasmFrame(frm);
-			gray_line();
             set_nmi_user_vram_adr(NAMETABLE_A + frm*32*plsmLines);
 			ppu_wait_nmi();
 		}
@@ -1404,7 +1315,7 @@ void main(void)
 {
 	set_vram_buffer();
 	clear_vram_buffer();
-		
+
 /*
 	setupArrowsFX();
 	while(1) {};
@@ -1771,6 +1682,7 @@ void main(void)
 	pal_bright(4); ppu_wait_nmi();
 
 	// fx twister
+	twTextTimer = get_mus_pos() + twTextDelay - 12;
 	while(muspos < (musCheckpoint + MUS_PATTERN*2)){
 		fxTwister();
 		muspos = get_mus_pos();
