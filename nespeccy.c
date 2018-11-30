@@ -1087,6 +1087,7 @@ void fxFire(void) {
 
 void setup_scene_water(void) {
 unsigned char attr;
+	ppu_off();
 	vram_adr(NAMETABLE_A);
 	vram_fill(0,1024-24);
 	attr=(3 << 6) | (3 << 4) | (0 << 2) | (0 << 0);
@@ -1454,8 +1455,6 @@ void main(void)
 	setup_scene1();
 	music_play(0);
 	scene1_ZXloading();
-
-	ppu_off();
 
 	xa = 0;
 	ya = 0;
