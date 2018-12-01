@@ -116,7 +116,7 @@ const unsigned char infoPage1[9][16] = {
 	"KAZAN, RUSSIA.  ",
 	"MULTIPLATFORM   ",
 	"DEMOPARTY AT    ",
-	"25-27 OCTOBER   ",
+	"25-27 OCTOBER.  ",
 	"NEWSKOOL AND    ", 
 	"OLDSKOOL PRODS. "
 };
@@ -1306,7 +1306,6 @@ void fxInvaders(void) {
 		++sq_scroll_pos;
 		++from_x;
 		fr=0;
-		pal_col(2, (rand8()&3)+1);
 	}
 	++fr;
 	if (from_x>15) sq_scroll_pos=from_x=0;
@@ -1647,7 +1646,7 @@ void main(void)
 	musCheckpoint=muspos;
 
 	pal_bright(8);
-	setupGridFX(0x05);
+	setupGridFX(0x21);
 	pal_bright(4);
 	ppu_wait_nmi();
 
@@ -1701,6 +1700,7 @@ void main(void)
 			} 
 			if (p==3 && muspos==musCheckpoint+MUS_HALF_BAR-20) {
 				pal_bright(4);
+				pal_col(2,0x04);
 				ppu_wait_nmi();
 				oam_clear();
 				platforms[0]=0;
