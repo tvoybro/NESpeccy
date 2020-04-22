@@ -286,57 +286,79 @@ const unsigned char logo_bottom2_BG[4*4]={
 	0xe4,0xe5,0xe6,0xe7
 };
 
-const unsigned char logo_bottom[]={
-	  0,  0,0xb8,1,
-	  8,  0,0xb9,1,
-	 16,  0,0xba,1,
-	 24,  0,0xbb,1,
-	 32,  0,0xbc,1,
-	 40,  0,0xbd,1,
-	 48,  0,0xbe,1,
-	 56,  0,0xbf,1,
-	  0,  8,0xc8,1,
-	  8,  8,0xc9,1,
-	 16,  8,0xca,1,
-	 24,  8,0xcb,1,
-	 32,  8,0xcc,1,
-	 40,  8,0xcd,1,
-	 48,  8,0xce,1,
-	 56,  8,0xcf,1,
-	  0, 16,0xd8,1,
-	  8, 16,0xd9,1,
-	 16, 16,0xda,1,
-	 24, 16,0xdb,1,
-	 32, 16,0xdc,1,
-	 40, 16,0xdd,1,
-	 48, 16,0xde,1,
-	 56, 16,0xdf,1,
-	  0, 24,0xe8,1,
-	  8, 24,0xe9,1,
-	 16, 24,0xea,1,
-	 24, 24,0xeb,1,
-	 32, 24,0xec,1,
-	 40, 24,0xed,1,
-	 48, 24,0xee,1,
-	 56, 24,0xef,1,
-	  0, 32,0xf0,1,
-	  8, 32,0xf1,1,
-	 16, 32,0xf2,1,
-	 24, 32,0xf3,1,
-	 32, 32,0xf4,1,
-	 40, 32,0xf5,1,
-	 48, 32,0xf6,1,
-	 56, 32,0xf7,1,
-	  0, 40,0xf8,1,
-	  8, 40,0xf9,1,
-	 16, 40,0xfa,1,
-	 24, 40,0xfb,1,
-	 32, 40,0xfc,1,
-	 40, 40,0xfd,1,
-	 48, 40,0xfe,1,
-	 56, 40,0xff,1,
+const unsigned char cafe_title[]={
+	  0,  0,0xf0,1,
+	  8,  0,0xf1,1,
+	 16,  0,0xf2,1,
+	 24,  0,0xf3,1,
+	 32,  0,0xf4,1,
+	 40,  0,0xf5,1,
+	 48,  0,0xf6,1,
+	 56,  0,0xf7,1,
+	  0,  8,0xf8,1,
+	  8,  8,0xf9,1,
+	 16,  8,0xfa,1,
+	 24,  8,0xfb,1,
+	 32,  8,0xfc,1,
+	 40,  8,0xfd,1,
+	 48,  8,0xfe,1,
+	 56,  8,0xff,1,
 	128
 };
+
+
+const unsigned char logo_bottom[]={
+	  0,  0,0xd0,1,
+	  8,  0,0xd1,1,
+	 16,  0,0xd2,1,
+	 24,  0,0xd3,1,
+	 32,  0,0xd4,1,
+	 40,  0,0xd5,1,
+	 48,  0,0xd6,1,
+	 56,  0,0xd7,1,
+	  0,  8,0xe0,1,
+	  8,  8,0xe1,1,
+	 16,  8,0xe2,1,
+	 24,  8,0xe3,1,
+	 32,  8,0xe4,1,
+	 40,  8,0xe5,1,
+	 48,  8,0xe6,1,
+	 56,  8,0xe7,1,
+	  0, 16,0xb8,1,
+	  8, 16,0xb9,1,
+	 16, 16,0xba,1,
+	 24, 16,0xbb,1,
+	 32, 16,0xbc,1,
+	 40, 16,0xbd,1,
+	 48, 16,0xbe,1,
+	 56, 16,0xbf,1,
+	  0, 24,0xc8,1,
+	  8, 24,0xc9,1,
+	 16, 24,0xca,1,
+	 24, 24,0xcb,1,
+	 32, 24,0xcc,1,
+	 40, 24,0xcd,1,
+	 48, 24,0xce,1,
+	 56, 24,0xcf,1,
+	  0, 32,0xd8,1,
+	  8, 32,0xd9,1,
+	 16, 32,0xda,1,
+	 24, 32,0xdb,1,
+	 32, 32,0xdc,1,
+	 40, 32,0xdd,1,
+	 48, 32,0xde,1,
+	 56, 32,0xdf,1,
+	  0, 40,0xe8,1,
+	  8, 40,0xe9,1,
+	 16, 40,0xea,1,
+	 24, 40,0xeb,1,
+	 32, 40,0xec,1,
+	 40, 40,0xed,1,
+	 48, 40,0xee,1,
+	 56, 40,0xef,1,
+	128
+};
+
 
 const unsigned char pal_Invites[16]={ 0x0f,0x0f,0x30,0x0f,0x0f,0x1a,0x27,0x24,0x0f,0x0f,0x0f,0x0f,0x0f,0x0f,0x0f,0x0f };
 const unsigned char pal_Platforms[16]={ 0x0f,0x1b,0x2b,0x3b,0x0f,0x16,0x26,0x36,0x0f,0x14,0x24,0x34,0x0f,0x17,0x27,0x37 };
@@ -628,7 +650,7 @@ const unsigned char twisterText[] = {
 
 	3, 3*32+8,
 	//REALITME
-	8, txtS('R'),txtS('E'),txtS('A'),txtS('L'),txtS('I'),txtS('T'),txtS('M'),txtS('E'),
+	8, txtS('R'),txtS('E'),txtS('A'),txtS('L'),txtS('T'),txtS('I'),txtS('M'),txtS('E'),
 
 	//--------------------------------
 
@@ -1211,78 +1233,78 @@ void fxPaletteRoll(void) {
 }
 
 void fxScroll32(unsigned char* restore_array) {
-		clear_vram_buffer();
 
 		// Calculate page and address to restore BG
 		if (from_x>5 && from_x<14){
 			imsb=(from_x-6)<<2;
-			scrollPage=NAMETABLE_B;
+			scrollPage=NAMETABLE_B+(32*8)+imsb;
 		}
 		if (from_x<6){
 			imsb=8+(from_x<<2);
-			scrollPage=NAMETABLE_A;
+			scrollPage=NAMETABLE_A+(32*8)+imsb;
 		}
 		if (from_x>13){
 			imsb=(from_x-14)<<2;
-			scrollPage=NAMETABLE_A;
+			scrollPage=NAMETABLE_A+(32*8)+imsb;
 		}
+		clear_vram_buffer();
 		// Restore BG
-		scrollRow=from_x<<2;
-		multi_vram_buffer_horz((unsigned char*) restore_array + scrollRow, 4, scrollPage+32*8+(imsb));
+		scrollRow = from_x<<2;
+		multi_vram_buffer_horz((unsigned char*) restore_array + scrollRow, 4, scrollPage);
 		scrollRow+=64;
-		multi_vram_buffer_horz((unsigned char*) restore_array + scrollRow, 4, scrollPage+32*9+(imsb));
+		scrollPage += 32;
+		multi_vram_buffer_horz((unsigned char*) restore_array + scrollRow, 4, scrollPage);
 		scrollRow+=64;
-		multi_vram_buffer_horz((unsigned char*) restore_array + scrollRow, 4, scrollPage+32*10+(imsb));
+		scrollPage += 32;
+		multi_vram_buffer_horz((unsigned char*) restore_array + scrollRow, 4, scrollPage);
 		scrollRow+=64;
-		multi_vram_buffer_horz((unsigned char*) restore_array + scrollRow, 4, scrollPage+32*11+(imsb));
+		scrollPage += 32;
+		multi_vram_buffer_horz((unsigned char*) restore_array + scrollRow, 4, scrollPage);
 
 		if (from_x>4 && from_x<13){
 			imsb=(from_x-5)<<2;
-			scrollPage=NAMETABLE_B;
+			scrollPage=NAMETABLE_B+(32*8)+imsb;
 		}
 		if (from_x<5){
 			imsb=12+(from_x<<2);
-			scrollPage=NAMETABLE_A;
+			scrollPage=NAMETABLE_A+(32*8)+imsb;
 		}
 		if (from_x>12){
 			imsb=(from_x-13)<<2;
-			scrollPage=NAMETABLE_A;
+			scrollPage=NAMETABLE_A+(32*8)+imsb;
 		}
 		scrollRow=0;
-		multi_vram_buffer_horz((unsigned char*) logo_bottom1_BG + scrollRow, 4, scrollPage+32*8+(imsb));
-		multi_vram_buffer_horz((unsigned char*) logo_bottom1_BG + scrollRow+4, 4, scrollPage+32*9+(imsb));
-		multi_vram_buffer_horz((unsigned char*) logo_bottom1_BG + scrollRow+8, 4, scrollPage+32*10+(imsb));
-		multi_vram_buffer_horz((unsigned char*) logo_bottom1_BG + scrollRow+12, 4, scrollPage+32*11+(imsb));
+		multi_vram_buffer_horz((unsigned char*) logo_bottom1_BG + scrollRow, 4, scrollPage);
+		scrollPage += 32;
+		multi_vram_buffer_horz((unsigned char*) logo_bottom1_BG + scrollRow+4, 4, scrollPage);
 
 		if (from_x>3 && from_x<12){
 			imsb=(from_x-4)<<2;
-			scrollPage=NAMETABLE_B;
+			scrollPage=NAMETABLE_B+(32*8)+imsb;
 		}
 		if (from_x<4){
 			imsb=16+(from_x<<2);
-			scrollPage=NAMETABLE_A;
+			scrollPage=NAMETABLE_A+(32*8)+imsb;
 		}
 		if (from_x>11){
 			imsb=(from_x-12)<<2;
-			scrollPage=NAMETABLE_A;
+			scrollPage=NAMETABLE_A+(32*8)+imsb;
 		}
 		scrollRow=0;
-		multi_vram_buffer_horz((unsigned char*) logo_bottom2_BG + scrollRow, 4, scrollPage+32*8+(imsb));
-		multi_vram_buffer_horz((unsigned char*) logo_bottom2_BG + scrollRow+4, 4, scrollPage+32*9+(imsb));
-		multi_vram_buffer_horz((unsigned char*) logo_bottom2_BG + scrollRow+8, 4, scrollPage+32*10+(imsb));
-		multi_vram_buffer_horz((unsigned char*) logo_bottom2_BG + scrollRow+12, 4, scrollPage+32*11+(imsb));
+		multi_vram_buffer_horz((unsigned char*) logo_bottom2_BG + scrollRow, 4, scrollPage);
+		scrollPage += 32;
+		multi_vram_buffer_horz((unsigned char*) logo_bottom2_BG + scrollRow+4, 4, scrollPage);
 
-		one_vram_buffer(0,attr_tbl1[from_x]);
-		one_vram_buffer((1 << 6) | (1 << 4) | (1 << 2) | (1 << 0),attr_tbl2[from_x]);
-		one_vram_buffer((1 << 6) | (1 << 4) | (1 << 2) | (1 << 0),attr_tbl3[from_x]);
+		one_vram_buffer(0,*(attr_tbl1+from_x));
+		one_vram_buffer((1 << 6) | (1 << 4) | (1 << 2) | (1 << 0), *(attr_tbl2+from_x));
+		one_vram_buffer((1 << 6) | (1 << 4) | (1 << 2) | (1 << 0), *(attr_tbl3+from_x));
 
 		scroll(sq_scroll_pos<<5, 0);
 
 		spr=0;
-		spr=oam_meta_spr(12*8,12*8-1,spr,logo_bottom);
-//		spr=oam_meta_spr(12*8,16*8-1,spr,logo_title);
+		spr=oam_meta_spr(12*8,10*8-1,spr,logo_bottom);
+		spr=oam_meta_spr(12*8,16*8-1,spr,cafe_title);
 
-		ppu_wait_nmi();
 
 		if (!(fr&1)) {
 			++sq_scroll_pos;
@@ -1297,6 +1319,7 @@ void fxScroll32(unsigned char* restore_array) {
 
 		if (from_x>15) sq_scroll_pos=from_x=0;
 		
+		ppu_wait_nmi();
 };
 
 void fxInvaders(void) {
